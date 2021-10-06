@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import Logo from 'assets/gfx/logo-dibk.svg';
+import { MapView, Upload } from 'components/partials';
+import { useState } from 'react';
+import './App.scss';
+import { geoJson1 } from 'utils/map';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+   const [geoJsonDocument, setGeoJsonDocument] = useState(geoJson1);
+
+   return (
+      <div className="app">
+         <div className="container">
+            <header>
+               <h1>
+                  <img src={Logo} alt="DiBK" />Fellestjenester PLAN |<span>Plankart</span>
+               </h1>
+            </header>
+
+            <div className="section">
+               <Upload onResponse={setGeoJsonDocument} />
+            </div>
+
+            <div className="section">
+               <MapView geoJsonDocument={geoJsonDocument} />
+            </div>
+         </div>
+      </div>
+   );
 }
 
 export default App;
