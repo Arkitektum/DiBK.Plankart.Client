@@ -51,9 +51,10 @@ async function addStyling(features, callback) {
 
 async function createVectorLayer(geoJsonDocument) {
    const features = new GeoJSON().readFeatures(geoJsonDocument.featureCollection);
+   const groupedFeatures = groupBy(features, feature => feature.get('name'));
 
    const vectorLayer = new VectorLayer({      
-      source: new VectorSource({ features })
+      source: new VectorSource({ features /*: groupedFeatures['RpAngittHensynSone']*/ })
    });
 
    vectorLayer.set('id', 'geojson');

@@ -53383,3 +53383,797 @@ export const geoJson2 = {
        ]
    }
 };
+
+export const geoJson3 = {
+   "fileName": "rpf.bo.3.gml",
+   "epsg": "EPSG:25832",
+   "featureCollection": {
+       "type": "FeatureCollection",
+       "features": [
+           {
+               "type": "Feature",
+               "geometry": {
+                   "coordinates": [
+                       [
+                           [
+                               [
+                                   4.77,
+                                   -0.37
+                               ],
+                               [
+                                   4.79,
+                                   -0.05
+                               ],
+                               [
+                                   4.8,
+                                   0.02
+                               ],
+                               [
+                                   4.97,
+                                   0.41
+                               ],
+                               [
+                                   5.38,
+                                   0.76
+                               ],
+                               [
+                                   6.08,
+                                   0.96
+                               ],
+                               [
+                                   6.16,
+                                   0.96
+                               ],
+                               [
+                                   9.61,
+                                   0.95
+                               ],
+                               [
+                                   9.58,
+                                   3.86
+                               ],
+                               [
+                                   7.23,
+                                   3.81
+                               ],
+                               [
+                                   7.24,
+                                   3.16
+                               ],
+                               [
+                                   8.55,
+                                   3.22
+                               ],
+                               [
+                                   8.57,
+                                   1.95
+                               ],
+                               [
+                                   6.74,
+                                   1.94
+                               ],
+                               [
+                                   6.74,
+                                   2.46
+                               ],
+                               [
+                                   6.74,
+                                   3.81
+                               ],
+                               [
+                                   4.44,
+                                   3.77
+                               ],
+                               [
+                                   4.46,
+                                   1.01
+                               ],
+                               [
+                                   3.93,
+                                   1.01
+                               ],
+                               [
+                                   3.63,
+                                   1.01
+                               ],
+                               [
+                                   3.62,
+                                   2.81
+                               ],
+                               [
+                                   2.31,
+                                   2.12
+                               ],
+                               [
+                                   2.3,
+                                   -0.9
+                               ],
+                               [
+                                   4.79,
+                                   -0.91
+                               ],
+                               [
+                                   4.77,
+                                   -0.37
+                               ]
+                           ]
+                       ]
+                   ],
+                   "type": "MultiPolygon"
+               },
+               "properties": {
+                   "id": "_d23f6d0c-ac1d-4857-b2fc-a8501e014dfb",
+                   "identifikasjon": {
+                       "Identifikasjon": {
+                           "lokalId": "9f7ecfb2-02a2-4827-b11a-eb607a36ef4d",
+                           "navnerom": "http://data.geonorge.no/4203/Reguleringsplaner/so",
+                           "versjonId": "\"2020-12-22 12:41:36.000000\""
+                       }
+                   },
+                   "oppdateringsdato": "2021-03-09T11:22:38.9095372+01:00",
+                   "opphav": "Lorem ipsum",
+                   "område": null,
+                   "vertikalnivå": "5",
+                   "vertikallag": {
+                       "Vertikallag": {
+                           "lag": "Lorem ipsum",
+                           "referansehøyde": "23.32"
+                       }
+                   },
+                   "arealplan": {
+                       "xlink:type": "simple",
+                       "xlink:href": "#_e62e0d8a-7a86-4fa6-b35b-b7a319081fd3"
+                   },
+                   "formål": [
+                       {
+                           "xlink:type": "simple",
+                           "xlink:href": "#_1deb7804-8671-469f-a0af-0ce6d5fa0b5c"
+                       },
+                       {
+                           "xlink:type": "simple",
+                           "xlink:href": "#_23f6ea2a-0943-4d5f-94d2-0b68ad85f929"
+                       },
+                       {
+                           "xlink:type": "simple",
+                           "xlink:href": "#_6d6d42da-21f9-4263-8413-27171ff10303"
+                       }
+                   ],
+                   "bestemmelseOmråde": [
+                       {
+                           "xlink:type": "simple",
+                           "xlink:href": "#_0b710728-faa9-4113-8552-e9780f8737c3"
+                       },
+                       {
+                           "xlink:type": "simple",
+                           "xlink:href": "#_614f21d8-20d3-451b-8ed9-c98296e2d301"
+                       }
+                   ],
+                   "name": "RpOmråde",
+                   "label": "RpOmråde '_d23f6d0c-ac1d-4857-b2fc-a8501e014dfb'"
+               }
+           },
+           {
+               "type": "Feature",
+               "geometry": {
+                   "coordinates": [
+                       [
+                           [
+                               [
+                                   3.93,
+                                   1.01
+                               ],
+                               [
+                                   3.63,
+                                   1.01
+                               ],
+                               [
+                                   3.62,
+                                   2.81
+                               ],
+                               [
+                                   2.31,
+                                   2.12
+                               ],
+                               [
+                                   2.3,
+                                   -0.9
+                               ],
+                               [
+                                   4.79,
+                                   -0.91
+                               ],
+                               [
+                                   4.77,
+                                   -0.37
+                               ],
+                               [
+                                   4.79,
+                                   -0.05
+                               ],
+                               [
+                                   3.93,
+                                   -0.06
+                               ],
+                               [
+                                   3.93,
+                                   1.01
+                               ]
+                           ]
+                       ]
+                   ],
+                   "type": "MultiPolygon"
+               },
+               "properties": {
+                   "id": "_1deb7804-8671-469f-a0af-0ce6d5fa0b5c",
+                   "xmlns:app": "http://skjema.geonorge.no/SOSI/produktspesifikasjon/Reguleringsplanforslag/5.0",
+                   "identifikasjon": {
+                       "Identifikasjon": {
+                           "lokalId": "12063deb-d393-4e7d-87f8-1709adfec500",
+                           "navnerom": "http://data.geonorge.no/0301/Reguleringsplaner/so",
+                           "versjonId": "56f46a19-c47a-4dda-97e8-4dc8bc9cfb7b"
+                       }
+                   },
+                   "førsteDigitaliseringsdato": "2020-12-22T00:00:00",
+                   "oppdateringsdato": "2020-12-22T00:00:00",
+                   "kvalitet": {
+                       "Posisjonskvalitet": {
+                           "målemetode": "frihåndstegningPåSkjerm",
+                           "nøyaktighet": "0"
+                       }
+                   },
+                   "område": null,
+                   "arealformål": "1800",
+                   "feltnavn": "o_BTAN1",
+                   "beskrivelse": "Beskrivelse",
+                   "eierform": "1",
+                   "utnytting": {
+                       "Utnytting": {
+                           "utnyttingstype": "16",
+                           "utnyttingstall": "43",
+                           "utnyttingstall_minimum": "20"
+                       }
+                   },
+                   "uteoppholdsareal": "0",
+                   "planområde": {
+                       "xlink:type": "simple",
+                       "xlink:href": "#_d23f6d0c-ac1d-4857-b2fc-a8501e014dfb"
+                   },
+                   "name": "RpArealformålOmråde",
+                   "label": "RpArealformålOmråde '_1deb7804-8671-469f-a0af-0ce6d5fa0b5c'"
+               }
+           },
+           {
+               "type": "Feature",
+               "geometry": {
+                   "coordinates": [
+                       [
+                           [
+                               [
+                                   6.74,
+                                   2.46
+                               ],
+                               [
+                                   6.74,
+                                   3.81
+                               ],
+                               [
+                                   4.44,
+                                   3.77
+                               ],
+                               [
+                                   4.46,
+                                   1.01
+                               ],
+                               [
+                                   3.93,
+                                   1.01
+                               ],
+                               [
+                                   3.93,
+                                   -0.06
+                               ],
+                               [
+                                   4.79,
+                                   -0.05
+                               ],
+                               [
+                                   4.8,
+                                   0.02
+                               ],
+                               [
+                                   4.97,
+                                   0.41
+                               ],
+                               [
+                                   5.38,
+                                   0.76
+                               ],
+                               [
+                                   6.08,
+                                   0.96
+                               ],
+                               [
+                                   6.16,
+                                   0.96
+                               ],
+                               [
+                                   6.17,
+                                   2.45
+                               ],
+                               [
+                                   6.74,
+                                   2.46
+                               ]
+                           ]
+                       ]
+                   ],
+                   "type": "MultiPolygon"
+               },
+               "properties": {
+                   "id": "_23f6ea2a-0943-4d5f-94d2-0b68ad85f929",
+                   "xmlns:app": "http://skjema.geonorge.no/SOSI/produktspesifikasjon/Reguleringsplanforslag/5.0",
+                   "identifikasjon": {
+                       "Identifikasjon": {
+                           "lokalId": "614a1fde-4afa-4b56-94fa-b9fa8af72f43",
+                           "navnerom": "http://data.geonorge.no/0301/Reguleringsplaner/so",
+                           "versjonId": "56f46a19-c47a-4dda-97e8-4dc8bc9cfb7b"
+                       }
+                   },
+                   "førsteDigitaliseringsdato": "2020-12-22T00:00:00",
+                   "oppdateringsdato": "2020-12-22T00:00:00",
+                   "kvalitet": {
+                       "Posisjonskvalitet": {
+                           "målemetode": "frihåndstegningPåSkjerm",
+                           "nøyaktighet": "0"
+                       }
+                   },
+                   "område": null,
+                   "arealformål": "1169",
+                   "feltnavn": "o_BTAN2",
+                   "beskrivelse": "Beskrivelse",
+                   "eierform": "1",
+                   "utnytting": {
+                       "Utnytting": {
+                           "utnyttingstype": "16",
+                           "utnyttingstall": "43",
+                           "utnyttingstall_minimum": "20"
+                       }
+                   },
+                   "uteoppholdsareal": "0",
+                   "planområde": {
+                       "xlink:type": "simple",
+                       "xlink:href": "#_d23f6d0c-ac1d-4857-b2fc-a8501e014dfb"
+                   },
+                   "name": "RpArealformålOmråde",
+                   "label": "RpArealformålOmråde '_23f6ea2a-0943-4d5f-94d2-0b68ad85f929'"
+               }
+           },
+           {
+               "type": "Feature",
+               "geometry": {
+                   "coordinates": [
+                       [
+                           [
+                               [
+                                   6.16,
+                                   0.96
+                               ],
+                               [
+                                   9.61,
+                                   0.95
+                               ],
+                               [
+                                   9.58,
+                                   3.86
+                               ],
+                               [
+                                   7.23,
+                                   3.81
+                               ],
+                               [
+                                   7.24,
+                                   3.16
+                               ],
+                               [
+                                   8.55,
+                                   3.22
+                               ],
+                               [
+                                   8.57,
+                                   1.95
+                               ],
+                               [
+                                   6.74,
+                                   1.94
+                               ],
+                               [
+                                   6.74,
+                                   2.46
+                               ],
+                               [
+                                   6.17,
+                                   2.45
+                               ],
+                               [
+                                   6.16,
+                                   0.96
+                               ]
+                           ]
+                       ]
+                   ],
+                   "type": "MultiPolygon"
+               },
+               "properties": {
+                   "id": "_6d6d42da-21f9-4263-8413-27171ff10303",
+                   "xmlns:app": "http://skjema.geonorge.no/SOSI/produktspesifikasjon/Reguleringsplanforslag/5.0",
+                   "identifikasjon": {
+                       "Identifikasjon": {
+                           "lokalId": "f1d43920-1895-41ad-b33f-8c3b571cb873",
+                           "navnerom": "http://data.geonorge.no/0301/Reguleringsplaner/so",
+                           "versjonId": "56f46a19-c47a-4dda-97e8-4dc8bc9cfb7b"
+                       }
+                   },
+                   "førsteDigitaliseringsdato": "2020-12-22T00:00:00",
+                   "oppdateringsdato": "2020-12-22T00:00:00",
+                   "kvalitet": {
+                       "Posisjonskvalitet": {
+                           "målemetode": "frihåndstegningPåSkjerm",
+                           "nøyaktighet": "0"
+                       }
+                   },
+                   "område": null,
+                   "arealformål": "1800",
+                   "feltnavn": "o_BTAN3",
+                   "beskrivelse": "Beskrivelse",
+                   "eierform": "1",
+                   "utnytting": {
+                       "Utnytting": {
+                           "utnyttingstype": "16",
+                           "utnyttingstall": "24",
+                           "utnyttingstall_minimum": "20"
+                       }
+                   },
+                   "uteoppholdsareal": "0",
+                   "planområde": {
+                       "xlink:type": "simple",
+                       "xlink:href": "#_d23f6d0c-ac1d-4857-b2fc-a8501e014dfb"
+                   },
+                   "handlingsområde": {
+                       "xlink:type": "simple",
+                       "xlink:href": "#_12a3a62d-af54-4187-8213-7ed2c6453b2e"
+                   },
+                   "name": "RpArealformålOmråde",
+                   "label": "RpArealformålOmråde '_6d6d42da-21f9-4263-8413-27171ff10303'"
+               }
+           },
+           {
+               "type": "Feature",
+               "geometry": {
+                   "coordinates": [
+                       [
+                           [
+                               [
+                                   4.5,
+                                   3.73
+                               ],
+                               [
+                                   4.5,
+                                   2.16
+                               ],
+                               [
+                                   6.12,
+                                   2.15
+                               ],
+                               [
+                                   6.12,
+                                   2.51
+                               ],
+                               [
+                                   6.68,
+                                   2.52
+                               ],
+                               [
+                                   6.69,
+                                   3.76
+                               ],
+                               [
+                                   4.5,
+                                   3.73
+                               ]
+                           ]
+                       ]
+                   ],
+                   "type": "MultiPolygon"
+               },
+               "properties": {
+                   "id": "_0b710728-faa9-4113-8552-e9780f8737c3",
+                   "identifikasjon": {
+                       "Identifikasjon": {
+                           "lokalId": "5292d721-5a3d-4f6f-aa44-b9313d719fa0",
+                           "navnerom": "Lorem ipsum",
+                           "versjonId": "Lorem ipsum"
+                       }
+                   },
+                   "førsteDigitaliseringsdato": "2021-03-09T11:22:38.8939101+01:00",
+                   "oppdateringsdato": "2021-03-09T11:22:38.8939101+01:00",
+                   "kvalitet": {
+                       "Posisjonskvalitet": {
+                           "målemetode": "-kodelisteverdi-",
+                           "nøyaktighet": "462417452"
+                       }
+                   },
+                   "opphav": "Lorem ipsum",
+                   "område": null,
+                   "bestemmelseHjemmel": "4",
+                   "bestemmelseOmrådeNavn": "navn1",
+                   "planområde": {
+                       "xlink:type": "simple",
+                       "xlink:href": "#_d23f6d0c-ac1d-4857-b2fc-a8501e014dfb"
+                   },
+                   "name": "RpBestemmelseOmråde",
+                   "label": "RpBestemmelseOmråde '_0b710728-faa9-4113-8552-e9780f8737c3'"
+               }
+           },
+           {
+               "type": "Feature",
+               "geometry": {
+                   "coordinates": [
+                       [
+                           [
+                               [
+                                   4.54,
+                                   2.09
+                               ],
+                               [
+                                   4.52,
+                                   1.04
+                               ],
+                               [
+                                   6.65,
+                                   1.02
+                               ],
+                               [
+                                   6.67,
+                                   2.47
+                               ],
+                               [
+                                   6.22,
+                                   2.47
+                               ],
+                               [
+                                   6.22,
+                                   2.07
+                               ],
+                               [
+                                   4.54,
+                                   2.09
+                               ]
+                           ]
+                       ]
+                   ],
+                   "type": "MultiPolygon"
+               },
+               "properties": {
+                   "id": "_614f21d8-20d3-451b-8ed9-c98296e2d301",
+                   "identifikasjon": {
+                       "Identifikasjon": {
+                           "lokalId": "59a38b53-01c2-43b1-972a-cd45204d97d9",
+                           "navnerom": "Lorem ipsum",
+                           "versjonId": "Lorem ipsum"
+                       }
+                   },
+                   "førsteDigitaliseringsdato": "2021-03-09T11:22:38.8939101+01:00",
+                   "oppdateringsdato": "2021-03-09T11:22:38.8939101+01:00",
+                   "kvalitet": {
+                       "Posisjonskvalitet": {
+                           "målemetode": "-kodelisteverdi-",
+                           "nøyaktighet": "462417452"
+                       }
+                   },
+                   "opphav": "Lorem ipsum",
+                   "område": null,
+                   "bestemmelseHjemmel": "4",
+                   "bestemmelseOmrådeNavn": "navn2",
+                   "planområde": {
+                       "xlink:type": "simple",
+                       "xlink:href": "#_d23f6d0c-ac1d-4857-b2fc-a8501e014dfb"
+                   },
+                   "name": "RpBestemmelseOmråde",
+                   "label": "RpBestemmelseOmråde '_614f21d8-20d3-451b-8ed9-c98296e2d301'"
+               }
+           },
+           {
+               "type": "Feature",
+               "geometry": {
+                   "coordinates": [
+                       [
+                           [
+                               7.29,
+                               3.77
+                           ],
+                           [
+                               7.29,
+                               3.22
+                           ],
+                           [
+                               8.61,
+                               3.27
+                           ],
+                           [
+                               8.63,
+                               1.97
+                           ],
+                           [
+                               9.56,
+                               1.97
+                           ],
+                           [
+                               9.53,
+                               3.8
+                           ],
+                           [
+                               7.29,
+                               3.77
+                           ]
+                       ]
+                   ],
+                   "type": "Polygon"
+               },
+               "properties": {
+                   "id": "_12a3a62d-af54-4187-8213-7ed2c6453b2e",
+                   "xmlns:app": "http://skjema.geonorge.no/SOSI/produktspesifikasjon/Reguleringsplanforslag/5.0",
+                   "identifikasjon": {
+                       "Identifikasjon": {
+                           "lokalId": "e27d2b2d-51d7-482f-8df4-3bb930d05e49",
+                           "navnerom": "http://data.geonorge.no/0301/Reguleringsplaner/so",
+                           "versjonId": "e61670c1-0500-48f0-81a9-10ddbdf422d9"
+                       }
+                   },
+                   "førsteDigitaliseringsdato": "2021-03-09T11:22:38.9095372+01:00",
+                   "oppdateringsdato": "2021-03-09T11:22:38.9095372+01:00",
+                   "opphav": "Lorem ipsum",
+                   "område": null,
+                   "formålsområde": {
+                       "xlink:type": "simple",
+                       "xlink:href": "#_6d6d42da-21f9-4263-8413-27171ff10303"
+                   },
+                   "name": "RpHandlingOmråde",
+                   "label": "RpHandlingOmråde '_12a3a62d-af54-4187-8213-7ed2c6453b2e'"
+               }
+           },
+           {
+               "type": "Feature",
+               "geometry": {
+                   "coordinates": [
+                       [
+                           2.56,
+                           -0.65
+                       ],
+                       [
+                           2.75,
+                           -0.19
+                       ],
+                       [
+                           3.15,
+                           0.07
+                       ],
+                       [
+                           3.61,
+                           0.28
+                       ],
+                       [
+                           3.81,
+                           0.64
+                       ],
+                       [
+                           3.77,
+                           0.89
+                       ]
+                   ],
+                   "type": "LineString"
+               },
+               "properties": {
+                   "id": "_0c12aec2-74f1-4095-b2dc-86a6a0768edf",
+                   "identifikasjon": {
+                       "Identifikasjon": {
+                           "lokalId": "5a12b2a3-e41e-4d9f-98cb-2191234a1729",
+                           "navnerom": "http://data.geonorge.no/0301/Reguleringsplaner/so",
+                           "versjonId": "56f46a19-c47a-4dda-97e8-4dc8bc9cfb7b"
+                       }
+                   },
+                   "førsteDigitaliseringsdato": "2021-02-03T16:19:42.7237148+01:00",
+                   "oppdateringsdato": "2021-02-03T16:19:42.7237148+01:00",
+                   "opphav": "Lorem ipsum",
+                   "senterlinje": null,
+                   "høydeFraPlanbestemmelse": {
+                       "HøydeFraPlanbestemmelse": {
+                           "regulerthøyde": "12.34",
+                           "høydereferansesystem": "NN2000"
+                       }
+                   },
+                   "planområde": {
+                       "xlink:type": "simple",
+                       "xlink:href": "#_d23f6d0c-ac1d-4857-b2fc-a8501e014dfb"
+                   },
+                   "name": "RpRegulertHøyde",
+                   "label": "RpRegulertHøyde '_0c12aec2-74f1-4095-b2dc-86a6a0768edf'"
+               }
+           }
+       ]
+   }
+};
+
+export const geoJson4 = {
+   "fileName": "rpf.hs.2.gml",
+   "epsg": "EPSG:25832",
+   "featureCollection": {
+       "type": "FeatureCollection",
+       "features": [
+           {
+               "type": "Feature",
+               "geometry": {
+                   "coordinates": [
+                       [
+                           [
+                               [
+                                   2.3,
+                                   3.78
+                               ],
+                               [
+                                   2.31,
+                                   -0.96
+                               ],
+                               [
+                                   6.63,
+                                   -0.93
+                               ],
+                               [
+                                   6.59,
+                                   4.05
+                               ],
+                               [
+                                   2.3,
+                                   3.78
+                               ]
+                           ]
+                       ]
+                   ],
+                   "type": "MultiPolygon"
+               },
+               "properties": {
+                   "id": "_00ee821d-aadf-4737-abaa-3c38c125cb80",
+                   "identifikasjon": {
+                       "Identifikasjon": {
+                           "lokalId": "b32521fc-7206-4359-9f1b-828e1b97dbd8",
+                           "navnerom": "http://data.geonorge.no/0301/Reguleringsplaner/so",
+                           "versjonId": "56f46a19-c47a-4dda-97e8-4dc8bc9cfb7b"
+                       }
+                   },
+                   "førsteDigitaliseringsdato": "2021-04-26T11:09:08.4724802+02:00",
+                   "oppdateringsdato": "2021-04-26T11:09:08.4724802+02:00",
+                   "kvalitet": {
+                       "Posisjonskvalitet": {
+                           "målemetode": "-kodelisteverdi-",
+                           "nøyaktighet": "1065846618"
+                       }
+                   },
+                   "opphav": "Lorem ipsum",
+                   "område": null,
+                   "beskrivelse": "Lorem ipsum",
+                   "hensynSonenavn": "550",
+                   "planområde": {
+                       "xlink:type": "simple",
+                       "xlink:href": "#_d23f6d0c-ac1d-4857-b2fc-a8501e014dfb"
+                   },
+                   "påskrift": {
+                       "xlink:type": "simple",
+                       "xlink:href": "#_a027a461-c795-4981-94e6-f63694540b03"
+                   },
+                   "angittHensyn": "550",
+                   "name": "RpDetaljeringSone",
+                   "label": "RpAngittHensynSone '_00ee821d-aadf-4737-abaa-3c38c125cb80'"
+               }
+           }
+       ]
+   }
+};

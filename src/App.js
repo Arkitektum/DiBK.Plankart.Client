@@ -2,10 +2,10 @@ import Logo from 'assets/gfx/logo-dibk.svg';
 import { MapView, Upload } from 'components/partials';
 import { useState } from 'react';
 import './App.scss';
-import { geoJson1 } from 'utils/map';
+import { geoJson4 } from 'utils/map';
 
 function App() {
-   const [geoJsonDocument, setGeoJsonDocument] = useState(geoJson1);
+   const [geoJsonDocument, setGeoJsonDocument] = useState(geoJson4);
 
    return (
       <div className="app">

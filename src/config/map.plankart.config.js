@@ -1,23 +1,23 @@
 const featureMembers = {
    /*'Arealplan': {
-   },
-   'RpAngittHensynSone': {
    },*/
+   'RpAngittHensynSone': {
+   },
    'RpArealformålOmråde': {
    },
    /*'RpBestemmelseMidlByggAnlegg': {
-   },
+   },*/
    'RpBestemmelseOmråde': {
    },
-   'RpBestemmelseRom': {
+   /*'RpBestemmelseRom': {
    },
    'RpBåndleggingSone': {
-   },
+   },*/
    'RpDetaljeringSone': {
    },
    'RpFareSone': {
    },
-   'RpFormålGrense': {
+   /*'RpFormålGrense': {
    },
    'RpGjennomføringSone': {
    },

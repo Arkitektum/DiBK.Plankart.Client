@@ -14,33 +14,37 @@ function createPattern(graphic) {
       graphic.externalgraphic.onlineresource
    );
 
-   const cnv = document.createElement('canvas');
-   const ctx = cnv.getContext('2d');
+   const canvas = document.createElement('canvas');
+   canvas.style.imageRendering = 'pixelated';
+   const context = canvas.getContext('2d');
 
-   // Calculate image scale factor.
    let imageRatio = DEVICE_PIXEL_RATIO;
+
    if (graphic.size && height !== graphic.size) {
       imageRatio *= graphic.size / height;
    }
 
-   // Draw image to canvas directly if no scaling necessary.
    if (imageRatio === 1) {
-      return ctx.createPattern(image, 'repeat');
+      return createAndRotatePattern(context, image, graphic);
    }
 
-   // Scale the image by drawing onto a temp canvas.
    const tempCanvas = document.createElement('canvas');
    const tCtx = tempCanvas.getContext('2d');
+
    tempCanvas.width = width * imageRatio;
    tempCanvas.height = height * imageRatio;
-   // prettier-ignore
+
    tCtx.drawImage(
       image,
       0, 0, width, height,
       0, 0, width * imageRatio, height * imageRatio
    );
 
-   const pattern = ctx.createPattern(tempCanvas, 'repeat');
+   return createAndRotatePattern(context, tempCanvas, graphic);
+}
+
+function createAndRotatePattern(context, imageOrCanvas, graphic) {
+   const pattern = context.createPattern(imageOrCanvas, 'repeat');
 
    if (graphic.rotation) {
       const matrix = new DOMMatrix();
@@ -54,7 +58,6 @@ function getExternalGraphicFill(symbolizer) {
    const { graphic } = symbolizer.fill.graphicfill;
    const fillImageUrl = graphic.externalgraphic.onlineresource;
 
-   // Use fallback style when graphicfill image hasn't been loaded yet.
    switch (getImageLoadingState(fillImageUrl)) {
       case IMAGE_LOADED:
          return new Fill({
@@ -65,7 +68,6 @@ function getExternalGraphicFill(symbolizer) {
       case IMAGE_ERROR:
          return imageErrorPolygonStyle.getFill();
       default:
-         // Load state of an image should be known at this time, but return 'loading' style as fallback.
          return imageLoadingPolygonStyle.getFill();
    }
 }
