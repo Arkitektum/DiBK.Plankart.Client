@@ -21,13 +21,13 @@ const defaultStyles = [defaultPointStyle];
  * @param {Function} styleFunction Function for getting the OL style object. Signature (symbolizer, feature) => OL style.
  */
 function appendStyle(styles, symbolizers, feature, styleFunction) {
-  if (Array.isArray(symbolizers)) {
-    for (let k = 0; k < symbolizers.length; k += 1) {
-      styles.push(styleFunction(symbolizers[k], feature));
-    }
-  } else {
-    styles.push(styleFunction(symbolizers, feature));
-  }
+   if (Array.isArray(symbolizers)) {
+      for (let k = 0; k < symbolizers.length; k += 1) {
+         styles.push(styleFunction(symbolizers[k], feature));
+      }
+   } else {
+      styles.push(styleFunction(symbolizers, feature));
+   }
 }
 
 /**
@@ -39,59 +39,59 @@ function appendStyle(styles, symbolizers, feature, styleFunction) {
  * @return ol.style.Style or array of it
  */
 export default function OlStyler(GeometryStyles, feature) {
-  const { polygon, line, point, text } = GeometryStyles;
+   const { polygon, line, point, text } = GeometryStyles;
 
-  const geometry = feature.getGeometry
-    ? feature.getGeometry()
-    : feature.geometry;
-  const geometryType = geometry.getType ? geometry.getType() : geometry.type;
+   const geometry = feature.getGeometry
+      ? feature.getGeometry()
+      : feature.geometry;
+   const geometryType = geometry.getType ? geometry.getType() : geometry.type;
 
-  let styles = [];
-  switch (geometryType) {
-    case 'Point':
-    case 'MultiPoint':
-      for (let j = 0; j < point.length; j += 1) {
-        appendStyle(styles, point[j], feature, getPointStyle);
-      }
-      for (let j = 0; j < text.length; j += 1) {
-        styles.push(getTextStyle(text[j], feature));
-      }
-      break;
+   let styles = [];
+   switch (geometryType) {
+      case 'Point':
+      case 'MultiPoint':
+         for (let j = 0; j < point.length; j += 1) {
+            appendStyle(styles, point[j], feature, getPointStyle);
+         }
+         for (let j = 0; j < text.length; j += 1) {
+            styles.push(getTextStyle(text[j], feature));
+         }
+         break;
 
-    case 'LineString':
-    case 'MultiLineString':
-      for (let j = 0; j < line.length; j += 1) {
-        appendStyle(styles, line[j], feature, getLineStyle);
-      }
-      for (let j = 0; j < point.length; j += 1) {
-        appendStyle(styles, point[j], feature, getLinePointStyle);
-      }
-      for (let j = 0; j < text.length; j += 1) {
-        styles.push(getTextStyle(text[j], feature));
-      }
-      break;
+      case 'LineString':
+      case 'MultiLineString':
+         for (let j = 0; j < line.length; j += 1) {
+            appendStyle(styles, line[j], feature, getLineStyle);
+         }
+         for (let j = 0; j < point.length; j += 1) {
+            appendStyle(styles, point[j], feature, getLinePointStyle);
+         }
+         for (let j = 0; j < text.length; j += 1) {
+            styles.push(getTextStyle(text[j], feature));
+         }
+         break;
 
-    case 'Polygon':
-    case 'MultiPolygon':
-      for (let j = 0; j < polygon.length; j += 1) {
-        appendStyle(styles, polygon[j], feature, getPolygonStyle);
-      }
-      for (let j = 0; j < line.length; j += 1) {
-        appendStyle(styles, line[j], feature, getLineStyle);
-      }
-      for (let j = 0; j < point.length; j += 1) {
-        appendStyle(styles, point[j], feature, getPolygonPointStyle);
-      }
-      for (let j = 0; j < text.length; j += 1) {
-        styles.push(getTextStyle(text[j], feature));
-      }
-      break;
+      case 'Polygon':
+      case 'MultiPolygon':
+         for (let j = 0; j < polygon.length; j += 1) {
+            appendStyle(styles, polygon[j], feature, getPolygonStyle);
+         }
+         for (let j = 0; j < line.length; j += 1) {
+            appendStyle(styles, line[j], feature, getLineStyle);
+         }
+         for (let j = 0; j < point.length; j += 1) {
+            appendStyle(styles, point[j], feature, getPolygonPointStyle);
+         }
+         for (let j = 0; j < text.length; j += 1) {
+            styles.push(getTextStyle(text[j], feature));
+         }
+         break;
 
-    default:
-      styles = defaultStyles;
-  }
+      default:
+         styles = defaultStyles;
+   }
 
-  return styles;
+   return styles;
 }
 
 /**
@@ -101,7 +101,7 @@ export default function OlStyler(GeometryStyles, feature) {
  * @returns {string} Feature id.
  */
 function getOlFeatureId(feature) {
-  return feature.getId();
+   return feature.getId();
 }
 
 /**
@@ -112,7 +112,7 @@ function getOlFeatureId(feature) {
  * @returns {object} Property value.
  */
 function getOlFeatureProperty(feature, propertyName) {
-  return feature.get(propertyName);
+   return feature.get(propertyName);
 }
 
 /**
@@ -134,40 +134,41 @@ function getOlFeatureProperty(feature, propertyName) {
  * }));
  */
 export function createOlStyleFunction(featureTypeStyle, options = {}) {
-  const imageLoadedCallback = options.imageLoadedCallback || (() => {});
+   const imageLoadedCallback = options.imageLoadedCallback || (() => { });
 
-  // Keep track of whether a callback has been registered per image url.
-  const callbackRef = {};
+   // Keep track of whether a callback has been registered per image url.
+   const callbackRef = {};
 
-  return (feature, mapResolution) => {
-    // Determine resolution in meters/pixel.
-    const resolution =
-      typeof options.convertResolution === 'function'
-        ? options.convertResolution(mapResolution)
-        : mapResolution;
+   return (feature, mapResolution) => {
+      // Determine resolution in meters/pixel.
+      const resolution =
+         typeof options.convertResolution === 'function'
+            ? options.convertResolution(mapResolution)
+            : mapResolution;
 
-    // Determine applicable style rules for the feature, taking feature properties and current resolution into account.
-    const rules = getRules(featureTypeStyle, feature, resolution, {
-      getProperty: getOlFeatureProperty,
-      getFeatureId: getOlFeatureId,
-    });
 
-    // Start loading images for external graphic symbolizers and when loaded:
-    // * update symbolizers to use the cached image.
-    // * call imageLoadedCallback with the image url.
-    processExternalGraphicSymbolizers(
-      rules,
-      featureTypeStyle,
-      imageLoadedCallback,
-      callbackRef
-    );
+      // Determine applicable style rules for the feature, taking feature properties and current resolution into account.
+      const rules = getRules(featureTypeStyle, feature, resolution, {
+         getProperty: getOlFeatureProperty,
+         getFeatureId: getOlFeatureId,
+      });
 
-    // Convert style rules to style rule lookup categorized by geometry type.
-    const geometryStyles = getGeometryStyles(rules);
+      // Start loading images for external graphic symbolizers and when loaded:
+      // * update symbolizers to use the cached image.
+      // * call imageLoadedCallback with the image url.
+      processExternalGraphicSymbolizers(
+         rules,
+         featureTypeStyle,
+         imageLoadedCallback,
+         callbackRef
+      );
 
-    // Determine style rule array.
-    const olStyles = OlStyler(geometryStyles, feature);
+      // Convert style rules to style rule lookup categorized by geometry type.
+      const geometryStyles = getGeometryStyles(rules);
 
-    return olStyles;
-  };
+      // Determine style rule array.
+      const olStyles = OlStyler(geometryStyles, feature);
+
+      return olStyles;
+   };
 }

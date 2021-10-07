@@ -23,10 +23,13 @@
                      <se:GraphicFill>
                         <se:Graphic>
                            <se:ExternalGraphic>
-                              <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/data/sld/gfx/rp-detaljering-sone.svg" />
+                              <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/data/sld/gfx/svart-linje.svg" />
                               <se:Format>image/svg+xml</se:Format>
                            </se:ExternalGraphic>
-                           <se:Size>22</se:Size>
+                           <se:Size>18</se:Size>
+                           <se:Rotation>
+                              <ogc:Literal>90</ogc:Literal>
+                           </se:Rotation>
                         </se:Graphic>
                      </se:GraphicFill>
                   </se:Fill>

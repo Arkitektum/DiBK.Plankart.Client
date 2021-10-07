@@ -6,7 +6,7 @@ import { scaleSelector, filterSelector } from './Filter';
  * @return {string[]} registered layernames
  */
 export function getLayerNames(sld) {
-  return sld.layers.map(l => l.name);
+   return sld.layers.map(l => l.name);
 }
 
 /**
@@ -16,10 +16,10 @@ export function getLayerNames(sld) {
  * @return {Layer}           [description]
  */
 export function getLayer(sld, layername) {
-  if (!layername) {
-    return sld.layers['0'];
-  }
-  return sld.layers.find(l => l.name === layername);
+   if (!layername) {
+      return sld.layers['0'];
+   }
+   return sld.layers.find(l => l.name === layername);
 }
 
 /**
@@ -28,7 +28,7 @@ export function getLayer(sld, layername) {
  * @return {string[]}       [description]
  */
 export function getStyleNames(layer) {
-  return layer.styles.map(s => s.name);
+   return layer.styles.map(s => s.name);
 }
 
 /**
@@ -39,10 +39,10 @@ export function getStyleNames(layer) {
  * @return {object} the style from layer.styles matching the name
  */
 export function getStyle(layer, name) {
-  if (name) {
-    return layer.styles.find(s => s.name === name);
-  }
-  return layer.styles.find(s => s.default);
+   if (name) {
+      return layer.styles.find(s => s.name === name);
+   }
+   return layer.styles.find(s => s.default);
 }
 
 /**
@@ -61,36 +61,37 @@ export function getStyle(layer, name) {
  * @return {Rule[]}
  */
 export function getRules(featureTypeStyle, feature, resolution, options = {}) {
-  const validRules = [];
-  let elseFilterCount = 0;
-  for (let j = 0; j < featureTypeStyle.rules.length; j += 1) {
-    const rule = featureTypeStyle.rules[j];
-    // Only keep rules that pass the rule's min/max scale denominator checks.
-    if (scaleSelector(rule, resolution)) {
-      if (rule.elsefilter) {
-        // In the first rule selection step, keep all rules with an ElseFilter.
-        validRules.push(rule);
-        elseFilterCount += 1;
-      } else if (!rule.filter) {
-        // Rules without filter always apply.
-        validRules.push(rule);
-      } else if (filterSelector(rule.filter, feature, options)) {
-        // If a rule has a filter, only keep it if the feature passes the filter.
-        validRules.push(rule);
+   const validRules = [];
+   let elseFilterCount = 0;
+   
+   for (let j = 0; j < featureTypeStyle.rules.length; j += 1) {
+      const rule = featureTypeStyle.rules[j];
+      // Only keep rules that pass the rule's min/max scale denominator checks.
+      if (scaleSelector(rule, resolution)) {
+         if (rule.elsefilter) {
+            // In the first rule selection step, keep all rules with an ElseFilter.
+            validRules.push(rule);
+            elseFilterCount += 1;
+         } else if (!rule.filter) {
+            // Rules without filter always apply.
+            validRules.push(rule);
+         } else if (filterSelector(rule.filter, feature, options)) {
+            // If a rule has a filter, only keep it if the feature passes the filter.
+            validRules.push(rule);
+         }
       }
-    }
-  }
+   }
 
-  // When eligible rules contain only rules with ElseFilter, return them all.
-  // Note: the spec does not forbid more than one ElseFilter remaining at a given scale,
-  // but leaves handling this case up to the implementor.
-  // The SLDLibrary chooses to keep them all.
-  if (elseFilterCount === validRules.length) {
-    return validRules;
-  }
+   // When eligible rules contain only rules with ElseFilter, return them all.
+   // Note: the spec does not forbid more than one ElseFilter remaining at a given scale,
+   // but leaves handling this case up to the implementor.
+   // The SLDLibrary chooses to keep them all.
+   if (elseFilterCount === validRules.length) {
+      return validRules;
+   }
 
-  // If a mix of rules with and without ElseFilter remains, only keep rules without ElseFilter.
-  return validRules.filter(rule => !rule.elsefilter);
+   // If a mix of rules with and without ElseFilter remains, only keep rules without ElseFilter.
+   return validRules.filter(rule => !rule.elsefilter);
 }
 
 /**
@@ -100,26 +101,26 @@ export function getRules(featureTypeStyle, feature, resolution, options = {}) {
  * @returns {Array<object>} Array of all symbolizers in a rule.
  */
 export function getRuleSymbolizers(rule) {
-  // Helper for adding a symbolizer to a list when the symbolizer can be an array of symbolizers.
-  // Todo: refactor style reader, so symbolizer is always an array.
-  function addSymbolizer(list, symbolizer) {
-    if (!symbolizer) {
-      return;
-    }
-    if (Array.isArray(symbolizer)) {
-      Array.prototype.push.apply(list, symbolizer);
-      return;
-    }
-    list.push(symbolizer);
-  }
+   // Helper for adding a symbolizer to a list when the symbolizer can be an array of symbolizers.
+   // Todo: refactor style reader, so symbolizer is always an array.
+   function addSymbolizer(list, symbolizer) {
+      if (!symbolizer) {
+         return;
+      }
+      if (Array.isArray(symbolizer)) {
+         Array.prototype.push.apply(list, symbolizer);
+         return;
+      }
+      list.push(symbolizer);
+   }
 
-  const allSymbolizers = [];
-  addSymbolizer(allSymbolizers, rule.pointsymbolizer);
-  addSymbolizer(allSymbolizers, rule.linesymbolizer);
-  addSymbolizer(allSymbolizers, rule.polygonsymbolizer);
-  addSymbolizer(allSymbolizers, rule.textsymbolizer);
+   const allSymbolizers = [];
+   addSymbolizer(allSymbolizers, rule.pointsymbolizer);
+   addSymbolizer(allSymbolizers, rule.linesymbolizer);
+   addSymbolizer(allSymbolizers, rule.polygonsymbolizer);
+   addSymbolizer(allSymbolizers, rule.textsymbolizer);
 
-  return allSymbolizers;
+   return allSymbolizers;
 }
 
 /**
@@ -136,23 +137,23 @@ export function getRuleSymbolizers(rule) {
  * in the path does not exist on the object.
  */
 export function getByPath(obj, path) {
-  if (!obj) {
-    return undefined;
-  }
-
-  // Start from the given object.
-  let value = obj;
-
-  // Walk the object property path.
-  const fragments = (path || '').split('.');
-  for (let k = 0; k < fragments.length; k += 1) {
-    const fragment = fragments[k];
-    // Return undefined if any partial path does not exist in the object.
-    if (!(fragment in value)) {
+   if (!obj) {
       return undefined;
-    }
-    value = value[fragment];
-  }
+   }
 
-  return value;
+   // Start from the given object.
+   let value = obj;
+
+   // Walk the object property path.
+   const fragments = (path || '').split('.');
+   for (let k = 0; k < fragments.length; k += 1) {
+      const fragment = fragments[k];
+      // Return undefined if any partial path does not exist in the object.
+      if (!(fragment in value)) {
+         return undefined;
+      }
+      value = value[fragment];
+   }
+
+   return value;
 }

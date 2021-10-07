@@ -5,23 +5,28 @@ import './App.scss';
 import { geoJson4 } from 'utils/map';
 
 function App() {
-   const [geoJsonDocument, setGeoJsonDocument] = useState(geoJson4);
+   const [geoJsonDocument, setGeoJsonDocument] = useState(null);
 
    return (
       <div className="app">
          <div className="container">
             <header>
                <h1>
-                  <img src={Logo} alt="DiBK" />Fellestjenester PLAN |<span>Plankart</span>
+                  <img src={Logo} alt="DiBK" />Fellestjenester PLAN |<span>GML-plankart</span>
                </h1>
             </header>
 
-            <div className="section">
-               <Upload onResponse={setGeoJsonDocument} />
-            </div>
-
-            <div className="section">
-               <MapView geoJsonDocument={geoJsonDocument} />
+            <div className="content">
+               <div className="left-content">
+                  <Upload onResponse={setGeoJsonDocument} />
+               </div>
+               <div className="right-content">
+                  {
+                     geoJsonDocument !== null ?
+                        <MapView geoJsonDocument={geoJsonDocument} /> :
+                        null
+                  }
+               </div>
             </div>
          </div>
       </div>

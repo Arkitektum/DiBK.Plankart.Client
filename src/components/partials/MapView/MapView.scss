@@ -6,8 +6,11 @@
    .map {
       width: 100%;
       height: 1000px;
-      border: 1px solid #dddddd;
-      background-color: #ffffff;
+      border: 1px solid #dddddd;     
+
+      .ol-rotate {
+         top: 45px;
+      }
    }
 
    /*.map-menu {

@@ -27,8 +27,8 @@
                               <se:Format>image/svg+xml</se:Format>
                            </se:ExternalGraphic>
                            <se:Rotation>
-                              <ogc:Literal>-45</ogc:Literal>
-                           </se:Rotation>                           
+                              <ogc:Literal>45</ogc:Literal>
+                           </se:Rotation>
                         </se:Graphic>
                      </se:GraphicFill>
                   </se:Fill>

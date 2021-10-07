@@ -5,12 +5,12 @@
    xmlns:se="http://www.opengis.net/se"
    xmlns:xlink="http://www.w3.org/1999/xlink">
    <NamedLayer>
-      <se:Name>RpAngittHensynSone</se:Name>
+      <se:Name>RpBåndleggingSone</se:Name>
       <UserStyle>
-         <se:Name>RpAngittHensynSone</se:Name>
+         <se:Name>RpBåndleggingSone</se:Name>
          <se:FeatureTypeStyle>
             <se:Rule>
-               <se:Name>RpAngittHensynSone</se:Name>
+               <se:Name>RpBåndleggingSone</se:Name>
                <se:PolygonSymbolizer>
                   <se:Stroke>
                      <se:SvgParameter name="stroke">#000000</se:SvgParameter>
@@ -23,13 +23,10 @@
                      <se:GraphicFill>
                         <se:Graphic>
                            <se:ExternalGraphic>
-                              <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/data/sld/gfx/rp-angitt-hensyn-sone.svg" />
+                              <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/data/sld/gfx/rp-baandlegging-sone.svg" />
                               <se:Format>image/svg+xml</se:Format>
                            </se:ExternalGraphic>
-                           <se:Size>18</se:Size>
-                           <se:Rotation>
-                              <ogc:Literal>-130</ogc:Literal>
-                           </se:Rotation>                           
+                           <se:Size>22</se:Size>
                         </se:Graphic>
                      </se:GraphicFill>
                   </se:Fill>

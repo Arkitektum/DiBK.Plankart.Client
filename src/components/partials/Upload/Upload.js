@@ -1,16 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useApi } from 'hooks';
 import Files from 'react-files'
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import UploadFileList from './UploadFileList/UploadFileList';
 import './Upload.scss';
+import { useSelector } from 'react-redux';
 
 const GML_TO_GEOJSON_URL = process.env.REACT_APP_GML_TO_GEOJSON_URL;
 
 function Upload({ onResponse }) {
    const [files, setFiles] = useState([]);
+   const [fileLoaded, setFileLoaded] = useState(false);
    const sendAsync = useApi();
    const uploadElement = useRef(null);
+   const apiLoading = useSelector(state => state.api.loading);
 
    useEffect(() => {
       if (!files.length) {
@@ -30,11 +33,12 @@ function Upload({ onResponse }) {
 
       if (response) {
          onResponse(response);
+         setFileLoaded(true);
       }
    }
 
    return (
-      <React.Fragment>
+      <div className={files.length ? 'file-added' : ''}>
          <Files
             ref={uploadElement}
             className='files-dropzone'
@@ -46,17 +50,24 @@ function Upload({ onResponse }) {
             minFileSize={0}
             clickable
          >
-            Slipp filer her eller klikk for å laste opp
+            Slipp en fil her eller klikk for å velge
          </Files>
 
          <UploadFileList files={files} uploadElement={uploadElement} />
 
          {
             files.length ?
-               <Button variant="primary" onClick={uploadFile}>Vis kart</Button> :
+               <div>
+                  <Button variant="primary" onClick={uploadFile} disabled={fileLoaded}>Vis kart</Button>
+                  {
+                     apiLoading ?
+                        <Spinner animation="border" /> :
+                        ''
+                  }
+               </div> :
                null
          }
-      </React.Fragment>
+      </div>
    )
 }
 

@@ -1,11 +1,10 @@
 .app {
-   width: 67%;
    text-align: left;
    margin: 15px auto 50px auto;
 }
 
 .container {
-   max-width: 1360px !important;
+   max-width: 1920px !important;
 }
 
 header {
@@ -13,20 +12,36 @@ header {
 }
 
 h1 {
-   font-size: 32px;
-   font-weight: 400;
-   margin-bottom: 0;
-
    img {
-      width: 125px;
+      width: 100px;
       margin-right: 25px;
    }
 
    span {
-      font-size: 22px;
+      font-size: 28px;
       margin-left: 9px;
-      vertical-align: 2px;
+      vertical-align: 3px;
       font-weight: 100;
+   }
+}
+
+.content {
+   display: flex;
+   min-height: 1052px;
+
+   > div {
+      background-color: #ffffff;
+      border: 1px solid #dddddd;
+      padding: 25px;
+   }
+
+   .left-content {
+      width: 400px;
+      border-right: 0;
+   }
+
+   .right-content {
+      width: calc(100% - 400px);
    }
 }
 

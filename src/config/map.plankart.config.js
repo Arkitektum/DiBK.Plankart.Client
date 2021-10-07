@@ -4,23 +4,24 @@ const featureMembers = {
    'RpAngittHensynSone': {
    },
    'RpArealformålOmråde': {
+      infoProps: ['arealformål', 'feltnavn', 'eierform']
    },
    /*'RpBestemmelseMidlByggAnlegg': {
    },*/
    'RpBestemmelseOmråde': {
    },
    /*'RpBestemmelseRom': {
-   },
-   'RpBåndleggingSone': {
    },*/
+   'RpBåndleggingSone': {
+   },
    'RpDetaljeringSone': {
    },
    'RpFareSone': {
    },
    /*'RpFormålGrense': {
-   },
+   },*/
    'RpGjennomføringSone': {
-   },
+   },/*
    'RpGrense': {
    },
    'RpHandlingOmråde': {
@@ -28,25 +29,25 @@ const featureMembers = {
    'RpHandlingRom': {
    },
    'RpHensynRom': {
-   },
+   },*/
    'RpInfrastrukturSone': {
-   },
+   },/*
    'RpJuridiskLinje': {
    },
    'RpJuridiskPunkt': {
    },*/
    'RpOmråde': {
    },
-   /*'RpPåskrift': {
+   'RpPåskrift': {
    },
-   'RpRegulertHøyde': {
+   /*'RpRegulertHøyde': {
    },
    'RpRegulertTerreng': {
-   },
+   },*/
    'RpSikringSone': {
    },
    'RpStøySone': {
-   }*/
+   }
 };
 
 export default featureMembers

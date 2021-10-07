@@ -1,29 +1,28 @@
 .file-list {
    display: flex;
    flex-direction: column;
-   margin-bottom: 25px;
-   border: 1px solid #dee2e6;
+   margin-bottom: 20px;
+   border: 2px dashed #d8e4eb;
 
    .file {
       display: flex;
-      border-top: 1px solid #dee2e6;
       padding: 10px;
-
-      &:first-child {
-         margin-top: 0;
-         border: 0 none;
-      }
    }
 
    .type {
-      width: 10%;
+      width: 15%;
    }
 
    .info {
-      width: 85%;
+      width: 80%;
       flex-direction: column;
       display: flex;
       justify-content: center;
+
+      .name {
+         overflow: hidden;
+         text-overflow: ellipsis;
+      }
 
       .size {
          font-size: 12px;

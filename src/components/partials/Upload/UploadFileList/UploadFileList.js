@@ -1,6 +1,6 @@
 import './UploadFileList.scss';
 
-function UploadFileList({ files, uploadElement, onFileRemove }) {
+function UploadFileList({ files, uploadElement }) {
    if (!files.length) {
       return null;
    }
@@ -22,12 +22,12 @@ function UploadFileList({ files, uploadElement, onFileRemove }) {
                      </div>
 
                      <div className="info">
-                        <span className="name">{file.name}</span>
+                        <span className="name" title={file.name}>{file.name}</span>
                         <span className="size">{file.sizeReadable}</span>
                      </div>
 
                      <div className="remove">
-                        <button onClick={() => removeFile(file)} title="Slett"></button>                        
+                        <button onClick={() => removeFile(file)} title="Fjern"></button>                        
                      </div>
                   </div>
                );

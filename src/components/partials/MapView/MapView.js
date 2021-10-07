@@ -1,6 +1,6 @@
 import axios from 'axios';
 import featureMembers from 'config/map.plankart.config';
-import { defaults as defaultControls, FullScreen } from 'ol/control';
+import { defaults as defaultControls, FullScreen, ZoomToExtent } from 'ol/control';
 import GeoJSON from 'ol/format/GeoJSON';
 import { defaults as defaultInteractions, DragRotateAndZoom } from 'ol/interaction';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -12,10 +12,13 @@ import View from 'ol/View';
 import React, { useEffect, useRef, useState } from 'react';
 import { groupBy } from 'utils/helpers';
 import { createOlStyleFunction, getLayer as getSldLayer, getStyle, Reader } from 'utils/sld-reader';
+import { altKeyOnly, click, pointerMove } from 'ol/events/condition';
+import Select from 'ol/interaction/Select';
 import './MapView.scss';
 
 function getLayer(map, id) {
-   return map.getLayers().getArray().find(layer => layer.get('id') === id);
+   return map.getLayers().getArray()
+      .find(layer => layer.get('id') === id);
 }
 
 async function createStyle(name, callback) {
@@ -43,18 +46,25 @@ async function addStyling(features, callback) {
 
       const style = await createStyle(key, callback);
 
-      groupedFeatures[key].forEach(feature => {
+      groupedFeatures[key].forEach(feature => {        
          feature.setStyle(style);
       });
    }
 }
 
+function getFeatures(features, names) {
+   return names.flatMap(name => {
+      return features.filter(feature => feature.get('name') === name);
+   })
+}
+
 async function createVectorLayer(geoJsonDocument) {
    const features = new GeoJSON().readFeatures(geoJsonDocument.featureCollection);
-   const groupedFeatures = groupBy(features, feature => feature.get('name'));
+   const feats = getFeatures(features, ['RpOmråde', 'RpArealformålOmråde', 'RpBestemmelseOmråde', 'RpFareSone', 'RpSikringSone', 'RpPåskrift']);
 
-   const vectorLayer = new VectorLayer({      
-      source: new VectorSource({ features /*: groupedFeatures['RpAngittHensynSone']*/ })
+   const vectorLayer = new VectorLayer({
+      source: new VectorSource({ features }),
+      declutter: true
    });
 
    vectorLayer.set('id', 'geojson');
@@ -72,7 +82,8 @@ function createTileLayer() {
             LAYERS: 'norges_grunnkart_graatone',
             VERSION: '1.1.1',
          }
-      })
+      }),
+      maxZoom: 18
    });
 }
 
@@ -91,7 +102,7 @@ async function createMap(geoJsonDocument) {
          padding: [25, 25, 25, 25]
       }),
       controls: defaultControls().extend([new FullScreen()]),
-      interactions: defaultInteractions().extend([new DragRotateAndZoom()])
+      interactions: defaultInteractions().extend([new DragRotateAndZoom()]),
    });
 }
 
@@ -116,10 +127,46 @@ function MapView({ geoJsonDocument }) {
          return;
       }
 
-      const vectorLayer = getLayer(map, 'geojson');
-
       map.setTarget(mapElement.current);
-      map.getView().fit(vectorLayer.getSource().getExtent(), map.getSize());
+
+      const vectorLayer = getLayer(map, 'geojson');
+      const extent = vectorLayer.getSource().getExtent();
+      const view = map.getView();
+
+      view.fit(extent, map.getSize());
+      view.setMinZoom(6);
+      view.setMaxZoom(18);
+
+      map.addControl(new ZoomToExtent({ extent }));
+
+      const selectPointerMove = new Select({
+         condition: click,
+         style: null
+      });
+
+      map.addInteraction(selectPointerMove);
+
+      selectPointerMove.on('select', event => {
+         const features = event.target.getFeatures().getArray();
+
+         if (features.length) {
+            const feature = features[0];
+            const featureName = feature.get('name');
+
+            const info = {
+               name: featureName,
+               id: feature.get('id'),               
+            };
+
+            const infoProps = featureMembers[featureName].infoProps || [];
+
+            infoProps.forEach(prop => {
+               info[prop] = feature.get(prop);
+            });
+
+            console.log(info);
+         }
+      });
 
       return () => {
          map.dispose();
