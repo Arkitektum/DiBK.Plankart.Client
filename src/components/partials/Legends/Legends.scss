@@ -1,0 +1,56 @@
+.legends {
+   height: 842px;
+   overflow-y: auto;
+   border: 1px solid #dddddd;
+   padding: 10px;
+
+   .legend {
+      margin-bottom: 15px;
+
+      &.legend-collapsed {
+         h3::after {
+            transform: rotate(0deg);
+         }
+
+         .symbols {
+            display: none;
+         }
+      }
+
+      h3 {
+         cursor: pointer;
+         user-select: none;
+         font-size: 14px;
+         display: inline-block;
+         
+         &::after {
+            content: "";
+            background: url(../../../assets/gfx/icon-arrow.svg) no-repeat center;
+            width: 10px;
+            height: 12px;
+            display: inline-block;
+            background-size: 12px;
+            margin-left: 10px;
+            transform: rotate(90deg);
+            transition: all 0.25s ease;
+            margin: 0;
+            margin: 0;
+            margin-left: 8px;
+            vertical-align: -1px;
+         }
+      }
+
+      .symbol {
+         font-size: 12px;
+         margin-bottom: 5px;
+         overflow: hidden;
+         white-space: nowrap;
+         text-overflow: ellipsis;
+
+         img {
+            width: 25px;
+            margin-right: 5px;
+         }
+      }
+   }
+}

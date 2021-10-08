@@ -1,8 +1,7 @@
 import Logo from 'assets/gfx/logo-dibk.svg';
-import { MapView, Upload } from 'components/partials';
+import { Legends, MapView, Upload } from 'components/partials';
 import { useState } from 'react';
 import './App.scss';
-import { geoJson4 } from 'utils/map';
 
 function App() {
    const [geoJsonDocument, setGeoJsonDocument] = useState(null);
@@ -18,13 +17,19 @@ function App() {
 
             <div className="content">
                <div className="left-content">
-                  <Upload onResponse={setGeoJsonDocument} />
+                  <div className="upload">
+                     <Upload onResponse={setGeoJsonDocument} />
+                  </div>
+                  <div style={{ display: geoJsonDocument !== null ? 'block' : 'none' }}>
+                     <Legends />
+                  </div>
                </div>
                <div className="right-content">
                   {
-                     geoJsonDocument !== null ?
-                        <MapView geoJsonDocument={geoJsonDocument} /> :
-                        null
+                     /*geoJsonDocument !== null ?*/
+                     <MapView geoJsonDocument={geoJsonDocument} />
+                     /*:
+                     null*/
                   }
                </div>
             </div>

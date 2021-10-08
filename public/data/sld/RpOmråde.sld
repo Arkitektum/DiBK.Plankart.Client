@@ -14,7 +14,7 @@
                <se:LineSymbolizer>
                   <se:Stroke>
                      <se:SvgParameter name="stroke">#000000</se:SvgParameter>
-                     <se:SvgParameter name="stroke-width">2</se:SvgParameter>
+                     <se:SvgParameter name="stroke-width">3</se:SvgParameter>
                      <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
                      <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
                      <se:SvgParameter name="stroke-dasharray">18 7</se:SvgParameter>

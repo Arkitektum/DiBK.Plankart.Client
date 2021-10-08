@@ -6,9 +6,9 @@ import { getRuleSymbolizers, getByPath } from './Utils';
 
 // These are possible locations for an external graphic inside a symbolizer.
 const externalGraphicPaths = [
-  'graphic.externalgraphic',
-  'stroke.graphicstroke.graphic.externalgraphic',
-  'fill.graphicfill.graphic.externalgraphic',
+   'graphic.externalgraphic',
+   'stroke.graphicstroke.graphic.externalgraphic',
+   'fill.graphicfill.graphic.externalgraphic',
 ];
 
 /**
@@ -22,19 +22,19 @@ const externalGraphicPaths = [
  */
 const imageCache = {};
 export function setCachedImage(url, imageData) {
-  imageCache[url] = imageData;
+   imageCache[url] = imageData;
 }
 export function getCachedImage(url) {
-  return imageCache[url];
+   return imageCache[url];
 }
 export function getCachedImageUrls() {
-  return Object.keys(imageCache);
+   return Object.keys(imageCache);
 }
 export function clearImageCache() {
-  Object.keys(imageCache).forEach(key => {
-    imageCache[key] = null;
-    delete imageCache[key];
-  });
+   Object.keys(imageCache).forEach(key => {
+      imageCache[key] = null;
+      delete imageCache[key];
+   });
 }
 
 /**
@@ -44,16 +44,16 @@ export function clearImageCache() {
  */
 const imageLoadingStateCache = {};
 export function setImageLoadingState(url, loadingState) {
-  imageLoadingStateCache[url] = loadingState;
+   imageLoadingStateCache[url] = loadingState;
 }
 export function getImageLoadingState(url) {
-  return imageLoadingStateCache[url];
+   return imageLoadingStateCache[url];
 }
 export function clearImageLoadingStateCache() {
-  Object.keys(imageLoadingStateCache).forEach(key => {
-    imageLoadingStateCache[key] = null;
-    delete imageLoadingStateCache[key];
-  });
+   Object.keys(imageLoadingStateCache).forEach(key => {
+      imageLoadingStateCache[key] = null;
+      delete imageLoadingStateCache[key];
+   });
 }
 
 /**
@@ -64,49 +64,49 @@ export function clearImageLoadingStateCache() {
  */
 const _imageLoaderCache = {};
 export function getImageLoader(url) {
-  return _imageLoaderCache[url];
+   return _imageLoaderCache[url];
 }
 export function setImageLoader(url, loaderPromise) {
-  _imageLoaderCache[url] = loaderPromise;
+   _imageLoaderCache[url] = loaderPromise;
 }
 export function clearImageLoaderCache() {
-  Object.keys(_imageLoaderCache).forEach(key => {
-    delete _imageLoaderCache[key];
-  });
+   Object.keys(_imageLoaderCache).forEach(key => {
+      delete _imageLoaderCache[key];
+   });
 }
 
 function invalidateExternalGraphicSymbolizers(symbolizer, imageUrl) {
-  // Look at all possible paths where an externalgraphic may be present within a symbolizer.
-  // When such an externalgraphic has been found, and its url equals imageUrl, invalidate the symbolizer.
-  for (let k = 0; k < externalGraphicPaths.length; k += 1) {
-    // Note: this process assumes that each symbolizer has at most one external graphic element.
-    const path = externalGraphicPaths[k];
-    const externalgraphic = getByPath(symbolizer, path);
-    if (externalgraphic && externalgraphic.onlineresource === imageUrl) {
-      symbolizer.__invalidated = true;
-      // If the symbolizer contains a graphic stroke symbolizer,
-      // also update the nested graphicstroke symbolizer object.
-      if (path.indexOf('graphicstroke') > -1) {
-        symbolizer.stroke.graphicstroke.__invalidated = true;
+   // Look at all possible paths where an externalgraphic may be present within a symbolizer.
+   // When such an externalgraphic has been found, and its url equals imageUrl, invalidate the symbolizer.
+   for (let k = 0; k < externalGraphicPaths.length; k += 1) {
+      // Note: this process assumes that each symbolizer has at most one external graphic element.
+      const path = externalGraphicPaths[k];
+      const externalgraphic = getByPath(symbolizer, path);
+      if (externalgraphic && externalgraphic.onlineresource === imageUrl) {
+         symbolizer.__invalidated = true;
+         // If the symbolizer contains a graphic stroke symbolizer,
+         // also update the nested graphicstroke symbolizer object.
+         if (path.indexOf('graphicstroke') > -1) {
+            symbolizer.stroke.graphicstroke.__invalidated = true;
+         }
       }
-    }
-  }
+   }
 }
 
 function updateSymbolizerInvalidatedState(ruleSymbolizer, imageUrl) {
-  if (!ruleSymbolizer) {
-    return;
-  }
+   if (!ruleSymbolizer) {
+      return;
+   }
 
-  // Watch out! A symbolizer inside a rule may be a symbolizer, or an array of symbolizers.
-  // Todo: refactor so rule.symbolizers property is always an array with 0..n symbolizer objects.
-  if (!Array.isArray(ruleSymbolizer)) {
-    invalidateExternalGraphicSymbolizers(ruleSymbolizer, imageUrl);
-  } else {
-    for (let k = 0; k < ruleSymbolizer.length; k += 1) {
-      invalidateExternalGraphicSymbolizers(ruleSymbolizer[k], imageUrl);
-    }
-  }
+   // Watch out! A symbolizer inside a rule may be a symbolizer, or an array of symbolizers.
+   // Todo: refactor so rule.symbolizers property is always an array with 0..n symbolizer objects.
+   if (!Array.isArray(ruleSymbolizer)) {
+      invalidateExternalGraphicSymbolizers(ruleSymbolizer, imageUrl);
+   } else {
+      for (let k = 0; k < ruleSymbolizer.length; k += 1) {
+         invalidateExternalGraphicSymbolizers(ruleSymbolizer[k], imageUrl);
+      }
+   }
 }
 
 /**
@@ -116,15 +116,15 @@ function updateSymbolizerInvalidatedState(ruleSymbolizer, imageUrl) {
  * @param {string} imageUrl The image url.
  */
 function invalidateExternalGraphics(featureTypeStyle, imageUrl) {
-  if (!featureTypeStyle.rules) {
-    return;
-  }
+   if (!featureTypeStyle.rules) {
+      return;
+   }
 
-  featureTypeStyle.rules.forEach(rule => {
-    updateSymbolizerInvalidatedState(rule.pointsymbolizer, imageUrl);
-    updateSymbolizerInvalidatedState(rule.linesymbolizer, imageUrl);
-    updateSymbolizerInvalidatedState(rule.polygonsymbolizer, imageUrl);
-  });
+   featureTypeStyle.rules.forEach(rule => {
+      updateSymbolizerInvalidatedState(rule.pointsymbolizer, imageUrl);
+      updateSymbolizerInvalidatedState(rule.linesymbolizer, imageUrl);
+      updateSymbolizerInvalidatedState(rule.polygonsymbolizer, imageUrl);
+   });
 }
 
 /**
@@ -137,40 +137,40 @@ function invalidateExternalGraphics(featureTypeStyle, imageUrl) {
  * image didn't load correctly.
  */
 function getCachingImageLoader(imageUrl) {
-  // Check of a load is already in progress for an image.
-  // If so, return the loader.
-  let loader = getImageLoader(imageUrl);
-  if (loader) {
-    return loader;
-  }
+   // Check of a load is already in progress for an image.
+   // If so, return the loader.
+   let loader = getImageLoader(imageUrl);
+   if (loader) {
+      return loader;
+   }
 
-  // If no load is in progress, create a new loader and store it in the image loader cache before returning it.
-  loader = new Promise((resolve, reject) => {
-    const image = new Image();
+   // If no load is in progress, create a new loader and store it in the image loader cache before returning it.
+   loader = new Promise((resolve, reject) => {
+      const image = new Image();
 
-    image.onload = () => {
-      setCachedImage(imageUrl, {
-        url: imageUrl,
-        image,
-        width: image.naturalWidth,
-        height: image.naturalHeight,
-      });
-      setImageLoadingState(imageUrl, IMAGE_LOADED);
-      resolve(imageUrl);
-    };
+      image.onload = () => {
+         setCachedImage(imageUrl, {
+            url: imageUrl,
+            image,
+            width: image.naturalWidth,
+            height: image.naturalHeight,
+         });
+         setImageLoadingState(imageUrl, IMAGE_LOADED);
+         resolve(imageUrl);
+      };
 
-    image.onerror = () => {
-      setImageLoadingState(imageUrl, IMAGE_ERROR);
-      reject();
-    };
+      image.onerror = () => {
+         setImageLoadingState(imageUrl, IMAGE_ERROR);
+         reject();
+      };
 
-    image.src = imageUrl;
-  });
+      image.src = imageUrl;
+   });
 
-  // Cache the new image loader and return it.
-  setImageLoadingState(imageUrl, IMAGE_LOADING);
-  setImageLoader(imageUrl, loader);
-  return loader;
+   // Cache the new image loader and return it.
+   setImageLoadingState(imageUrl, IMAGE_LOADING);
+   setImageLoader(imageUrl, loader);
+   return loader;
 }
 
 /**
@@ -183,26 +183,43 @@ function getCachingImageLoader(imageUrl) {
  * @param {Function} imageLoadedCallback Will be called with the image url when image
  * has loaded. Will be called with undefined if the loading the image resulted in an error.
  */
-export function loadExternalGraphic(
-  imageUrl,
-  featureTypeStyle,
-  imageLoadedCallback
-) {
-  invalidateExternalGraphics(featureTypeStyle, imageUrl);
-  getCachingImageLoader(imageUrl)
-    .then(() => {
+export function loadExternalGraphic(imageUrl, featureTypeStyle, imageLoadedCallback) {
+   invalidateExternalGraphics(featureTypeStyle, imageUrl);
+
+   getCachingImageLoader(imageUrl)
+      .then(() => {
+         invalidateExternalGraphics(featureTypeStyle, imageUrl);
+         if (typeof imageLoadedCallback === 'function') {
+            imageLoadedCallback(imageUrl);
+         }
+      })
+      .catch(() => {
+         invalidateExternalGraphics(featureTypeStyle, imageUrl);
+
+         if (typeof imageLoadedCallback === 'function') {
+            imageLoadedCallback();
+         }
+      });
+}
+
+/**
+ * @private
+ * Asynchronous load and cache an image that's used as externalGraphic inside a symbolizer.
+ * When the image is loaded, all symbolizers within the feature type style referencing this image are invalidated,
+ * @param {url} imageUrl Image url.
+ * @param {object} featureTypeStyle Feature type style object.
+ */
+export async function loadExternalGraphicAsync(imageUrl, featureTypeStyle) {
+   invalidateExternalGraphics(featureTypeStyle, imageUrl);
+
+   try {
+      await getCachingImageLoader(imageUrl);
+      return imageUrl;
+   } catch (error) {
+      return undefined;
+   } finally {
       invalidateExternalGraphics(featureTypeStyle, imageUrl);
-      if (typeof imageLoadedCallback === 'function') {
-        imageLoadedCallback(imageUrl);
-      }
-    })
-    .catch(() => {
-      invalidateExternalGraphics(featureTypeStyle, imageUrl);
-      
-      if (typeof imageLoadedCallback === 'function') {
-        imageLoadedCallback();
-      }
-    });
+   }
 }
 
 /**
@@ -212,44 +229,71 @@ export function loadExternalGraphic(
  * @param {FeatureTypeStyle} featureTypeStyle The feature type style object for a layer.
  * @param {Function} imageLoadedCallback Function to call when an image has loaded.
  */
-export function processExternalGraphicSymbolizers(
-  rules,
-  featureTypeStyle,
-  imageLoadedCallback,
-  callbackRef
-) {
-  // Walk over all symbolizers inside all given rules.
-  // Dive into the symbolizers to find ExternalGraphic elements and for each ExternalGraphic,
-  // check if the image url has been encountered before.
-  // If not -> start loading the image into the global image cache.
-  rules.forEach(rule => {
-    const allSymbolizers = getRuleSymbolizers(rule);
-    allSymbolizers.forEach(symbolizer => {
-      externalGraphicPaths.forEach(path => {
-        const exgraphic = getByPath(symbolizer, path);
-        if (!exgraphic) {
-          return;
-        }
-        const imageUrl = exgraphic.onlineresource;
-        const imageLoadingState = getImageLoadingState(imageUrl);
-        if (!imageLoadingState || imageLoadingState === IMAGE_LOADING) {
-          // Prevent adding imageLoadedCallback more than once per image per created style function
-          // by inspecting the callbackRef object passed by the style function creator function.
-          // Each style function has its own callbackRef dictionary.
-          if (!callbackRef[imageUrl]) {
-            callbackRef[imageUrl] = true;
-            // Load image and when loaded, invalidate all symbolizers referencing the image
-            // and invoke the imageLoadedCallback.
-            loadExternalGraphic(
-              imageUrl,
-              featureTypeStyle,
-              imageLoadedCallback
-            );
-          }
-        }
+export function processExternalGraphicSymbolizers(rules, featureTypeStyle, imageLoadedCallback, callbackRef) {
+   _processExternalGraphicsSymbolizers(
+      rules,
+      featureTypeStyle,
+      callbackRef,
+      imageUrl => {
+         loadExternalGraphic(
+            imageUrl,
+            featureTypeStyle,
+            imageLoadedCallback
+         )
+      }
+   );
+}
+
+/**
+ * @private
+ * Asynchronous loading of images used in rules that have a pointsymbolizer with an externalgraphic.
+ * @param {Array<object>} rules Array of SLD rule objects that pass the filter for a single feature.
+ * @param {FeatureTypeStyle} featureTypeStyle The feature type style object for a layer.
+ */
+export function processExternalGraphicSymbolizersAsync(rules, featureTypeStyle, callbackRef) {
+   const promises = [];
+
+   _processExternalGraphicsSymbolizers(
+      rules,
+      featureTypeStyle,
+      callbackRef,
+      imageUrl => {
+         promises.push(loadExternalGraphicAsync(imageUrl, featureTypeStyle));
+      }
+   )
+
+   return Promise.all(promises);
+}
+
+function _processExternalGraphicsSymbolizers(rules, featureTypeStyle, callbackRef, callback) {
+   rules.forEach(rule => {
+      const allSymbolizers = getRuleSymbolizers(rule);
+
+      allSymbolizers.forEach(symbolizer => {
+         externalGraphicPaths.forEach(path => {
+            const exgraphic = getByPath(symbolizer, path);
+
+            if (!exgraphic) {
+               return;
+            }
+
+            const imageUrl = exgraphic.onlineresource;
+            const imageLoadingState = getImageLoadingState(imageUrl);
+
+            if (!imageLoadingState || imageLoadingState === IMAGE_LOADING) {
+               // Prevent adding imageLoadedCallback more than once per image per created style function
+               // by inspecting the callbackRef object passed by the style function creator function.
+               // Each style function has its own callbackRef dictionary.
+               if (!callbackRef[imageUrl]) {
+                  callbackRef[imageUrl] = true;
+                  // Load image and when loaded, invalidate all symbolizers referencing the image
+                  // and invoke the callback.
+                  callback(imageUrl)
+               }
+            }
+         });
       });
-    });
-  });
+   });
 }
 
 /**
@@ -261,14 +305,14 @@ export function processExternalGraphicSymbolizers(
  * @param {number} [rotationDegrees] Image rotation in degrees (clockwise). Default 0.
  */
 export function createCachedImageStyle(imageUrl, size, rotationDegrees = 0.0) {
-  const { image, width, height } = getCachedImage(imageUrl);
-  return new Style({
-    image: new Icon({
-      img: image,
-      imgSize: [width, height],
-      // According to SLD spec, if size is given, image height should equal the given size.
-      scale: size / height || 1,
-      rotation: (Math.PI * rotationDegrees) / 180.0,
-    }),
-  });
+   const { image, width, height } = getCachedImage(imageUrl);
+   return new Style({
+      image: new Icon({
+         img: image,
+         imgSize: [width, height],
+         // According to SLD spec, if size is given, image height should equal the given size.
+         scale: size / height || 1,
+         rotation: (Math.PI * rotationDegrees) / 180.0,
+      }),
+   });
 }

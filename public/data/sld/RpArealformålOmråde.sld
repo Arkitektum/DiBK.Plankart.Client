@@ -3693,6 +3693,7 @@ kombinert med andre angitte hovedformål</se:Title>
                </se:PolygonSymbolizer>
             </se:Rule>
             <se:Rule>
+               <se:Name>Annet</se:Name>
                <se:ElseFilter />
                <se:PolygonSymbolizer>
                   <se:Fill>

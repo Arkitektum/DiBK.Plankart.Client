@@ -133,7 +133,7 @@ function getOlFeatureProperty(feature, propertyName) {
  *   imageLoadedCallback: () => { myOlVectorLayer.changed(); }
  * }));
  */
-export function createOlStyleFunction(featureTypeStyle, options = {}) {
+export async function createOlStyleFunction(featureTypeStyle, options = {}) {
    const imageLoadedCallback = options.imageLoadedCallback || (() => { });
 
    // Keep track of whether a callback has been registered per image url.

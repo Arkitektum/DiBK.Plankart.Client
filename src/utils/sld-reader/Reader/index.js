@@ -13,11 +13,11 @@ import createFilter from './filter';
  * @param {string} prop key on obj to hold array
  */
 function addPropArray(node, obj, prop) {
-  const property = prop.toLowerCase();
-  obj[property] = obj[property] || [];
-  const item = {};
-  readNode(node, item);
-  obj[property].push(item);
+   const property = prop.toLowerCase();
+   obj[property] = obj[property] || [];
+   const item = {};
+   readNode(node, item);
+   obj[property].push(item);
 }
 
 /**
@@ -28,16 +28,16 @@ function addPropArray(node, obj, prop) {
  * @param {string} prop key on obj to hold array
  */
 function addPropOrArray(node, obj, prop) {
-  const property = prop.toLowerCase();
-  const item = {};
-  readNode(node, item);
-  if (!(property in obj)) {
-    obj[property] = item;
-  } else if (Array.isArray(obj[property])) {
-    obj[property].push(item);
-  } else {
-    obj[property] = [obj[property], item];
-  }
+   const property = prop.toLowerCase();
+   const item = {};
+   readNode(node, item);
+   if (!(property in obj)) {
+      obj[property] = item;
+   } else if (Array.isArray(obj[property])) {
+      obj[property].push(item);
+   } else {
+      obj[property] = [obj[property], item];
+   }
 }
 
 /**
@@ -49,9 +49,9 @@ function addPropOrArray(node, obj, prop) {
  * @param {string} prop key on obj to hold empty object
  */
 function addProp(node, obj, prop) {
-  const property = prop.toLowerCase();
-  obj[property] = {};
-  readNode(node, obj[property]);
+   const property = prop.toLowerCase();
+   obj[property] = {};
+   readNode(node, obj[property]);
 }
 
 /**
@@ -63,12 +63,12 @@ function addProp(node, obj, prop) {
  * @param {bool} [trimText] Trim whitespace from text content (default false).
  */
 function addPropWithTextContent(node, obj, prop, trimText = false) {
-  const property = prop.toLowerCase();
-  if (trimText) {
-    obj[property] = node.textContent.trim();
-  } else {
-    obj[property] = node.textContent;
-  }
+   const property = prop.toLowerCase();
+   if (trimText) {
+      obj[property] = node.textContent.trim();
+   } else {
+      obj[property] = node.textContent;
+   }
 }
 
 /**
@@ -80,9 +80,9 @@ function addPropWithTextContent(node, obj, prop, trimText = false) {
  * @param {string} prop The property name.
  */
 function addNumericProp(node, obj, prop) {
-  const property = prop.toLowerCase();
-  const value = parseFloat(node.textContent.trim());
-  obj[property] = value;
+   const property = prop.toLowerCase();
+   const value = parseFloat(node.textContent.trim());
+   obj[property] = value;
 }
 
 /**
@@ -108,54 +108,54 @@ function addNumericProp(node, obj, prop) {
  * @param {bool} [skipEmptyNodes] Default true. If true, emtpy (whitespace-only) text nodes will me omitted in the result.
  */
 function addFilterExpressionProp(node, obj, prop, skipEmptyNodes = true) {
-  const childExpressions = [];
+   const childExpressions = [];
 
-  for (let k = 0; k < node.childNodes.length; k += 1) {
-    const childNode = node.childNodes[k];
-    const childExpression = {};
-    if (
-      childNode.namespaceURI === 'http://www.opengis.net/ogc' &&
-      childNode.localName === 'PropertyName'
-    ) {
-      // Add ogc:PropertyName elements as type:propertyname.
-      childExpression.type = 'propertyname';
-      childExpression.value = childNode.textContent.trim();
-    } else if (childNode.nodeName === '#cdata-section') {
-      // Add CDATA section text content untrimmed.
-      childExpression.type = 'literal';
-      childExpression.value = childNode.textContent;
-    } else {
-      // Add ogc:Literal elements and plain text nodes as type:literal.
-      childExpression.type = 'literal';
-      childExpression.value = childNode.textContent.trim();
-    }
-
-    if (childExpression.type === 'literal' && skipEmptyNodes) {
-      if (childExpression.value.trim()) {
-        childExpressions.push(childExpression);
+   for (let k = 0; k < node.childNodes.length; k += 1) {
+      const childNode = node.childNodes[k];
+      const childExpression = {};
+      if (
+         childNode.namespaceURI === 'http://www.opengis.net/ogc' &&
+         childNode.localName === 'PropertyName'
+      ) {
+         // Add ogc:PropertyName elements as type:propertyname.
+         childExpression.type = 'propertyname';
+         childExpression.value = childNode.textContent.trim();
+      } else if (childNode.nodeName === '#cdata-section') {
+         // Add CDATA section text content untrimmed.
+         childExpression.type = 'literal';
+         childExpression.value = childNode.textContent;
+      } else {
+         // Add ogc:Literal elements and plain text nodes as type:literal.
+         childExpression.type = 'literal';
+         childExpression.value = childNode.textContent.trim();
       }
-    } else {
-      childExpressions.push(childExpression);
-    }
-  }
 
-  const property = prop.toLowerCase();
+      if (childExpression.type === 'literal' && skipEmptyNodes) {
+         if (childExpression.value.trim()) {
+            childExpressions.push(childExpression);
+         }
+      } else {
+         childExpressions.push(childExpression);
+      }
+   }
 
-  // If expression children are all literals, concatenate them into a string.
-  const allLiteral = childExpressions.every(
-    childExpression => childExpression.type === 'literal'
-  );
+   const property = prop.toLowerCase();
 
-  if (allLiteral) {
-    obj[property] = childExpressions
-      .map(expression => expression.value)
-      .join('');
-  } else {
-    obj[property] = {
-      type: 'expression',
-      children: childExpressions,
-    };
-  }
+   // If expression children are all literals, concatenate them into a string.
+   const allLiteral = childExpressions.every(
+      childExpression => childExpression.type === 'literal'
+   );
+
+   if (allLiteral) {
+      obj[property] = childExpressions
+         .map(expression => expression.value)
+         .join('');
+   } else {
+      obj[property] = {
+         type: 'expression',
+         children: childExpressions,
+      };
+   }
 }
 
 /**
@@ -166,14 +166,14 @@ function addFilterExpressionProp(node, obj, prop, skipEmptyNodes = true) {
  * @return {boolean}
  */
 function getBool(element, tagName) {
-  const collection = element.getElementsByTagNameNS(
-    'http://www.opengis.net/sld',
-    tagName
-  );
-  if (collection.length) {
-    return Boolean(collection.item(0).textContent);
-  }
-  return false;
+   const collection = element.getElementsByTagNameNS(
+      'http://www.opengis.net/sld',
+      tagName
+   );
+   if (collection.length) {
+      return Boolean(collection.item(0).textContent);
+   }
+   return false;
 }
 
 /**
@@ -184,67 +184,67 @@ function getBool(element, tagName) {
  * @param  {String} prop
  */
 function parameters(element, obj, prop) {
-  const propnames = {
-    CssParameter: 'styling',
-    SvgParameter: 'styling',
-    VendorOption: 'vendoroption',
-  };
-  const propname = propnames[prop] || 'styling';
-  obj[propname] = obj[propname] || {};
-  const name = element
-    .getAttribute('name')
-    .toLowerCase()
-    .replace(/-(.)/g, (match, group1) => group1.toUpperCase());
-  obj[propname][name] = element.textContent.trim();
+   const propnames = {
+      CssParameter: 'styling',
+      SvgParameter: 'styling',
+      VendorOption: 'vendoroption',
+   };
+   const propname = propnames[prop] || 'styling';
+   obj[propname] = obj[propname] || {};
+   const name = element
+      .getAttribute('name')
+      .toLowerCase()
+      .replace(/-(.)/g, (match, group1) => group1.toUpperCase());
+   obj[propname][name] = element.textContent.trim();
 }
 
 const FilterParsers = {
-  Filter: (element, obj) => {
-    obj.filter = createFilter(element);
-  },
-  ElseFilter: (element, obj) => {
-    obj.elsefilter = true;
-  },
+   Filter: (element, obj) => {
+      obj.filter = createFilter(element);
+   },
+   ElseFilter: (element, obj) => {
+      obj.elsefilter = true;
+   },
 };
 
 const SymbParsers = {
-  PolygonSymbolizer: addPropOrArray,
-  LineSymbolizer: addPropOrArray,
-  PointSymbolizer: addPropOrArray,
-  TextSymbolizer: addPropOrArray,
-  Fill: addProp,
-  Stroke: addProp,
-  GraphicStroke: addProp,
-  GraphicFill: addProp,
-  Graphic: addProp,
-  ExternalGraphic: addProp,
-  Gap: addNumericProp,
-  InitialGap: addNumericProp,
-  Mark: addProp,
-  Label: (node, obj, prop) => addFilterExpressionProp(node, obj, prop, false),
-  Halo: addProp,
-  Font: addProp,
-  Radius: addPropWithTextContent,
-  LabelPlacement: addProp,
-  PointPlacement: addProp,
-  LinePlacement: addProp,
-  PerpendicularOffset: addPropWithTextContent,
-  AnchorPoint: addProp,
-  AnchorPointX: addPropWithTextContent,
-  AnchorPointY: addPropWithTextContent,
-  Opacity: addFilterExpressionProp,
-  Rotation: addFilterExpressionProp,
-  Displacement: addProp,
-  DisplacementX: addPropWithTextContent,
-  DisplacementY: addPropWithTextContent,
-  Size: addFilterExpressionProp,
-  WellKnownName: addPropWithTextContent,
-  VendorOption: parameters,
-  OnlineResource: (element, obj) => {
-    obj.onlineresource = element.getAttribute('xlink:href');
-  },
-  CssParameter: parameters,
-  SvgParameter: parameters,
+   PolygonSymbolizer: addPropOrArray,
+   LineSymbolizer: addPropOrArray,
+   PointSymbolizer: addPropOrArray,
+   TextSymbolizer: addPropOrArray,
+   Fill: addProp,
+   Stroke: addProp,
+   GraphicStroke: addProp,
+   GraphicFill: addProp,
+   Graphic: addProp,
+   ExternalGraphic: addProp,
+   Gap: addNumericProp,
+   InitialGap: addNumericProp,
+   Mark: addProp,
+   Label: (node, obj, prop) => addFilterExpressionProp(node, obj, prop, false),
+   Halo: addProp,
+   Font: addProp,
+   Radius: addPropWithTextContent,
+   LabelPlacement: addProp,
+   PointPlacement: addProp,
+   LinePlacement: addProp,
+   PerpendicularOffset: addPropWithTextContent,
+   AnchorPoint: addProp,
+   AnchorPointX: addPropWithTextContent,
+   AnchorPointY: addPropWithTextContent,
+   Opacity: addFilterExpressionProp,
+   Rotation: addFilterExpressionProp,
+   Displacement: addProp,
+   DisplacementX: addPropWithTextContent,
+   DisplacementY: addPropWithTextContent,
+   Size: addFilterExpressionProp,
+   WellKnownName: addPropWithTextContent,
+   VendorOption: parameters,
+   OnlineResource: (element, obj) => {
+      obj.onlineresource = element.getAttribute('xlink:href');
+   },
+   CssParameter: parameters,
+   SvgParameter: parameters,
 };
 
 /**
@@ -253,38 +253,38 @@ const SymbParsers = {
  * @type {Object}
  */
 const parsers = {
-  NamedLayer: (element, obj) => {
-    addPropArray(element, obj, 'layers');
-  },
-  UserLayer: (element, obj) => {
-    addPropArray(element, obj, 'layers');
-  },
-  UserStyle: (element, obj) => {
-    obj.styles = obj.styles || [];
-    const style = {
-      default: getBool(element, 'IsDefault'),
-      featuretypestyles: [],
-    };
-    readNode(element, style);
-    obj.styles.push(style);
-  },
-  FeatureTypeStyle: (element, obj) => {
-    const featuretypestyle = {
-      rules: [],
-    };
-    readNode(element, featuretypestyle);
-    obj.featuretypestyles.push(featuretypestyle);
-  },
-  Rule: (element, obj) => {
-    const rule = {};
-    readNode(element, rule);
-    obj.rules.push(rule);
-  },
-  Name: addPropWithTextContent,
-  MaxScaleDenominator: addPropWithTextContent,
-  MinScaleDenominator: addPropWithTextContent,
-  ...FilterParsers,
-  ...SymbParsers,
+   NamedLayer: (element, obj) => {
+      addPropArray(element, obj, 'layers');
+   },
+   UserLayer: (element, obj) => {
+      addPropArray(element, obj, 'layers');
+   },
+   UserStyle: (element, obj) => {
+      obj.styles = obj.styles || [];
+      const style = {
+         default: getBool(element, 'IsDefault'),
+         featuretypestyles: [],
+      };
+      readNode(element, style);
+      obj.styles.push(style);
+   },
+   FeatureTypeStyle: (element, obj) => {
+      const featuretypestyle = {
+         rules: [],
+      };
+      readNode(element, featuretypestyle);
+      obj.featuretypestyles.push(featuretypestyle);
+   },
+   Rule: (element, obj) => {
+      const rule = {};
+      readNode(element, rule);
+      obj.rules.push(rule);
+   },
+   Name: addPropWithTextContent,
+   MaxScaleDenominator: addPropWithTextContent,
+   MinScaleDenominator: addPropWithTextContent,
+   ...FilterParsers,
+   ...SymbParsers,
 };
 
 /**
@@ -295,11 +295,11 @@ const parsers = {
  * @return {void}
  */
 function readNode(node, obj) {
-  for (let n = node.firstElementChild; n; n = n.nextElementSibling) {
-    if (parsers[n.localName]) {
-      parsers[n.localName](n, obj, n.localName);
-    }
-  }
+   for (let n = node.firstElementChild; n; n = n.nextElementSibling) {
+      if (parsers[n.localName]) {
+         parsers[n.localName](n, obj, n.localName);
+      }
+   }
 }
 
 /**
@@ -308,15 +308,15 @@ function readNode(node, obj) {
  * @return {StyledLayerDescriptor}  object representing sld style
  */
 export default function Reader(sld) {
-  const result = {};
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(sld, 'application/xml');
+   const result = {};
+   const parser = new DOMParser();
+   const doc = parser.parseFromString(sld, 'application/xml');
 
-  for (let n = doc.firstChild; n; n = n.nextSibling) {
-    result.version = n.getAttribute('version');
-    readNode(n, result);
-  }
-  return result;
+   for (let n = doc.firstChild; n; n = n.nextSibling) {
+      result.version = n.getAttribute('version');
+      readNode(n, result);
+   }
+   return result;
 }
 
 /**

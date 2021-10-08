@@ -1,8 +1,10 @@
 import axios from 'axios';
 import featureMembers from 'config/map.plankart.config';
 import { defaults as defaultControls, FullScreen, ZoomToExtent } from 'ol/control';
+import { click } from 'ol/events/condition';
 import GeoJSON from 'ol/format/GeoJSON';
 import { defaults as defaultInteractions, DragRotateAndZoom } from 'ol/interaction';
+import Select from 'ol/interaction/Select';
 import { Vector as VectorLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/Tile';
 import Map from 'ol/Map';
@@ -12,8 +14,6 @@ import View from 'ol/View';
 import React, { useEffect, useRef, useState } from 'react';
 import { groupBy } from 'utils/helpers';
 import { createOlStyleFunction, getLayer as getSldLayer, getStyle, Reader } from 'utils/sld-reader';
-import { altKeyOnly, click, pointerMove } from 'ol/events/condition';
-import Select from 'ol/interaction/Select';
 import './MapView.scss';
 
 function getLayer(map, id) {
@@ -46,21 +46,14 @@ async function addStyling(features, callback) {
 
       const style = await createStyle(key, callback);
 
-      groupedFeatures[key].forEach(feature => {        
+      groupedFeatures[key].forEach(feature => {
          feature.setStyle(style);
       });
    }
 }
 
-function getFeatures(features, names) {
-   return names.flatMap(name => {
-      return features.filter(feature => feature.get('name') === name);
-   })
-}
-
 async function createVectorLayer(geoJsonDocument) {
    const features = new GeoJSON().readFeatures(geoJsonDocument.featureCollection);
-   const feats = getFeatures(features, ['RpOmråde', 'RpArealformålOmråde', 'RpBestemmelseOmråde', 'RpFareSone', 'RpSikringSone', 'RpPåskrift']);
 
    const vectorLayer = new VectorLayer({
       source: new VectorSource({ features }),
@@ -155,7 +148,7 @@ function MapView({ geoJsonDocument }) {
 
             const info = {
                name: featureName,
-               id: feature.get('id'),               
+               id: feature.get('id'),
             };
 
             const infoProps = featureMembers[featureName].infoProps || [];
@@ -173,11 +166,12 @@ function MapView({ geoJsonDocument }) {
       }
    }, [map]);
 
-
    return (
-      <div className="map-container">
-         <div ref={mapElement} className="map"></div>
-      </div>
+      <React.Fragment>
+         <div className="map-container">
+            <div ref={mapElement} className="map"></div>
+         </div>
+      </React.Fragment>
    );
 }
 

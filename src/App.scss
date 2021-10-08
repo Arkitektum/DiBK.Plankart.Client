@@ -38,6 +38,10 @@ h1 {
    .left-content {
       width: 400px;
       border-right: 0;
+
+      .upload {
+         margin-bottom: 25px;
+      }
    }
 
    .right-content {
