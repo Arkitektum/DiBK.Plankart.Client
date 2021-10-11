@@ -1,0 +1,15 @@
+.top-bar {
+   height: 35px;
+   background: #8aaec3;
+   color: #ffffff;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 0 10px;
+   margin: -1px 0 0 -1px;
+   width: calc(100% + 2px);
+
+   .file-name span {
+      margin-left: 10px
+   }
+}

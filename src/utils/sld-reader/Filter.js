@@ -1,118 +1,118 @@
 function isNullOrUndefined(value) {
-  /* eslint-disable-next-line eqeqeq */
-  return value == null;
+   /* eslint-disable-next-line eqeqeq */
+   return value == null;
 }
 
 function compareNumbers(a, b) {
-  if (a < b) {
-    return -1;
-  }
-  if (a === b) {
-    return 0;
-  }
-  return 1;
+   if (a < b) {
+      return -1;
+   }
+   if (a === b) {
+      return 0;
+   }
+   return 1;
 }
 
 function toNumber(text) {
-  if (text === '') {
-    return NaN;
-  }
-  return Number(text);
+   if (text === '') {
+      return NaN;
+   }
+   return Number(text);
 }
 
 function compare(a, b, matchcase) {
-  const aNumber = toNumber(a);
-  const bNumber = toNumber(b);
-  if (!(Number.isNaN(aNumber) || Number.isNaN(bNumber))) {
-    return compareNumbers(aNumber, bNumber);
-  }
+   const aNumber = toNumber(a);
+   const bNumber = toNumber(b);
+   if (!(Number.isNaN(aNumber) || Number.isNaN(bNumber))) {
+      return compareNumbers(aNumber, bNumber);
+   }
 
-  // If a and/or b is non-numeric, compare both values as strings.
-  const aString = a.toString();
-  const bString = b.toString();
+   // If a and/or b is non-numeric, compare both values as strings.
+   const aString = a.toString();
+   const bString = b.toString();
 
-  // Note: using locale compare with sensitivity option fails the CI test, while it works on my PC.
-  // So, case insensitive comparison is done in a more brute-force way by using lower case comparison.
-  // Original method:
-  // const caseSensitiveCollator = new Intl.Collator(undefined, { sensitivity: 'case' });
-  // caseSensitiveCollator.compare(string1, string2);
-  if (matchcase) {
-    return aString.localeCompare(bString);
-  }
+   // Note: using locale compare with sensitivity option fails the CI test, while it works on my PC.
+   // So, case insensitive comparison is done in a more brute-force way by using lower case comparison.
+   // Original method:
+   // const caseSensitiveCollator = new Intl.Collator(undefined, { sensitivity: 'case' });
+   // caseSensitiveCollator.compare(string1, string2);
+   if (matchcase) {
+      return aString.localeCompare(bString);
+   }
 
-  return aString.toLowerCase().localeCompare(bString.toLowerCase());
+   return aString.toLowerCase().localeCompare(bString.toLowerCase());
 }
 
 function propertyIsLessThan(comparison, value) {
-  if (isNullOrUndefined(value)) {
-    return false;
-  }
+   if (isNullOrUndefined(value)) {
+      return false;
+   }
 
-  if (isNullOrUndefined(comparison.literal)) {
-    return false;
-  }
+   if (isNullOrUndefined(comparison.literal)) {
+      return false;
+   }
 
-  return compare(value, comparison.literal) < 0;
+   return compare(value, comparison.literal) < 0;
 }
 
 function propertyIsGreaterThan(comparison, value) {
-  if (isNullOrUndefined(value)) {
-    return false;
-  }
+   if (isNullOrUndefined(value)) {
+      return false;
+   }
 
-  if (isNullOrUndefined(comparison.literal)) {
-    return false;
-  }
+   if (isNullOrUndefined(comparison.literal)) {
+      return false;
+   }
 
-  return compare(value, comparison.literal) > 0;
+   return compare(value, comparison.literal) > 0;
 }
 
 function propertyIsBetween(comparison, value) {
-  if (isNullOrUndefined(value)) {
-    return false;
-  }
+   if (isNullOrUndefined(value)) {
+      return false;
+   }
 
-  const lowerBoundary = comparison.lowerboundary;
-  if (isNullOrUndefined(lowerBoundary)) {
-    return false;
-  }
+   const lowerBoundary = comparison.lowerboundary;
+   if (isNullOrUndefined(lowerBoundary)) {
+      return false;
+   }
 
-  const upperBoundary = comparison.upperboundary;
-  if (isNullOrUndefined(upperBoundary)) {
-    return false;
-  }
+   const upperBoundary = comparison.upperboundary;
+   if (isNullOrUndefined(upperBoundary)) {
+      return false;
+   }
 
-  return (
-    compare(lowerBoundary, value) <= 0 && compare(upperBoundary, value) >= 0
-  );
+   return (
+      compare(lowerBoundary, value) <= 0 && compare(upperBoundary, value) >= 0
+   );
 }
 
 function propertyIsEqualTo(comparison, value) {
-  if (isNullOrUndefined(value)) {
-    return false;
-  }
+   if (isNullOrUndefined(value)) {
+      return false;
+   }
 
-  if (isNullOrUndefined(comparison.literal)) {
-    return false;
-  }
+   if (isNullOrUndefined(comparison.literal)) {
+      return false;
+   }
 
-  if (!comparison.matchcase) {
-    return compare(comparison.literal, value, false) === 0;
-  }
+   if (!comparison.matchcase) {
+      return compare(comparison.literal, value, false) === 0;
+   }
 
-  /* eslint-disable-next-line eqeqeq */
-  return value == comparison.literal;
+   /* eslint-disable-next-line eqeqeq */
+   return value == comparison.literal;
 }
 
 // Watch out! Null-ish values should not pass propertyIsNotEqualTo,
 // just like in databases.
 // This means that PropertyIsNotEqualTo is not the same as NOT(PropertyIsEqualTo).
 function propertyIsNotEqualTo(comparison, value) {
-  if (isNullOrUndefined(value)) {
-    return false;
-  }
+   if (isNullOrUndefined(value)) {
+      return false;
+   }
 
-  return !propertyIsEqualTo(comparison, value);
+   return !propertyIsEqualTo(comparison, value);
 }
 
 /**
@@ -124,40 +124,40 @@ function propertyIsNotEqualTo(comparison, value) {
  * the value of a property from a feature.
  */
 function propertyIsLike(comparison, value) {
-  const pattern = comparison.literal;
+   const pattern = comparison.literal;
 
-  if (isNullOrUndefined(value)) {
-    return false;
-  }
+   if (isNullOrUndefined(value)) {
+      return false;
+   }
 
-  // Create regex string from match pattern.
-  const { wildcard, singlechar, escapechar, matchcase } = comparison;
+   // Create regex string from match pattern.
+   const { wildcard, singlechar, escapechar, matchcase } = comparison;
 
-  // Replace wildcard by '.*'
-  let patternAsRegex = pattern.replace(new RegExp(`[${wildcard}]`, 'g'), '.*');
+   // Replace wildcard by '.*'
+   let patternAsRegex = pattern.replace(new RegExp(`[${wildcard}]`, 'g'), '.*');
 
-  // Replace single char match by '.'
-  patternAsRegex = patternAsRegex.replace(
-    new RegExp(`[${singlechar}]`, 'g'),
-    '.'
-  );
+   // Replace single char match by '.'
+   patternAsRegex = patternAsRegex.replace(
+      new RegExp(`[${singlechar}]`, 'g'),
+      '.'
+   );
 
-  // Replace escape char by '\' if escape char is not already '\'.
-  if (escapechar !== '\\') {
-    patternAsRegex = patternAsRegex.replace(
-      new RegExp(`[${escapechar}]`, 'g'),
-      '\\'
-    );
-  }
+   // Replace escape char by '\' if escape char is not already '\'.
+   if (escapechar !== '\\') {
+      patternAsRegex = patternAsRegex.replace(
+         new RegExp(`[${escapechar}]`, 'g'),
+         '\\'
+      );
+   }
 
-  // Bookend the regular expression.
-  patternAsRegex = `^${patternAsRegex}$`;
+   // Bookend the regular expression.
+   patternAsRegex = `^${patternAsRegex}$`;
 
-  const rex =
-    matchcase === false
-      ? new RegExp(patternAsRegex, 'i')
-      : new RegExp(patternAsRegex);
-  return rex.test(value);
+   const rex =
+      matchcase === false
+         ? new RegExp(patternAsRegex, 'i')
+         : new RegExp(patternAsRegex);
+   return rex.test(value);
 }
 
 /**
@@ -170,46 +170,46 @@ function propertyIsLike(comparison, value) {
  * @return {bool}  does feature fullfill comparison
  */
 function doComparison(comparison, feature, getProperty) {
-  const value = getProperty(feature, comparison.propertyname);
+   const value = getProperty(feature, comparison.propertyname);
 
-  switch (comparison.operator) {
-    case 'propertyislessthan':
-      return propertyIsLessThan(comparison, value);
-    case 'propertyisequalto':
-      return propertyIsEqualTo(comparison, value);
-    case 'propertyislessthanorequalto':
-      return (
-        propertyIsEqualTo(comparison, value) ||
-        propertyIsLessThan(comparison, value)
-      );
-    case 'propertyisnotequalto':
-      return propertyIsNotEqualTo(comparison, value);
-    case 'propertyisgreaterthan':
-      return propertyIsGreaterThan(comparison, value);
-    case 'propertyisgreaterthanorequalto':
-      return (
-        propertyIsEqualTo(comparison, value) ||
-        propertyIsGreaterThan(comparison, value)
-      );
-    case 'propertyisbetween':
-      return propertyIsBetween(comparison, value);
-    case 'propertyisnull':
-      return isNullOrUndefined(value);
-    case 'propertyislike':
-      return propertyIsLike(comparison, value);
-    default:
-      throw new Error(`Unkown comparison operator ${comparison.operator}`);
-  }
+   switch (comparison.operator) {
+      case 'propertyislessthan':
+         return propertyIsLessThan(comparison, value);
+      case 'propertyisequalto':
+         return propertyIsEqualTo(comparison, value);
+      case 'propertyislessthanorequalto':
+         return (
+            propertyIsEqualTo(comparison, value) ||
+            propertyIsLessThan(comparison, value)
+         );
+      case 'propertyisnotequalto':
+         return propertyIsNotEqualTo(comparison, value);
+      case 'propertyisgreaterthan':
+         return propertyIsGreaterThan(comparison, value);
+      case 'propertyisgreaterthanorequalto':
+         return (
+            propertyIsEqualTo(comparison, value) ||
+            propertyIsGreaterThan(comparison, value)
+         );
+      case 'propertyisbetween':
+         return propertyIsBetween(comparison, value);
+      case 'propertyisnull':
+         return isNullOrUndefined(value);
+      case 'propertyislike':
+         return propertyIsLike(comparison, value);
+      default:
+         throw new Error(`Unkown comparison operator ${comparison.operator}`);
+   }
 }
 
 function doFIDFilter(fids, featureId) {
-  for (let i = 0; i < fids.length; i += 1) {
-    if (fids[i] === featureId) {
-      return true;
-    }
-  }
+   for (let i = 0; i < fids.length; i += 1) {
+      if (fids[i] === featureId) {
+         return true;
+      }
+   }
 
-  return false;
+   return false;
 }
 
 /**
@@ -220,7 +220,7 @@ function doFIDFilter(fids, featureId) {
  *
  */
 function getGeoJSONProperty(feature, propertyName) {
-  return feature.properties[propertyName];
+   return feature.get([propertyName]);
 }
 
 /**
@@ -230,7 +230,7 @@ function getGeoJSONProperty(feature, propertyName) {
  * @returns {number|string} Feature ID.
  */
 function getGeoJSONFeatureId(feature) {
-  return feature.id;
+   return feature.id;
 }
 
 /**
@@ -248,60 +248,61 @@ function getGeoJSONFeatureId(feature) {
  * @return {boolean} True if the feature passes the conditions described by the filter object.
  */
 export function filterSelector(filter, feature, options = {}) {
-  const getProperty =
-    typeof options.getProperty === 'function'
-      ? options.getProperty
-      : getGeoJSONProperty;
+   const getProperty =
+      typeof options.getProperty === 'function'
+         ? options.getProperty
+         : getGeoJSONProperty;
 
-  const getFeatureId =
-    typeof options.getFeatureId === 'function'
-      ? options.getFeatureId
-      : getGeoJSONFeatureId;
+   const getFeatureId =
+      typeof options.getFeatureId === 'function'
+         ? options.getFeatureId
+         : getGeoJSONFeatureId;
 
-  const { type } = filter;
-  switch (type) {
-    case 'featureid':
-      return doFIDFilter(filter.fids, getFeatureId(feature));
+   const { type } = filter;
 
-    case 'comparison':
-      return doComparison(filter, feature, getProperty);
+   switch (type) {
+      case 'featureid':
+         return doFIDFilter(filter.fids, getFeatureId(feature));
 
-    case 'and': {
-      if (!filter.predicates) {
-        throw new Error('And filter must have predicates array.');
+      case 'comparison':
+         return doComparison(filter, feature, getProperty);
+
+      case 'and': {
+         if (!filter.predicates) {
+            throw new Error('And filter must have predicates array.');
+         }
+
+         // And without predicates should return false.
+         if (filter.predicates.length === 0) {
+            return false;
+         }
+
+         return filter.predicates.every(predicate =>
+            filterSelector(predicate, feature, options)
+         );
       }
 
-      // And without predicates should return false.
-      if (filter.predicates.length === 0) {
-        return false;
+      case 'or': {
+         if (!filter.predicates) {
+            throw new Error('Or filter must have predicates array.');
+         }
+
+         return filter.predicates.some(predicate =>
+            filterSelector(predicate, feature, options)
+         );
       }
 
-      return filter.predicates.every(predicate =>
-        filterSelector(predicate, feature, options)
-      );
-    }
+      case 'not': {
+         if (!filter.predicate) {
+            throw new Error('Not filter must have predicate.');
+         }
 
-    case 'or': {
-      if (!filter.predicates) {
-        throw new Error('Or filter must have predicates array.');
+         return !filterSelector(filter.predicate, feature, options);
       }
 
-      return filter.predicates.some(predicate =>
-        filterSelector(predicate, feature, options)
-      );
-    }
-
-    case 'not': {
-      if (!filter.predicate) {
-        throw new Error('Not filter must have predicate.');
-      }
-
-      return !filterSelector(filter.predicate, feature, options);
-    }
-
-    default:
-      throw new Error(`Unknown filter type: ${type}`);
-  }
+      default:
+         throw new Error(`Unknown filter type: ${type}`);
+   }
 }
 
 /**
@@ -313,23 +314,23 @@ export function filterSelector(filter, feature, options = {}) {
  * @return {boolean}
  */
 export function scaleSelector(rule, resolution) {
-  if (
-    rule.maxscaledenominator !== undefined &&
-    rule.minscaledenominator !== undefined
-  ) {
-    if (
-      resolution / 0.00028 < rule.maxscaledenominator &&
-      resolution / 0.00028 > rule.minscaledenominator
-    ) {
-      return true;
-    }
-    return false;
-  }
-  if (rule.maxscaledenominator !== undefined) {
-    return resolution / 0.00028 < rule.maxscaledenominator;
-  }
-  if (rule.minscaledenominator !== undefined) {
-    return resolution / 0.00028 > rule.minscaledenominator;
-  }
-  return true;
+   if (
+      rule.maxscaledenominator !== undefined &&
+      rule.minscaledenominator !== undefined
+   ) {
+      if (
+         resolution / 0.00028 < rule.maxscaledenominator &&
+         resolution / 0.00028 > rule.minscaledenominator
+      ) {
+         return true;
+      }
+      return false;
+   }
+   if (rule.maxscaledenominator !== undefined) {
+      return resolution / 0.00028 < rule.maxscaledenominator;
+   }
+   if (rule.minscaledenominator !== undefined) {
+      return resolution / 0.00028 > rule.minscaledenominator;
+   }
+   return true;
 }

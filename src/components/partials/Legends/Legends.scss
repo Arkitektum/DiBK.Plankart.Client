@@ -1,11 +1,14 @@
 .legends {
-   height: 842px;
+   max-height: 799px;
    overflow-y: auto;
-   border: 1px solid #dddddd;
    padding: 10px;
-
+   
    .legend {
       margin-bottom: 15px;
+
+      &.legend-hidden {
+         display: none;
+      }
 
       &.legend-collapsed {
          h3::after {
@@ -29,7 +32,7 @@
             width: 10px;
             height: 12px;
             display: inline-block;
-            background-size: 12px;
+            background-size: 11px;
             margin-left: 10px;
             transform: rotate(90deg);
             transition: all 0.25s ease;
@@ -46,6 +49,10 @@
          overflow: hidden;
          white-space: nowrap;
          text-overflow: ellipsis;
+         
+         &.symbol-hidden {
+            display: none;
+         }
 
          img {
             width: 25px;

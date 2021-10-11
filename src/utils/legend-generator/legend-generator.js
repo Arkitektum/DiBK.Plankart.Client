@@ -4,6 +4,7 @@ import { Polygon } from 'ol/geom';
 import { toContext } from 'ol/render';
 import { Stroke, Style } from 'ol/style';
 import { getGeometryStyles, getLayer as getSldLayer, getStyle, OlStyler, Reader } from 'utils/sld-reader';
+import { filterSelector } from 'utils/sld-reader/Filter';
 import { processExternalGraphicSymbolizersAsync } from 'utils/sld-reader/imageCache';
 
 const SYMBOLIZER = {
@@ -54,15 +55,15 @@ async function createLegend(name) {
    const rules = style.featuretypestyles[0].rules;
 
    const legend = {
-      title: style.name,
-      symbols: []
+      name: style.name,
+      symbols: [],
+      hidden: false
    };
 
    await loadExternalGraphics(style);
 
    for (let i = 0; i < rules.length; i++) {
       const rule = rules[i];
-      delete rule.filter;
 
       const styles = getGeometryStyles([rule]);
       const feature = new Feature({ geometry: createGeometry(rule) });
@@ -75,8 +76,9 @@ async function createLegend(name) {
       vectorContext.drawFeature(feature, olStyles[0]);
 
       legend.symbols.push({
-         title: rule.name,
-         image: canvas.toDataURL()
+         image: canvas.toDataURL(),
+         rule,
+         hidden: false
       });
    }
 
@@ -94,4 +96,29 @@ export async function createLegends(names) {
    }
 
    return legends;
+}
+
+export function filterLegends(legends, features) {
+   const filteredLegends = legends.slice(0);
+
+   filteredLegends.forEach(legend => {
+      const featuresByName = features.filter(feature => feature.get('name') === legend.name);
+
+      if (featuresByName.length) {
+         legend.symbols.forEach(symbol => {
+            let visible = true;
+
+            if (symbol.rule.elsefilter) {
+               visible = false;
+            }  else if (symbol.rule.filter) {
+               visible = featuresByName.some(feature => filterSelector(symbol.rule.filter, feature));
+            }
+            symbol.hidden = !visible;
+         });
+      }
+
+      legend.hidden = !featuresByName.length || legend.symbols.every(symbol => symbol.hidden);
+   });
+
+   return filteredLegends;
 }

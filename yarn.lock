@@ -6916,6 +6916,11 @@ filesize@6.1.0:
   resolved "https://registry.yarnpkg.com/filesize/-/filesize-6.1.0.tgz#e81bdaa780e2451d714d71c0d7a4f3238d37ad00"
   integrity sha512-LpCHtPQ3sFx67z+uh2HnSyWSLLu5Jxo21795uRDuar/EOuYWXib5EmPaGIBuSnRqH2IODiKA2k5re/K9OnN/Yg==
 
+filesize@^8.0.3:
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/filesize/-/filesize-8.0.3.tgz#b53541cc42418ec716b41cd74831793964ff90ac"
+  integrity sha512-UrhwVdUWmP0Jo9uLhVro8U36D4Yp3uT6pfXeNJHVRwyQrZjsqfnypOLthfnuB/bk1glUu7aIY947kyfoOfXuog==
+
 fill-range@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-4.0.0.tgz#d544811d428f98eb06a63dc402d2403c328c38f7"
@@ -11518,11 +11523,6 @@ react-error-overlay@^6.0.9:
   version "6.0.9"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
   integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
-
-react-files@^2.4.9:
-  version "2.4.9"
-  resolved "https://registry.yarnpkg.com/react-files/-/react-files-2.4.9.tgz#77522442678f6c83040540df99febe387fca991c"
-  integrity sha512-TSQpynDOkK+umDSGm2r3SeqLjX2FvmqpThHgnL65fGBLUKbT9wT6nLy4Ab62LeZl/WUX7Qpj4IPn+xMA8Yvw9Q==
 
 react-is@^16.13.1, react-is@^16.3.2, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.13.1"

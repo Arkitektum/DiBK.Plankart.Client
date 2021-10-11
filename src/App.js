@@ -1,37 +1,49 @@
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Legends, MapView, TopBar } from 'components/partials';
+import { Spinner } from 'components/custom-elements';
 import Logo from 'assets/gfx/logo-dibk.svg';
-import { Legends, MapView, Upload } from 'components/partials';
-import { useState } from 'react';
 import './App.scss';
+//import { mapDoc } from 'utils/map';
 
 function App() {
-   const [geoJsonDocument, setGeoJsonDocument] = useState(null);
+   const [mapDocument, setMapDocument] = useState(null);
+   const [legends, setLegends] = useState([]);
+   const apiLoading = useSelector(state => state.api.loading);
 
    return (
       <div className="app">
-         <div className="container">
-            <header>
-               <h1>
-                  <img src={Logo} alt="DiBK" />Fellestjenester PLAN |<span>GML-plankart</span>
-               </h1>
-            </header>
+         <div className="content">
+            <div className="left-content">
+               <header>
+                  <h1>
+                     <img src={Logo} alt="DiBK" />
+                     <div className="header">
+                        <span>Fellestjenester PLAN</span>
+                        <span>GML-plankart</span>
+                     </div>
+                  </h1>
+               </header>
 
-            <div className="content">
-               <div className="left-content">
-                  <div className="upload">
-                     <Upload onResponse={setGeoJsonDocument} />
-                  </div>
-                  <div style={{ display: geoJsonDocument !== null ? 'block' : 'none' }}>
-                     <Legends />
-                  </div>
+               {
+                  mapDocument ?
+                     <div className="info">
+                        <span className="name">{mapDocument.name}</span>
+                        <span className="id">{mapDocument.id}</span>
+                     </div> :
+                     null
+               }
+
+               <div>
+                  <Legends legends={legends} />
                </div>
-               <div className="right-content">
-                  {
-                     /*geoJsonDocument !== null ?*/
-                     <MapView geoJsonDocument={geoJsonDocument} />
-                     /*:
-                     null*/
-                  }
-               </div>
+            </div>
+            <div className="right-content">
+               <TopBar onUploadResponse={setMapDocument} />
+
+               {apiLoading ? <Spinner /> : null}
+
+               <MapView mapDocument={mapDocument} onLegendUpdated={setLegends} />
             </div>
          </div>
       </div>

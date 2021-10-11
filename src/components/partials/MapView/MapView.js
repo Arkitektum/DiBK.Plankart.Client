@@ -1,5 +1,5 @@
 import axios from 'axios';
-import featureMembers from 'config/map.plankart.config';
+import plankartConfig from 'config/plankart.config';
 import { defaults as defaultControls, FullScreen, ZoomToExtent } from 'ol/control';
 import { click } from 'ol/events/condition';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -13,6 +13,7 @@ import VectorSource from 'ol/source/Vector';
 import View from 'ol/View';
 import React, { useEffect, useRef, useState } from 'react';
 import { groupBy } from 'utils/helpers';
+import { createLegends, filterLegends } from 'utils/legend-generator/legend-generator';
 import { createOlStyleFunction, getLayer as getSldLayer, getStyle, Reader } from 'utils/sld-reader';
 import './MapView.scss';
 
@@ -21,8 +22,15 @@ function getLayer(map, id) {
       .find(layer => layer.get('id') === id);
 }
 
-async function createStyle(name, callback) {
-   const response = await axios.get(`/data/sld/${name}.sld`);
+async function createStyle(name, callback) {  
+   let response;
+
+   try {
+      response = await axios.get(`/data/sld/${name}.sld`);   
+   } catch {
+      return null;
+   }
+   
    const sldObject = Reader(response.data);
    const sldLayer = getSldLayer(sldObject);
    const style = getStyle(sldLayer, name);
@@ -40,10 +48,10 @@ async function addStyling(features, callback) {
    for (let i = 0; i < featureKeys.length; i++) {
       const key = featureKeys[i];
 
-      if (!featureMembers[key]) {
+      if (!plankartConfig.some(member => member.name === key)) {
          continue;
       }
-
+      
       const style = await createStyle(key, callback);
 
       groupedFeatures[key].forEach(feature => {
@@ -52,8 +60,40 @@ async function addStyling(features, callback) {
    }
 }
 
-async function createVectorLayer(geoJsonDocument) {
-   const features = new GeoJSON().readFeatures(geoJsonDocument.featureCollection);
+function addMapInteraction(map) {
+   const selectPointerMove = new Select({
+      condition: click,
+      style: null
+   });
+
+   map.addInteraction(selectPointerMove);
+
+   selectPointerMove.on('select', event => {
+      const features = event.target.getFeatures().getArray();
+
+      if (features.length) {
+         const feature = features[0];
+         const featureName = feature.get('name');
+
+         const info = {
+            name: featureName,
+            id: feature.get('id'),
+         };
+
+         const featureMember = plankartConfig.find(member => member.name === featureName);
+         const infoProps = featureMember?.infoProps || [];
+
+         infoProps.forEach(prop => {
+            info[prop] = feature.get(prop);
+         });
+
+         console.log(info);
+      }
+   });
+}
+
+async function createVectorLayer(mapDocument) {
+   const features = new GeoJSON().readFeatures(mapDocument.geoJson);
 
    const vectorLayer = new VectorLayer({
       source: new VectorSource({ features }),
@@ -80,40 +120,65 @@ function createTileLayer() {
    });
 }
 
-async function createMap(geoJsonDocument) {
-   if (!geoJsonDocument) {
+async function createMap(mapDocument) {
+   if (!mapDocument) {
       return null;
    }
+
+   const vectorLayer = await createVectorLayer(mapDocument);
 
    return new Map({
       layers: [
          createTileLayer(),
-         await createVectorLayer(geoJsonDocument)
+         vectorLayer
       ],
       view: new View({
-         projection: geoJsonDocument.epsg,
+         projection: mapDocument.epsg,
          padding: [25, 25, 25, 25]
       }),
       controls: defaultControls().extend([new FullScreen()]),
       interactions: defaultInteractions().extend([new DragRotateAndZoom()]),
    });
-}
+} 
 
-function MapView({ geoJsonDocument }) {
+function MapView({ mapDocument, onLegendUpdated }) {
    const [map, setMap] = useState(null);
+   const [features, setFeatures] = useState([]);
+   const [legends, setLegends] = useState([]);
    const mapElement = useRef();
 
    useEffect(() => {
-      if (!geoJsonDocument) {
+      const featureMembers = plankartConfig
+         .filter(member => member.showLegend)
+         .map(member => member.name);
+
+      createLegends(featureMembers)
+         .then(legs => {
+            setLegends(legs);
+         });
+   }, []);
+
+   useEffect(() => {
+      if (!features.length || !legends.length) {
          return;
       }
 
-      createMap(geoJsonDocument)
+      const filtered = filterLegends(legends, features);
+      onLegendUpdated(filtered);
+   }, [features, legends, onLegendUpdated])
+
+   useEffect(() => {
+      if (!mapDocument) {
+         return;
+      }
+
+      createMap(mapDocument)
          .then(olMap => {
             setMap(olMap);
+            const vectorLayer = getLayer(olMap, 'geojson');
+            setFeatures(vectorLayer.getSource().getFeatures());
          });
-
-   }, [geoJsonDocument]);
+   }, [mapDocument]);
 
    useEffect(() => {
       if (!map) {
@@ -131,35 +196,7 @@ function MapView({ geoJsonDocument }) {
       view.setMaxZoom(18);
 
       map.addControl(new ZoomToExtent({ extent }));
-
-      const selectPointerMove = new Select({
-         condition: click,
-         style: null
-      });
-
-      map.addInteraction(selectPointerMove);
-
-      selectPointerMove.on('select', event => {
-         const features = event.target.getFeatures().getArray();
-
-         if (features.length) {
-            const feature = features[0];
-            const featureName = feature.get('name');
-
-            const info = {
-               name: featureName,
-               id: feature.get('id'),
-            };
-
-            const infoProps = featureMembers[featureName].infoProps || [];
-
-            infoProps.forEach(prop => {
-               info[prop] = feature.get(prop);
-            });
-
-            console.log(info);
-         }
-      });
+      addMapInteraction(map);
 
       return () => {
          map.dispose();
