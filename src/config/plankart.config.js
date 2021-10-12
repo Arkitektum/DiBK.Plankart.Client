@@ -15,7 +15,8 @@ const plankartConfig = [
    new FeatureMember('RpJuridiskLinje', { infoProps: ['juridisklinje'] }),
    new FeatureMember('RpGrense', { showLegend: false }),
    new FeatureMember('RpFormålGrense'),
-   new FeatureMember('RpPåskrift', { showLegend: false })
+   new FeatureMember('RpPåskrift', { showLegend: false }),
+   //new FeatureMember('RpJuridiskPunkt')
 ];
 
 export default plankartConfig;

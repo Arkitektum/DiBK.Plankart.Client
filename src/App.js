@@ -4,7 +4,6 @@ import { Legends, MapView, TopBar } from 'components/partials';
 import { Spinner } from 'components/custom-elements';
 import Logo from 'assets/gfx/logo-dibk.svg';
 import './App.scss';
-//import { mapDoc } from 'utils/map';
 
 function App() {
    const [mapDocument, setMapDocument] = useState(null);
@@ -24,25 +23,25 @@ function App() {
                      </div>
                   </h1>
                </header>
-
                {
                   mapDocument ?
                      <div className="info">
-                        <span className="name">{mapDocument.name}</span>
-                        <span className="id">{mapDocument.id}</span>
+                        <span className="name">{mapDocument.name || '-'}</span>
+                        <span className="id">{mapDocument.id || '-'}</span>
                      </div> :
                      null
                }
-
                <div>
                   <Legends legends={legends} />
                </div>
             </div>
             <div className="right-content">
                <TopBar onUploadResponse={setMapDocument} />
-
-               {apiLoading ? <Spinner /> : null}
-
+               {
+                  apiLoading ?
+                     <Spinner /> :
+                     null
+               }
                <MapView mapDocument={mapDocument} onLegendUpdated={setLegends} />
             </div>
          </div>

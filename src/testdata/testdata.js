@@ -1,4 +1,4 @@
-export const mapDoc = {
+export const testdata = {
    "id": "4601_66470000",
    "name": "Årstad, gnr. 11 bnr. 28 mfl. Nattlandsfjellet",
    "epsg": "EPSG:25832",
