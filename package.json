@@ -24,7 +24,6 @@
    "scripts": {
       "start": "react-scripts start",
       "build": "react-scripts build",
-      "test": "react-scripts test",
       "eject": "react-scripts eject"
    },
    "eslintConfig": {
@@ -35,8 +34,10 @@
    },
    "browserslist": {
       "production": [
-         ">0.2%",
+         ">0.3%",
          "not dead",
+         "not ie 11",
+         "not safari 5.1",
          "not op_mini all"
       ],
       "development": [
