@@ -23,7 +23,7 @@
                      <se:GraphicFill>
                         <se:Graphic>
                            <se:ExternalGraphic>
-                              <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/data/sld/gfx/rp-fare-sone.svg" />
+                              <se:OnlineResource xlink:type="simple" xlink:href="https://dibk-plankart.azurewebsites.net/data/sld/gfx/rp-fare-sone.svg" />
                               <se:Format>image/svg+xml</se:Format>
                            </se:ExternalGraphic>
                            <se:Rotation>
