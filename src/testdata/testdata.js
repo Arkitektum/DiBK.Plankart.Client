@@ -52474,5 +52474,154 @@ export const testdata = {
                }
            }
        ]
+   },
+   "validationResult": {
+       "rules": [
+           {
+               "id": "rpf.o.2",
+               "name": "Tilhørende planelement må ligge innenfor RpOmråde",
+               "description": null,
+               "documentation": null,
+               "messageType": "ERROR",
+               "status": "FAILED",
+               "messages": [
+                   {
+                       "message": "Objektet RpPåskrift '_f7880fce-ad2b-40ab-81b7-5eaf5f9040e9' ligger (delvis) utenfor RpOmråde '_6149f289-b773-4ac5-a59e-f80a20d51153'.",
+                       "fileName": "20210705_f_plankart_VN2_nytt_skjema_multisurface_midlbygganlegg.gml",
+                       "xPaths": [
+                           "/gml:FeatureCollection[1]/gml:featureMember[469]/app:RpPåskrift[1]"
+                       ],
+                       "gmlIds": [
+                           "_f7880fce-ad2b-40ab-81b7-5eaf5f9040e9"
+                       ],
+                       "zoomTo": null
+                   },
+                   {
+                       "message": "Objektet RpPåskrift '_0d46726f-7a96-44fb-8218-14c19d424f9a' ligger (delvis) utenfor RpOmråde '_6149f289-b773-4ac5-a59e-f80a20d51153'.",
+                       "fileName": "20210705_f_plankart_VN2_nytt_skjema_multisurface_midlbygganlegg.gml",
+                       "xPaths": [
+                           "/gml:FeatureCollection[1]/gml:featureMember[448]/app:RpPåskrift[1]"
+                       ],
+                       "gmlIds": [
+                           "_0d46726f-7a96-44fb-8218-14c19d424f9a"
+                       ],
+                       "zoomTo": null
+                   },
+                   {
+                       "message": "Objektet RpJuridiskLinje '_e058a454-a311-49e4-b2cb-3f408a73f266' ligger (delvis) utenfor RpOmråde '_6149f289-b773-4ac5-a59e-f80a20d51153'.",
+                       "fileName": "20210705_f_plankart_VN2_nytt_skjema_multisurface_midlbygganlegg.gml",
+                       "xPaths": [
+                           "/gml:FeatureCollection[1]/gml:featureMember[236]/app:RpJuridiskLinje[1]"
+                       ],
+                       "gmlIds": [
+                           "_e058a454-a311-49e4-b2cb-3f408a73f266"
+                       ],
+                       "zoomTo": null
+                   },
+                   {
+                       "message": "Objektet RpJuridiskLinje '_f7413c18-34f0-4358-9088-f1cb72c8f236' ligger (delvis) utenfor RpOmråde '_6149f289-b773-4ac5-a59e-f80a20d51153'.",
+                       "fileName": "20210705_f_plankart_VN2_nytt_skjema_multisurface_midlbygganlegg.gml",
+                       "xPaths": [
+                           "/gml:FeatureCollection[1]/gml:featureMember[237]/app:RpJuridiskLinje[1]"
+                       ],
+                       "gmlIds": [
+                           "_f7413c18-34f0-4358-9088-f1cb72c8f236"
+                       ],
+                       "zoomTo": null
+                   },
+                   {
+                       "message": "Objektet RpJuridiskLinje '_b31f2941-c21f-4ff1-8f3e-7b0f8b9f985b' ligger (delvis) utenfor RpOmråde '_6149f289-b773-4ac5-a59e-f80a20d51153'.",
+                       "fileName": "20210705_f_plankart_VN2_nytt_skjema_multisurface_midlbygganlegg.gml",
+                       "xPaths": [
+                           "/gml:FeatureCollection[1]/gml:featureMember[241]/app:RpJuridiskLinje[1]"
+                       ],
+                       "gmlIds": [
+                           "_b31f2941-c21f-4ff1-8f3e-7b0f8b9f985b"
+                       ],
+                       "zoomTo": null
+                   },
+                   {
+                       "message": "Objektet RpJuridiskLinje '_7432de61-c22f-4c9e-aa2b-2a301d414ce4' ligger (delvis) utenfor RpOmråde '_6149f289-b773-4ac5-a59e-f80a20d51153'.",
+                       "fileName": "20210705_f_plankart_VN2_nytt_skjema_multisurface_midlbygganlegg.gml",
+                       "xPaths": [
+                           "/gml:FeatureCollection[1]/gml:featureMember[242]/app:RpJuridiskLinje[1]"
+                       ],
+                       "gmlIds": [
+                           "_7432de61-c22f-4c9e-aa2b-2a301d414ce4"
+                       ],
+                       "zoomTo": null
+                   },
+                   {
+                       "message": "Objektet RpJuridiskLinje '_af0b70f3-2195-4e4e-aeb3-4cc876bb5cba' ligger (delvis) utenfor RpOmråde '_6149f289-b773-4ac5-a59e-f80a20d51153'.",
+                       "fileName": "20210705_f_plankart_VN2_nytt_skjema_multisurface_midlbygganlegg.gml",
+                       "xPaths": [
+                           "/gml:FeatureCollection[1]/gml:featureMember[244]/app:RpJuridiskLinje[1]"
+                       ],
+                       "gmlIds": [
+                           "_af0b70f3-2195-4e4e-aeb3-4cc876bb5cba"
+                       ],
+                       "zoomTo": null
+                   },
+                   {
+                       "message": "Objektet RpJuridiskLinje '_0940f05f-caa2-4c35-b220-103d0006165b' ligger (delvis) utenfor RpOmråde '_6149f289-b773-4ac5-a59e-f80a20d51153'.",
+                       "fileName": "20210705_f_plankart_VN2_nytt_skjema_multisurface_midlbygganlegg.gml",
+                       "xPaths": [
+                           "/gml:FeatureCollection[1]/gml:featureMember[288]/app:RpJuridiskLinje[1]"
+                       ],
+                       "gmlIds": [
+                           "_0940f05f-caa2-4c35-b220-103d0006165b"
+                       ],
+                       "zoomTo": null
+                   }
+               ],
+               "passed": false
+           },
+           {
+               "id": "rpf.a.14",
+               "name": "Utnyttingstype 10 og 11 ikke multippelt",
+               "description": "Utnytting kan brukes bare én gang dersom utnyttingstype er 10 eller 11.",
+               "documentation": null,
+               "messageType": "ERROR",
+               "status": "FAILED",
+               "messages": [
+                   {
+                       "message": "Utnyttingstype 10 eller 11 kan ikke anvendes i kombinasjon med annen bruk av utnyttingsgrad.",
+                       "fileName": "20210705_f_plankart_VN2_nytt_skjema_multisurface_midlbygganlegg.gml",
+                       "xPaths": [
+                           "/gml:FeatureCollection[1]/gml:featureMember[318]/app:RpArealformålOmråde[1]/app:utnytting[2]/app:Utnytting[1]/app:utnyttingstype[1]"
+                       ],
+                       "gmlIds": [
+                           "_69adda71-b36c-4ec9-8835-b9451df74bef"
+                       ],
+                       "zoomTo": null
+                   },
+                   {
+                       "message": "Utnyttingstype 10 eller 11 kan ikke anvendes i kombinasjon med annen bruk av utnyttingsgrad.",
+                       "fileName": "20210705_f_plankart_VN2_nytt_skjema_multisurface_midlbygganlegg.gml",
+                       "xPaths": [
+                           "/gml:FeatureCollection[1]/gml:featureMember[319]/app:RpArealformålOmråde[1]/app:utnytting[2]/app:Utnytting[1]/app:utnyttingstype[1]"
+                       ],
+                       "gmlIds": [
+                           "_4294848c-4028-4e7d-82f6-70175e8396be"
+                       ],
+                       "zoomTo": null
+                   },
+                   {
+                       "message": "Utnyttingstype 10 eller 11 kan ikke anvendes i kombinasjon med annen bruk av utnyttingsgrad.",
+                       "fileName": "20210705_f_plankart_VN2_nytt_skjema_multisurface_midlbygganlegg.gml",
+                       "xPaths": [
+                           "/gml:FeatureCollection[1]/gml:featureMember[320]/app:RpArealformålOmråde[1]/app:utnytting[2]/app:Utnytting[1]/app:utnyttingstype[1]"
+                       ],
+                       "gmlIds": [
+                           "_f725146f-8f6c-496d-b7cb-7030af05ddfe"
+                       ],
+                       "zoomTo": null
+                   }
+               ],
+               "passed": false
+           }
+       ],
+       "xsdValidationMessages": [],
+       "xsdValidated": true
    }
 };

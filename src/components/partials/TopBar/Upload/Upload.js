@@ -1,11 +1,13 @@
 import React from 'react';
 import { useApi } from 'hooks';
+import { useModals } from 'context/ModalsContext';
 import './Upload.scss';
 
 const MAP_URL = process.env.REACT_APP_MAP_URL;
 
 function Upload({ onResponse }) {
    const sendAsync = useApi();
+   const { openModal } = useModals();
 
    async function handleFileChange(event) {
       const files = event.target.files;
@@ -16,11 +18,16 @@ function Upload({ onResponse }) {
 
       const formData = new FormData();
       formData.append('file', files[0]);
+      event.target.value = '';
 
       const response = await sendAsync(MAP_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
       if (response) {
-         onResponse(response);
+         if (response.validationResult.xsdValidated) {
+            onResponse(response);
+         } else {
+            openModal('XSD_VALIDATION', { fileName: response.fileName, messages: response.validationResult.xsdValidationMessages });
+         }
       }
    }
 

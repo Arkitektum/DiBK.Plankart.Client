@@ -10,27 +10,42 @@ import TileLayer from 'ol/layer/Tile';
 import Map from 'ol/Map';
 import TileWMS from 'ol/source/TileWMS';
 import VectorSource from 'ol/source/Vector';
+import { Stroke, Style } from 'ol/style';
 import View from 'ol/View';
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { groupBy } from 'utils/helpers';
 import { createLegends, filterLegends } from 'utils/legend-generator/legend-generator';
 import { createOlStyleFunction, getLayer as getSldLayer, getStyle, Reader } from 'utils/sld-reader';
 import './MapView.scss';
+
+const SLD_BASE_URL = process.env.REACT_APP_SLD_BASE_URL;
 
 function getLayer(map, id) {
    return map.getLayers().getArray()
       .find(layer => layer.get('id') === id);
 }
 
-async function createStyle(name, callback) {  
+function getFeatureById(vectorLayer, id) {
+   return vectorLayer.getSource().getFeatures()
+      .find(feature => feature.get('id') === id);
+}
+
+function getFeaturesByName(vectorLayer, name) {
+   return vectorLayer.getSource().getFeatures()
+      .filter(feature => feature.get('name') === name);
+}
+
+async function createStyle(name, callback) {
    let response;
 
    try {
-      response = await axios.get(`/data/sld/${name}.sld`);   
-   } catch {
+      response = await axios.get(`${SLD_BASE_URL}/${name}.sld`);
+   } catch (ex) {
+      debugger
       return null;
    }
-   
+
    const sldObject = Reader(response.data);
    const sldLayer = getSldLayer(sldObject);
    const style = getStyle(sldLayer, name);
@@ -51,18 +66,43 @@ async function addStyling(features, callback) {
       if (!plankartConfig.some(member => member.name === key)) {
          continue;
       }
-      
+
       const style = await createStyle(key, callback);
 
       groupedFeatures[key].forEach(feature => {
          feature.setStyle(style);
+         feature.set('visible', true);
       });
    }
+}
+
+function toggleFeatures(legend, map) {
+   const vectorLayer = getLayer(map, 'features');
+   const features = getFeaturesByName(vectorLayer, legend.name);
+
+   features.forEach(feature => {
+      toggleFeature(feature);
+   });
+}
+
+function toggleFeature(feature) {
+   const visible = !feature.get('visible');
+
+   if (visible) {
+      const savedStyle = feature.get('savedStyle');
+      feature.setStyle(savedStyle);
+   } else {
+      feature.set('savedStyle', feature.getStyle());
+      feature.setStyle(new Style(null));
+   }
+
+   feature.set('visible', visible);
 }
 
 function addMapInteraction(map) {
    const selectPointerMove = new Select({
       condition: click,
+      multi: true,
       style: null
    });
 
@@ -71,8 +111,7 @@ function addMapInteraction(map) {
    selectPointerMove.on('select', event => {
       const features = event.target.getFeatures().getArray();
 
-      if (features.length) {
-         const feature = features[0];
+      features.forEach(feature => {
          const featureName = feature.get('name');
 
          const info = {
@@ -88,7 +127,7 @@ function addMapInteraction(map) {
          });
 
          console.log(info);
-      }
+      });
    });
 }
 
@@ -100,7 +139,7 @@ async function createVectorLayer(mapDocument) {
       declutter: true
    });
 
-   vectorLayer.set('id', 'geojson');
+   vectorLayer.set('id', 'features');
 
    await addStyling(features, () => { vectorLayer.changed() });
 
@@ -118,6 +157,72 @@ function createTileLayer() {
       }),
       maxZoom: 18
    });
+}
+
+function createErrorStyleFunction(feature) {
+   const origStyleFunction = feature.getStyleFunction();
+
+   const stroke = new Stroke({
+      color: 'rgb(255 0 0 / 50%)',
+      lineCap: 'butt',
+      width: 5
+   });
+
+   return (feature, resolution) => {
+      const styles = origStyleFunction(feature, resolution);
+      let newStyle;
+
+      if (feature.get('name') === 'RpPåskrift') {
+         newStyle = styles[1].clone();
+         newStyle.getText().setStroke(stroke);
+      } else {
+         newStyle = styles[0].clone();
+         newStyle.setStroke(stroke);
+      }
+
+      return [newStyle];
+   };
+}
+
+function createErrorFeatures(mapDocument, map) {
+   const rules = mapDocument.validationResult.rules;
+
+   if (!rules.length) {
+      return;
+   }
+
+   const gmlIds = rules.flatMap(rule => rule.messages.flatMap(message => message.gmlIds));
+   const uniqueGmlIds = [...new Set(gmlIds)];
+   const vectorLayer = getLayer(map, 'features');
+   const features = [];
+
+   for (let i = 0; i < uniqueGmlIds.length; i++) {
+      const gmlId = uniqueGmlIds[i];
+      const featureOrig = getFeatureById(vectorLayer, gmlId);
+
+      if (!featureOrig) {
+         continue;
+      }
+
+      const newFeature = featureOrig.clone();
+      const styleFunction = createErrorStyleFunction(newFeature);
+
+      newFeature.set('visible', false);
+      newFeature.set('savedStyle', styleFunction);
+      newFeature.setStyle(new Style(null));
+
+      features.push(newFeature);
+   }
+
+   const errorVectorLayer = new VectorLayer({
+      source: new VectorSource({ features }),
+      zIndex: 999,
+      declutter: true,
+   });
+
+   errorVectorLayer.set('id', 'error-features');
+
+   map.addLayer(errorVectorLayer);
 }
 
 async function createMap(mapDocument) {
@@ -139,13 +244,45 @@ async function createMap(mapDocument) {
       controls: defaultControls().extend([new FullScreen()]),
       interactions: defaultInteractions().extend([new DragRotateAndZoom()]),
    });
-} 
+}
 
 function MapView({ mapDocument, onLegendUpdated }) {
    const [map, setMap] = useState(null);
    const [features, setFeatures] = useState([]);
    const [legends, setLegends] = useState([]);
+   const legend = useSelector(state => state.legend);
+   const selectedFeature = useSelector(state => state.feature);
    const mapElement = useRef();
+   const [selected, setSelected] = useState(null);
+
+   useEffect(() => {
+      if (!selectedFeature.id) {
+         return;
+      }
+
+      if (selected) {
+         toggleFeature(selected);
+
+         if (selected.get('id') === selectedFeature.id) {
+            setSelected(null);
+            return;
+         }
+      }
+
+      const errorLayer = getLayer(map, 'error-features');
+      const feature = getFeatureById(errorLayer, selectedFeature.id);
+      toggleFeature(feature);
+      setSelected(feature);
+
+      const featureExtent = feature.getGeometry().getExtent();
+      map.getView().fit(featureExtent, map.getSize());
+      map.getView().setZoom(map.getView().getZoom() - 1);
+      /*map.getView().animate({
+  zoom: map.getView().getZoom() + 1,
+  duration: 250
+})*/
+
+   }, [selectedFeature, map])
 
    useEffect(() => {
       const featureMembers = plankartConfig
@@ -168,6 +305,14 @@ function MapView({ mapDocument, onLegendUpdated }) {
    }, [features, legends, onLegendUpdated])
 
    useEffect(() => {
+      if (!legend.name) {
+         return;
+      }
+
+      toggleFeatures(legend, map);
+   }, [legend, map])
+
+   useEffect(() => {
       if (!mapDocument) {
          return;
       }
@@ -175,8 +320,11 @@ function MapView({ mapDocument, onLegendUpdated }) {
       createMap(mapDocument)
          .then(olMap => {
             setMap(olMap);
-            const vectorLayer = getLayer(olMap, 'geojson');
+
+            const vectorLayer = getLayer(olMap, 'features');
             setFeatures(vectorLayer.getSource().getFeatures());
+
+            createErrorFeatures(mapDocument, olMap);
          });
    }, [mapDocument]);
 
@@ -187,7 +335,7 @@ function MapView({ mapDocument, onLegendUpdated }) {
 
       map.setTarget(mapElement.current);
 
-      const vectorLayer = getLayer(map, 'geojson');
+      const vectorLayer = getLayer(map, 'features');
       const extent = vectorLayer.getSource().getExtent();
       const view = map.getView();
 

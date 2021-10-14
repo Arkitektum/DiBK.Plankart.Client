@@ -148,6 +148,8 @@ function getCachingImageLoader(imageUrl) {
    loader = new Promise((resolve, reject) => {
       const image = new Image();
 
+      image.crossOrigin = '*';
+
       image.onload = () => {
          setCachedImage(imageUrl, {
             url: imageUrl,

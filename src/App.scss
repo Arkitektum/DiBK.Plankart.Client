@@ -1,6 +1,8 @@
 .app {
+   display: flex;
+   flex-direction: column;
    text-align: left;
-   margin: 15px auto;
+   margin: auto;
    max-width: 1920px !important;
 }
 
@@ -37,17 +39,15 @@ h1 {
 
 .content {
    display: flex;
-   margin: 15px;
 
    > div {
       background-color: #ffffff;
-      border: 1px solid #dddddd;
    }
 
    .left-content {
-      width: 340px;
+      width: 18%;
       padding: 15px;
-      margin-right: 15px;
+      border-right: 1px solid #8aaec3;
 
       .info {
          border-top: 1px solid #f1f1f1;
@@ -66,10 +66,37 @@ h1 {
       }
    }
 
-   .right-content {
-      width: calc(100% - 355px);
+   .mid-content {
+      width: 60%;
       display: flex;
       flex-direction: column;
       position: relative;
    }
+
+   .right-content {
+      border-left: 1px solid #8aaec3;
+      width: 22%;
+   }
 }
+
+/*.spin {
+   position: absolute;
+   top: calc(50% - 130px);
+   left: calc(50% - 125px);
+   -webkit-animation:spin 2s linear infinite;
+   -moz-animation:spin 2s linear infinite;
+   animation:spin 2s linear infinite;
+}
+
+@-moz-keyframes spin { 
+   100% { -moz-transform: rotate(-360deg); } 
+}
+@-webkit-keyframes spin { 
+   100% { -webkit-transform: rotate(-360deg); } 
+}
+@keyframes spin { 
+   100% { 
+       -webkit-transform: rotate(-360deg); 
+       transform:rotate(-360deg); 
+   } 
+}*/

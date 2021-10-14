@@ -7,6 +7,8 @@ import { getGeometryStyles, getLayer as getSldLayer, getStyle, OlStyler, Reader 
 import { filterSelector } from 'utils/sld-reader/Filter';
 import { processExternalGraphicSymbolizersAsync } from 'utils/sld-reader/imageCache';
 
+const SLD_BASE_URL = process.env.REACT_APP_SLD_BASE_URL;
+
 const SYMBOLIZER = {
    POLYGON: 'POLYGON',
    LINE: 'LINE',
@@ -48,7 +50,15 @@ async function loadExternalGraphics(style) {
 }
 
 async function createLegend(name) {
-   const response = await axios.get(`/data/sld/${name}.sld`);
+   let response;
+
+   try {
+      response = await axios.get(`${SLD_BASE_URL}/${name}.sld`);   
+   } catch (ex) {
+      debugger
+      return null;
+   }
+   
    const sldObject = Reader(response.data);
    const sldLayer = getSldLayer(sldObject);
    const style = getStyle(sldLayer, name);
@@ -74,7 +84,7 @@ async function createLegend(name) {
 
       vectorContext.setStyle(new Style({ stroke: new Stroke({ color: 'black' }) }));
       vectorContext.drawFeature(feature, olStyles[0]);
-
+      
       legend.symbols.push({
          image: canvas.toDataURL(),
          rule,

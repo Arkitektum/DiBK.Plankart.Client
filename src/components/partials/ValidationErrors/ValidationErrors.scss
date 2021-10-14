@@ -1,0 +1,16 @@
+
+.messages .btn-link {
+   text-align: left;
+   font-size: 12px !important;
+   text-decoration: none;
+   color: #333;
+   
+   &:hover {
+      //text-decoration: underline;
+      color: #333;
+   }
+}
+
+.messages li.selected .btn-link {
+   font-weight: bold;
+}
