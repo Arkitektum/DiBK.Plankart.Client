@@ -1,7 +1,35 @@
 .legends {
-   max-height: 797px;
-   overflow-y: auto;
+   bottom: 0;
    padding: 10px;
+   border-top: 1px solid #8aaec3;
+   left: 0;
+   width: 350px;
+
+   &.legends-expanded {
+      left: 0;
+   }
+
+   .expand {
+      position: absolute;
+      top: -1px;
+      right: -36px;
+      background: rgb(138 174 195 / 85%);
+      width: 35px;
+      height: 150px;
+
+      &:hover {
+         background: rgb(138 174 195);
+      }
+
+      div {
+         transform: rotate(90deg);
+         transform-origin: top;
+         margin: 15px 30px;
+         font-size: 16px;
+         font-weight: 500;
+         color: #ffffff;
+      }
+   }
 
    &.legends-show-all .symbol-hidden {
       display: block !important;
@@ -9,6 +37,11 @@
 
    .show-all {
       margin-bottom: 20px;
+   }
+
+   .legend-list {
+      max-height: 500px;
+      overflow-y: auto;
    }
 
    .legend {
@@ -36,7 +69,6 @@
          h3 {
             cursor: pointer;
             user-select: none;
-            font-size: 14px;
             display: inline-block;
             margin-bottom: 0;
 
@@ -62,7 +94,7 @@
          margin-left: 10px;
 
          .symbol {
-            font-size: 12px;
+            font-size: 13px;
             margin-bottom: 5px;
             overflow: hidden;
             white-space: nowrap;

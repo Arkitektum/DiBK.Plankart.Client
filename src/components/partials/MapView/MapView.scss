@@ -3,11 +3,7 @@
 
    .map {
       width: 100%;
-      height: 1022px;
-
-      .ol-rotate {
-         top: 45px;
-      }
+      height: calc(100vh - 35px);
    }
 
    /*.map-menu {

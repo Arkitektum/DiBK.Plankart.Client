@@ -1,54 +1,55 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { selectFeature } from 'store/slices/featureSlice';
+import { getFeatureById, getLayer, zoomTo } from 'utils/map/helpers';
 import './ValidationErrors.scss';
 
-function ValidationErrors({ mapDocument }) {
-   const [selected, setSelected] = useState(null);
-   const dispatch = useDispatch();
-   const rules = mapDocument?.validationResult.rules || [];
+function ValidationErrors({ map, validationResult, onMessageClick }) {
+   const rules = validationResult?.rules || [];
 
-   function handleMessageClick(messageId, gmlIds) {
-      if (messageId !== selected) {
-         setSelected(messageId);
-      } else {
-         setSelected(null);
-      }
+   function handleMessageClick(gmlIds) {
+      const featureLayer = getLayer(map, 'features');
+      const features = gmlIds.map(gmlId => getFeatureById(featureLayer, gmlId));
 
-      dispatch(selectFeature({ id: gmlIds[0], select: messageId !== selected }));
+      onMessageClick(features);
+      zoomTo(map, features);
+   }
+
+   function getErrorCount() {
+      return rules.flatMap(rule => rule.messages).length;
    }
 
    if (!rules.length) {
-      return;
+      return null;
    }
 
    return (
-      <React.Fragment>
-         <h4>Valideringsfeil</h4>
-         {
-            rules.map(rule => {
-               return (
-                  <div key={rule.id}>
-                     <div>{rule.name}</div>
-                     <ol className="messages">
-                        {
-                           rule.messages.map((message, index) => {
-                              const messageId = `${rule.id}-${index}`;
-
-                              return (
-                                 <li key={messageId} className={messageId === selected ? 'selected' : ''}>
-                                    <Button variant="link" onClick={() => handleMessageClick(messageId, message.gmlIds)}>{message.message}</Button>
-                                 </li>
-                              )
-                           })
-                        }
-                     </ol>
-                  </div>
-               );
-            })
-         }
-      </React.Fragment>
+      <div className="validation-errors">
+         <h3>Valideringsfeil ({getErrorCount()})</h3>
+         <div className="rules">
+            {
+               rules.map(rule => {
+                  return (
+                     <div className="rule" key={rule.id}>
+                        <div className="rule-name">{rule.id}: {rule.name}</div>
+                        <ol className="messages">
+                           {
+                              rule.messages.map((message, index) => {
+                                 const messageId = `${rule.id}-${index}`;
+                                 ;
+                                 return (
+                                    <li key={messageId}>
+                                       <Button variant="link" onClick={() => handleMessageClick(message.gmlIds)}>{message.message}</Button>
+                                    </li>
+                                 );
+                              })
+                           }
+                        </ol>
+                     </div>
+                  );
+               })
+            }
+         </div>
+      </div>
    );
 }
 

@@ -18,7 +18,7 @@
                      <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
                      <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
                      <se:SvgParameter name="stroke-dasharray">16 5 1 5</se:SvgParameter>
-                  </se:Stroke>               
+                  </se:Stroke>
                   <se:Fill>
                      <se:GraphicFill>
                         <se:Graphic>
@@ -26,7 +26,7 @@
                               <se:OnlineResource xlink:type="simple" xlink:href="https://dibk-plankart.azurewebsites.net/sld/gfx/rp-fare-sone.svg" />
                               <se:Format>image/svg+xml</se:Format>
                            </se:ExternalGraphic>
-						  <se:Size>12</se:Size>
+                           <se:Size>15</se:Size>
                            <se:Rotation>
                               <ogc:Literal>45</ogc:Literal>
                            </se:Rotation>

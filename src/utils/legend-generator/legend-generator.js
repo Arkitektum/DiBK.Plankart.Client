@@ -4,7 +4,6 @@ import { Polygon } from 'ol/geom';
 import { toContext } from 'ol/render';
 import { Stroke, Style } from 'ol/style';
 import { getGeometryStyles, getLayer as getSldLayer, getStyle, OlStyler, Reader } from 'utils/sld-reader';
-import { filterSelector } from 'utils/sld-reader/Filter';
 import { processExternalGraphicSymbolizersAsync } from 'utils/sld-reader/imageCache';
 
 const SLD_BASE_URL = process.env.REACT_APP_SLD_BASE_URL;
@@ -38,7 +37,7 @@ function createGeometry(rule) {
       case SYMBOLIZER.POLYGON:
          return new Polygon([[[0, 0], [0, 50], [50, 50], [50, 0], [0, 0]]]);
       default:
-         return new Polygon([[[0, 0], [0, 50], [50, 50], [50, 0], [0, 0]]]);         
+         return new Polygon([[[0, 0], [0, 50], [50, 50], [50, 0], [0, 0]]]);
    }
 }
 
@@ -53,12 +52,12 @@ async function createLegend(name) {
    let response;
 
    try {
-      response = await axios.get(`${SLD_BASE_URL}/${name}.sld`);   
+      response = await axios.get(`${SLD_BASE_URL}/${name}.sld`);
    } catch (ex) {
       debugger
       return null;
    }
-   
+
    const sldObject = Reader(response.data);
    const sldLayer = getSldLayer(sldObject);
    const style = getStyle(sldLayer, name);
@@ -84,8 +83,9 @@ async function createLegend(name) {
 
       vectorContext.setStyle(new Style({ stroke: new Stroke({ color: 'black' }) }));
       vectorContext.drawFeature(feature, olStyles[0]);
-      
+
       legend.symbols.push({
+         id: '_' + Math.random().toString(36).substr(2, 9),
          image: canvas.toDataURL(),
          rule,
          hidden: false
@@ -109,26 +109,13 @@ export async function createLegends(names) {
 }
 
 export function filterLegends(legends, features) {
-   const filteredLegends = legends.slice(0);
+   return legends.map(legend => {
+      legend.symbols.forEach(symbol => {
+         symbol.hidden = !features.some(feature => feature.get('legend')?.id === symbol.id);
+      });
 
-   filteredLegends.forEach(legend => {
-      const featuresByName = features.filter(feature => feature.get('name') === legend.name);
+      legend.hidden = legend.symbols.every(symbol => symbol.hidden);
 
-      if (featuresByName.length) {
-         legend.symbols.forEach(symbol => {
-            let visible = true;
-
-            if (symbol.rule.elsefilter) {
-               visible = false;
-            }  else if (symbol.rule.filter) {
-               visible = featuresByName.some(feature => filterSelector(symbol.rule.filter, feature));
-            }
-            symbol.hidden = !visible;
-         });
-      }
-
-      legend.hidden = !featuresByName.length || legend.symbols.every(symbol => symbol.hidden);
+      return legend;
    });
-
-   return filteredLegends;
 }

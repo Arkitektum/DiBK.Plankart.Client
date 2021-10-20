@@ -52613,7 +52613,8 @@ export const testdata = {
                            "/gml:FeatureCollection[1]/gml:featureMember[320]/app:RpArealformålOmråde[1]/app:utnytting[2]/app:Utnytting[1]/app:utnyttingstype[1]"
                        ],
                        "gmlIds": [
-                           "_f725146f-8f6c-496d-b7cb-7030af05ddfe"
+                           "_f725146f-8f6c-496d-b7cb-7030af05ddfe",
+                           "_f7880fce-ad2b-40ab-81b7-5eaf5f9040e9"
                        ],
                        "zoomTo": null
                    }

@@ -1,0 +1,54 @@
+.feature-info {
+   font-size: 13px;
+
+   .feature {
+      margin-bottom: 30px;
+
+      &:last-child {
+         margin-bottom: 0;
+      }
+   }
+
+   .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+
+      img,
+      .no-legend {
+         width: 33px;
+         height: 33px;
+         margin-right: 10px;
+      }
+
+      .name {
+         font-size: 14px;
+         font-weight: 500;
+         margin-right: 5px;
+      }
+
+      .zoom {
+         background: url("../../../assets/gfx/icon-zoom.svg") no-repeat center center;
+         width: 33px;
+         height: 33px;
+         border: 0;
+         padding: 0;
+      }
+   }
+
+   .error-messages {
+      margin-top: 10px;
+
+      h5 {
+         font-weight: 500;
+         margin-bottom: 5px;
+         font-size: 13px;
+         color: #db3636;
+      }
+
+      ol {
+         padding: 0 12px;
+         margin-bottom: 0;
+      }
+   }
+}

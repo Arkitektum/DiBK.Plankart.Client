@@ -11,7 +11,7 @@
          <se:Name>RpPåskrift</se:Name>
          <se:FeatureTypeStyle>
             <se:Rule>
-               <se:Title>RpPåskrift</se:Title>
+               <se:Name>RpPåskrift</se:Name>
                <se:TextSymbolizer>
                   <se:Label>
                      <ogc:PropertyName>tekststreng</ogc:PropertyName>
@@ -27,11 +27,23 @@
                      <se:CssParameter name="font-family">Arial</se:CssParameter>
                   </se:Font>
                   <se:Halo>
+                     <se:Radius>1</se:Radius>
                      <se:Fill>
                         <se:CssParameter name="fill">#ffffff</se:CssParameter>
                      </se:Fill>
                   </se:Halo>
+                  <se:VendorOption name="conflictResolution">false</se:VendorOption>
                </se:TextSymbolizer>
+            </se:Rule>
+            <!-- For kompatibilitet med QGIS: -->            
+            <se:Rule>
+               <se:Name>Dummy</se:Name>
+               <se:LineSymbolizer>
+                  <se:Stroke>
+                     <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                     <se:SvgParameter name="stroke-opacity">0</se:SvgParameter>
+                  </se:Stroke>
+               </se:LineSymbolizer>
             </se:Rule>
          </se:FeatureTypeStyle>
       </UserStyle>

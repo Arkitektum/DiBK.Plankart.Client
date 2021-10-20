@@ -11,6 +11,19 @@ function TopBar({ onUploadResponse }) {
       onUploadResponse(response);
    }
 
+   function getNameAndId() {
+      if (!mapDocument.name && !mapDocument.id) {
+         return null;
+      }
+
+      return (
+         <div className="name-and-id">
+            {mapDocument.name ? <span className="name">{mapDocument.name}</span> : null}
+            {mapDocument.id ? `(ID: ${mapDocument.id})` : null}
+         </div>
+      );
+   }
+
    return (
       <div className="top-bar">
          <div>
@@ -19,9 +32,13 @@ function TopBar({ onUploadResponse }) {
          {
             mapDocument ?
                <React.Fragment>
-                  <div className="file-name">
-                     {mapDocument?.fileName}
-                     <span>({filesize(mapDocument.fileSize, { separator: ',' })})</span>
+                  <div className="info">
+                     <div className="file-name">
+                        {mapDocument.fileName}
+                        <span>({filesize(mapDocument.fileSize, { separator: ',' })})</span>
+                     </div>
+                     
+                     {getNameAndId()}
                   </div>
                   <div className="epsg">{mapDocument.epsg}</div>
                </React.Fragment> :

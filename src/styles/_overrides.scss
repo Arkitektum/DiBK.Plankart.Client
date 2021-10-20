@@ -4,6 +4,11 @@ h1 {
    margin-bottom: 0;
 }
 
+h3 {
+   font-size: 16px;
+   margin-bottom: 15px;
+}
+
 .form-group {
    margin-bottom: 1rem;
 }
@@ -181,4 +186,23 @@ h1 {
    height: 23px;
    margin: -5px 10px;
    color: #6f92a7;   
+}
+
+.ol-zoom {
+   top: 15px;
+   left: calc(275px + 15px);
+}
+
+.ol-zoom-extent {
+   top: 70px;
+   left: calc(275px + 15px);
+}
+
+.ol-full-screen {
+   top: 15px;
+   right: 15px;
+}
+
+.with-feature-info .ol-full-screen {
+   right: calc(22% + 15px);
 }

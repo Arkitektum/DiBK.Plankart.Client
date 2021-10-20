@@ -7,7 +7,21 @@
    align-items: center;
    padding: 0 15px;
 
-   .file-name span {
-      margin-left: 10px
+   .info {
+      display: flex;
+
+      .file-name {
+         margin-right: 100px;
+
+         span {
+            margin-left: 10px
+         }
+      }
+
+      .name-and-id {
+         .name {
+            margin-right: 10px;
+         }
+      }
    }
 }

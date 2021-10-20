@@ -15,14 +15,26 @@ function Legends({ legends }) {
 
    return (
       <div className={`legends ${showAll ? 'legends-show-all' : ''}`}>
-         <div className="show-all">
-            <label className="checkbox">
-               <input type="checkbox" defaultChecked={false} onChange={handleCheckboxChange} />
-               <span className="checkmark"></span>Vis alle tegnforklaringer
-            </label>
-         </div>
+         <div>
+            <h3>Tegnforklaringer</h3>
 
-         {legends.map((legend, index) => <Legend legend={legend} key={'legend-' + index} />)}
+            <div className="show-all">
+               <label className="checkbox">
+                  <input type="checkbox" defaultChecked={false} onChange={handleCheckboxChange} />
+                  <span className="checkmark"></span>Vis alle
+               </label>
+            </div>
+
+            <div className="legend-list">
+               {legends.map((legend, index) => <Legend legend={legend} key={'legend-' + index} />)}
+            </div>
+
+            {/*
+            <div className="expand" role="button" onClick={expand}>
+               <div>Tegnforklaringer</div>
+            </div>
+            */}
+         </div>
       </div>
    );
 }

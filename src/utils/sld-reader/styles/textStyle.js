@@ -20,14 +20,17 @@ function textStyle(textsymbolizer) {
    const labelText = expressionOrDefault(textsymbolizer.label, '');
 
    const fill = textsymbolizer.fill ? textsymbolizer.fill.styling : {};
+
    const halo =
       textsymbolizer.halo && textsymbolizer.halo.fill
          ? textsymbolizer.halo.fill.styling
          : {};
+
    const haloRadius =
       textsymbolizer.halo && textsymbolizer.halo.radius
          ? parseFloat(textsymbolizer.halo.radius)
          : 1;
+
    const {
       fontFamily = 'sans-serif',
       fontSize = 10,
@@ -55,6 +58,7 @@ function textStyle(textsymbolizer) {
       pointplacement && pointplacement.displacement
          ? pointplacement.displacement
          : {};
+
    const offsetX = displacement.displacementx ? displacement.displacementx : 0;
    const offsetY = displacement.displacementy ? displacement.displacementy : 0;
 
@@ -62,9 +66,11 @@ function textStyle(textsymbolizer) {
    const anchorpoint = (pointplacement && pointplacement.anchorpoint) || {};
 
    let textAlign = 'center';
+
    const anchorpointx = Number(
       anchorpoint.anchorpointx === '' ? NaN : anchorpoint.anchorpointx
    );
+
    if (anchorpointx < 0.25) {
       textAlign = 'left';
    } else if (anchorpointx > 0.75) {
@@ -72,9 +78,11 @@ function textStyle(textsymbolizer) {
    }
 
    let textBaseline = 'middle';
+
    const anchorpointy = Number(
       anchorpoint.anchorpointy === '' ? NaN : anchorpoint.anchorpointy
    );
+
    if (anchorpointy < 0.25) {
       textBaseline = 'bottom';
    } else if (anchorpointy > 0.75) {
@@ -131,6 +139,7 @@ const cachedTextStyle = memoizeStyleFunction(textStyle);
 function getTextStyle(symbolizer, feature) {
    const olStyle = cachedTextStyle(symbolizer);
    const olText = olStyle.getText();
+
    if (!olText) {
       return olStyle;
    }
@@ -161,15 +170,17 @@ function getTextStyle(symbolizer, feature) {
    const geometry = feature.getGeometry
       ? feature.getGeometry()
       : feature.geometry;
+
    const geometryType = geometry.getType ? geometry.getType() : geometry.type;
+
    const lineplacement =
       symbolizer &&
          symbolizer.labelplacement &&
          symbolizer.labelplacement.lineplacement
          ? symbolizer.labelplacement.lineplacement
          : null;
-   const placement =
-      geometryType !== 'point' && lineplacement ? 'line' : 'point';
+
+   const placement = geometryType !== 'point' && lineplacement ? 'line' : 'point';
 
    olText.setPlacement(placement);
 
