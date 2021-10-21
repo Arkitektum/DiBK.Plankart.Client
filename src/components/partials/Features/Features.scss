@@ -1,11 +1,27 @@
 .feature-info {
    font-size: 13px;
+   top: 32px;
+   border-bottom: 1px solid #8aaec3;
+   width: 450px;
+   padding: 15px;
 
    .feature {
       margin-bottom: 30px;
 
       &:last-child {
          margin-bottom: 0;
+      }
+
+      .info-row {
+         display: flex;
+      
+         .label {
+            width: 35%;
+         }
+   
+         .value {
+            width: 65%;
+         }
       }
    }
 

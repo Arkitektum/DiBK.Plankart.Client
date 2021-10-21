@@ -18,9 +18,9 @@ function Features({ map, features }) {
       return (
          infoProps.map((prop) => {
             return (
-               <div key={`${feature.get('id')}-${prop}`} className="row">
-                  <div className="col-3 capitalize">{prop}:</div>
-                  <div className="col-9">{feature.get(prop)}</div>
+               <div className="info-row" key={`${feature.get('id')}-${prop}`}>
+                  <div className="label capitalize">{prop}:</div>
+                  <div className="value">{feature.get(prop)}</div>
                </div>
             );
          })
@@ -59,9 +59,9 @@ function Features({ map, features }) {
                      <button className="zoom" onClick={() => zoomTo(map, [feature])} title="Gå til objekt"></button>
                   </div>
 
-                  <div className="row">
-                     <div className="col-3">GML-ID:</div>
-                     <div className="col-9">{feature.get('id')}</div>
+                  <div className="info-row">
+                     <div className="label">GML-ID:</div>
+                     <div className="value">{feature.get('id')}</div>
                   </div>
 
                   {getFeatureInfo(feature)}

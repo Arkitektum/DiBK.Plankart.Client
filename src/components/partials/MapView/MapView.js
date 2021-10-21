@@ -1,4 +1,3 @@
-import Logo from 'assets/gfx/logo-dibk.svg';
 import { Spinner } from 'components/custom-elements';
 import { FeatureContextMenu, Features, Legends, ValidationErrors } from 'components/partials';
 import featureMembers from 'config/plankart.config';
@@ -134,18 +133,6 @@ function MapView({ mapDocument }) {
    return (
       <div className="content">
          <div className="left-content">
-            <div className="top">
-               <header>
-                  <h1>
-                     <img src={Logo} alt="DiBK" />
-                     <div className="header">
-                        <span>GML-plankart</span>
-                        <span>Fellestjenester PLAN</span>
-                     </div>
-                  </h1>
-               </header>
-            </div>
-
             <Legends legends={filteredLegends} />
          </div>
 

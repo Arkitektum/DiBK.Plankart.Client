@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import './FeatureContextMenu.scss';
 
 function FeatureContextMenu({ map, data, onFeatureSelect }) {
    const [visible, setVisible] = useState(false);
+   const [posistion, setPosition] = useState({ top: 0, left: 0 });
    const menuElement = useRef(null);
 
    const { handleClickOutside, closeMenu } = useMemo(
@@ -22,6 +23,29 @@ function FeatureContextMenu({ map, data, onFeatureSelect }) {
          return { handleClickOutside, closeMenu };
       },
       [data]
+   );
+
+   useLayoutEffect(
+      () => {
+         if (visible) {
+            let top, left;
+
+            if (data.left + menuElement.current.offsetWidth > window.innerWidth) {
+               left = data.left - menuElement.current.offsetWidth;
+            } else {
+               left = data.left;
+            }
+
+            if (data.top + menuElement.current.offsetHeight > window.innerHeight) {
+               top = data.top - menuElement.current.offsetHeight;
+            } else {
+               top = data.top;
+            }
+
+            setPosition({ top, left });
+         }
+      },
+      [visible, data]
    );
 
    useEffect(
@@ -50,7 +74,7 @@ function FeatureContextMenu({ map, data, onFeatureSelect }) {
       <div
          ref={menuElement}
          className={`feature-context-menu ${visible ? 'feature-context-menu-visible' : ''}`}
-         style={{ top: `${data.top || 0}px`, left: `${data.left || 0}px` }}
+         style={{ top: `${posistion.top || 0}px`, left: `${posistion.left || 0}px` }}
       >
          {
             data.features.getArray().map(feature => {

@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { getFeatureById, getLayer, zoomTo } from 'utils/map/helpers';
 import './ValidationErrors.scss';
 
 function ValidationErrors({ map, validationResult, onMessageClick }) {
+   const [expanded, setExpanded] = useState(true);
    const rules = validationResult?.rules || [];
+
+   function toggle() {
+      setExpanded(!expanded);
+   }
 
    function handleMessageClick(gmlIds) {
       const featureLayer = getLayer(map, 'features');
@@ -23,8 +28,9 @@ function ValidationErrors({ map, validationResult, onMessageClick }) {
    }
 
    return (
-      <div className="validation-errors">
-         <h3>Valideringsfeil ({getErrorCount()})</h3>
+      <div className={`validation-errors ${expanded ? 'panel-expanded' : ''}`}>
+         <Button className="expand-button" variant="link" onClick={toggle}>Valideringsfeil ({getErrorCount()})</Button>
+
          <div className="rules">
             {
                rules.map(rule => {
@@ -35,7 +41,7 @@ function ValidationErrors({ map, validationResult, onMessageClick }) {
                            {
                               rule.messages.map((message, index) => {
                                  const messageId = `${rule.id}-${index}`;
-                                 ;
+
                                  return (
                                     <li key={messageId}>
                                        <Button variant="link" onClick={() => handleMessageClick(message.gmlIds)}>{message.message}</Button>

@@ -9,3 +9,38 @@ button.close {
       display: none;
    }
 }
+
+.expand-button {
+   display: flex;
+   align-items: center;
+   text-decoration: none;
+   color: #333333;
+   font-weight: 500;
+   line-height: 16px;
+
+   &:hover {
+      color: #333333;
+      text-decoration: underline;
+   }
+
+   &::after {
+      content: "";
+      background: url("../assets/gfx/icon-arrow.svg") no-repeat center;
+      background-size: 11px;
+      width: 11px;
+      height: 11px;
+      transform: rotate(-90deg);
+      transition: all 0.25s ease;
+      margin-left: 10px;
+   }
+}
+
+.panel-expanded {
+   > .expand-button {
+      margin-bottom: 15px;
+
+      &::after {
+         transform: rotate(90deg);
+      }
+   }
+}

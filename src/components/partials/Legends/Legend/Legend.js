@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { toggleLegend } from 'store/slices/legendSlice';
 
@@ -15,14 +16,14 @@ function Legend({ legend }) {
    }
 
    return (
-      <div className={`legend ${!expanded ? 'legend-collapsed' : ''} ${legend.hidden ? 'legend-hidden' : ''}`}>
+      <div className={`legend ${expanded ? 'legend-expanded' : ''} ${legend.hidden ? 'legend-hidden' : ''}`}>
          <div className="header">
             <label className="checkbox">
                <input type="checkbox" defaultChecked={true} onChange={handleCheckboxChange} />
                <span className="checkmark"></span>
             </label>
 
-            <h3 onClick={handleClick}>{legend.name}</h3>
+            <Button className="expand-button" variant="link" onClick={handleClick}>{legend.name}</Button>
          </div>
 
          <div className="symbols">

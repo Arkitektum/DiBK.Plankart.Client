@@ -1,34 +1,29 @@
 .legends {
-   bottom: 0;
-   padding: 10px;
+   bottom: 32px;
    border-top: 1px solid #8aaec3;
-   left: 0;
-   width: 350px;
+   width: auto;
 
-   &.legends-expanded {
-      left: 0;
+   > .expand-button {
+      padding: 10px;
+      margin-bottom: 0 !important;
    }
 
-   .expand {
-      position: absolute;
-      top: -1px;
-      right: -36px;
-      background: rgb(138 174 195 / 85%);
-      width: 35px;
-      height: 150px;
+   &.panel-expanded {
+      width: 350px !important;
 
-      &:hover {
-         background: rgb(138 174 195);
+      > .expand-button {
+         width: 100%;
       }
 
-      div {
-         transform: rotate(90deg);
-         transform-origin: top;
-         margin: 15px 30px;
-         font-size: 16px;
-         font-weight: 500;
-         color: #ffffff;
+      .content {
+         display: block;
       }
+   }
+
+   .content {
+      display: none;
+      border-top: 1px solid #94b5c8;
+      padding: 20px 10px 15px 10px;
    }
 
    &.legends-show-all .symbol-hidden {
@@ -51,13 +46,15 @@
          display: none;
       }
 
-      &.legend-collapsed {
-         h3::after {
-            transform: rotate(0deg);
+      &.legend-expanded {
+         .expand-button {
+            &::after {
+               transform: rotate(90deg);
+            }
          }
 
          .symbols {
-            display: none;
+            display: block;
          }
       }
 
@@ -92,6 +89,7 @@
 
       .symbols {
          margin-left: 10px;
+         display: none;
 
          .symbol {
             font-size: 13px;

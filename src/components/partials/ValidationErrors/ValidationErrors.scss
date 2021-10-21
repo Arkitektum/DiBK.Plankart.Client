@@ -1,11 +1,39 @@
 .validation-errors {
-   bottom: 0;
+   bottom: 32px;
    border-top: 1px solid #8aaec3;
+   width: auto;
+
+   > .expand-button {
+      padding: 10px;
+      margin-bottom: 0 !important;
+   }
+
+   &.panel-expanded {
+      width: 550px !important;
+
+      > .expand-button {
+         width: 100%;
+      }
+
+      .rules {
+         display: block;
+      }
+   }
+
+   .expand-button {
+      color: #db3636;
+
+      &:hover {
+         color: #db3636;
+      }
+   }
 
    .rules {
+      display: none;
       max-height: 500px;
       overflow-y: auto;
-      padding-right: 15px;
+      padding: 15px 15px 15px 10px;
+      border-top: 1px solid #94b5c8;
 
       .rule {
          margin-bottom: 20px;
@@ -25,12 +53,8 @@
             border-bottom: 1px solid #dddddd;
 
             li {
-               &.selected  {
-                  background-color: #d8d8d8 !important;
-               }
-
-               padding: 10px;
-               transition: background-color .15s ease-in-out, border-color .15s ease-in-out;
+               padding: 5px 10px;
+               transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 
                &:hover {
                   background-color: #ebebeb;

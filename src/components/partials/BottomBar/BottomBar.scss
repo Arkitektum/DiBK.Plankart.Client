@@ -1,4 +1,4 @@
-.top-bar {
+.bottom-bar {
    height: 32px;
    background-color: #8aaec3e6;
    color: #ffffff;
@@ -6,17 +6,12 @@
    justify-content: center;
    align-items: center;
    position: absolute;
-   top: 0;
+   bottom: 0;
    left: 0;
    width: 100%;
    z-index: 999;
 
-   .upload-button {
-      position: absolute;
-      left: 15px;
-   }
-
-   .file-name {
+   > span {
       margin-right: 15px;
 
       &::after {
@@ -24,8 +19,13 @@
          margin-left: 15px;
       }
 
-      span {
-         margin-left: 10px;
+      &:last-child {
+         margin-right: 0;
+
+         &::after {
+            content: "";
+            margin: 0;
+         }
       }
    }
 }
