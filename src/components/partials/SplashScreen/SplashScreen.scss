@@ -1,4 +1,4 @@
-.splash-screen {
+.splash-screen > div {
    position: absolute;
    width: 396px;
    height: 180px;
@@ -13,7 +13,7 @@
       margin-right: 15px;
    }
 
-   div {
+   .header {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -31,5 +31,11 @@
       span:nth-child(2) {
          font-size: 22px;
       }
+   }
+
+   .spinner {
+      position: absolute;
+      bottom: -50px;
+      top: unset;
    }
 }

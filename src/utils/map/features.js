@@ -62,10 +62,7 @@ export function addLegendToFeatures(features, legends) {
          const symbol = symbols.find(sym => !sym.rule.filter || filterSelector(sym.rule.filter, feature));
 
          if (symbol) {
-            feature.set('legend', {
-               id: symbol.id,
-               image: symbol.image
-            });
+            feature.set('symbolId', symbol.id);
          }
       }      
    }  

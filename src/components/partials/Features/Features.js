@@ -1,8 +1,12 @@
+import { LegendContext } from 'App';
 import featureMembers from 'config/plankart.config';
-import { zoomTo } from 'utils/map/helpers';
+import { useContext } from 'react';
+import { getSymbolById, zoomTo } from 'utils/map/helpers';
 import './Features.scss';
 
 function Features({ map, features }) {
+   const legends = useContext(LegendContext);
+
    if (!map || !features.length) {
       return null;
    }
@@ -25,6 +29,10 @@ function Features({ map, features }) {
             );
          })
       );
+   }
+
+   function getSymbolImage(id) {
+      return getSymbolById(legends, id)?.image;
    }
 
    function getErrorMessages(feature) {
@@ -51,8 +59,8 @@ function Features({ map, features }) {
                <div className="feature" key={feature.get('id')}>
                   <div className="header">
                      {
-                        feature.get('legend') ?
-                           <img src={feature.get('legend').image} alt="" /> :
+                        feature.get('symbolId') ?
+                           <img src={getSymbolImage(feature.get('symbolId'))} alt="" /> :
                            null
                      }
                      <span className="name">{feature.get('name')}</span>

@@ -3,7 +3,7 @@ import Upload from './Upload/Upload';
 import filesize from 'filesize';
 import './TopBar.scss';
 
-function TopBar({ onUploadResponse }) {
+function TopBar({ loading, onUploadResponse }) {
    const [mapDocument, setMapDocument] = useState(null);
 
    function handleUploadResponse(response) {
@@ -13,7 +13,7 @@ function TopBar({ onUploadResponse }) {
 
    return (
       <div className="top-bar">
-         <div className="upload-button">
+         <div className="upload-button" style={{ display: loading ? 'none' : 'block' }}>
             <Upload onResponse={handleUploadResponse} />
          </div>
          {

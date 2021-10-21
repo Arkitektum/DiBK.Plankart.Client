@@ -1,7 +1,10 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { LegendContext } from 'App';
+import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { getSymbolById } from 'utils/map/helpers';
 import './FeatureContextMenu.scss';
 
 function FeatureContextMenu({ map, data, onFeatureSelect }) {
+   const legends = useContext(LegendContext);
    const [visible, setVisible] = useState(false);
    const [posistion, setPosition] = useState({ top: 0, left: 0 });
    const menuElement = useRef(null);
@@ -66,6 +69,10 @@ function FeatureContextMenu({ map, data, onFeatureSelect }) {
       closeMenu();
    }
 
+   function getSymbolImage(id) {
+      return getSymbolById(legends, id)?.image;
+   }
+
    if (!data) {
       return null;
    }
@@ -80,7 +87,11 @@ function FeatureContextMenu({ map, data, onFeatureSelect }) {
             data.features.getArray().map(feature => {
                return (
                   <div className="feature" onClick={() => handleFeatureSelect(feature)} key={feature.get('id')}>
-                     {feature.get('legend') ? <img src={feature.get('legend').image} alt="" /> : <span className="no-legend" />}
+                     {
+                        feature.get('symbolId') ?
+                           <img src={getSymbolImage(feature.get('symbolId'))} alt="" /> :
+                           <span className="no-legend" />
+                     }
                      <span className="label">{feature.get('label')}</span>
                   </div>
                );

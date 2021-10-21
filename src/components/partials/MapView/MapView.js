@@ -1,12 +1,12 @@
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { LegendContext } from 'App';
 import { Spinner } from 'components/custom-elements';
 import { FeatureContextMenu, Features, Legends, ValidationErrors } from 'components/partials';
-import featureMembers from 'config/plankart.config';
 import { ZoomToExtent } from 'ol/control';
 import { click } from 'ol/events/condition';
 import { Select } from 'ol/interaction';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { createLegends, filterLegends } from 'utils/legend-generator/legend-generator';
+import { filterLegends } from 'utils/map/legend';
 import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
 import { getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
@@ -17,45 +17,27 @@ function MapView({ mapDocument }) {
    const [contextMenuData, setContextMenuData] = useState(null);
    const [features, setFeatures] = useState([]);
    const [selectedFeatures, setSelectedFeatures] = useState([]);
-   const [legends, setLegends] = useState([]);
    const [filteredLegends, setFilteredLegends] = useState([]);
+   const legends = useContext(LegendContext);
    const apiLoading = useSelector(state => state.api.loading);
    const legend = useSelector(state => state.legend);
    const mapElement = useRef();
 
    useEffect(
       () => {
-         const members = featureMembers
-            .filter(member => member.showLegend)
-            .map(member => member.name);
-
-         createLegends(members)
-            .then(legs => {
-               setLegends(legs);
-            });
-      },
-      []
-   );
-
-   useEffect(
-      () => {
-         if (!features.length || !legends.length) {
-            return;
+         if (features.length && legends.length) {
+            addLegendToFeatures(features, legends);
+            setFilteredLegends(filterLegends(legends, features));
          }
-
-         addLegendToFeatures(features, legends);
-         setFilteredLegends(filterLegends(legends, features));
       },
       [features, legends]
    );
 
    useEffect(
       () => {
-         if (!legend.name) {
-            return;
+         if (legend.name) {
+            toggleFeatures(legend, map);
          }
-
-         toggleFeatures(legend, map);
       },
       [legend, map]
    );
@@ -84,25 +66,9 @@ function MapView({ mapDocument }) {
       },
       [map]
    );
-
-   useEffect(
+   
+   const addMapInteraction = useCallback(
       () => {
-         if (!map) {
-            return;
-         }
-
-         map.setTarget(mapElement.current);
-
-         const vectorLayer = getLayer(map, 'features');
-         const extent = vectorLayer.getSource().getExtent();
-         const view = map.getView();
-
-         view.fit(extent, map.getSize());
-         view.setMinZoom(6);
-         view.setMaxZoom(18);
-
-         map.addControl(new ZoomToExtent({ extent }));
-
          const selectClick = new Select({
             condition: click,
             layers: layer => layer.get('id') === 'features',
@@ -122,12 +88,34 @@ function MapView({ mapDocument }) {
                setContextMenuData({ left: originalEvent.offsetX, top: originalEvent.offsetY, features });
             }
          });
+      },
+      [map, selectFeature]
+   );
+
+   useEffect(
+      () => {
+         if (!map) {
+            return;
+         }
+
+         map.setTarget(mapElement.current);
+
+         const vectorLayer = getLayer(map, 'features');
+         const extent = vectorLayer.getSource().getExtent();
+         const view = map.getView();
+
+         view.fit(extent, map.getSize());
+         view.setMinZoom(6);
+         view.setMaxZoom(18);
+
+         map.addControl(new ZoomToExtent({ extent }));
+         addMapInteraction();
 
          return () => {
             map.dispose();
          }
       },
-      [map, selectFeature]
+      [map, selectFeature, addMapInteraction]
    );
 
    return (
@@ -143,7 +131,7 @@ function MapView({ mapDocument }) {
                   null
             }
 
-            <div className={`map-container ${selectedFeatures.length ? 'with-feature-info' : ''}`}>
+            <div className="map-container">
                <div ref={mapElement} className="map"></div>
             </div>
 

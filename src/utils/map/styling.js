@@ -1,23 +1,10 @@
-import axios from 'axios';
-import plankartConfig from 'config/plankart.config';
-import { createOlStyleFunction, getLayer as getSldLayer, getStyle, Reader } from 'utils/sld-reader';
+import featureMembers from 'config/plankart.config';
+import { createOlStyleFunction } from 'utils/sld-reader';
 import { groupBy } from './helpers';
-
-const SLD_BASE_URL = process.env.REACT_APP_SLD_BASE_URL;
+import { sldStyles } from './sld';
 
 export async function createStyle(name, callback) {
-   let response;
-
-   try {
-      response = await axios.get(`${SLD_BASE_URL}/${name}.sld`);
-   } catch (ex) {
-      debugger
-      return null;
-   }
-
-   const sldObject = Reader(response.data);
-   const sldLayer = getSldLayer(sldObject);
-   const style = getStyle(sldLayer, name);
+   const style = sldStyles[name];
    const featureTypeStyle = style.featuretypestyles[0];
 
    return createOlStyleFunction(featureTypeStyle, {
@@ -57,7 +44,7 @@ export async function addStyling(features, callback) {
    for (let i = 0; i < featureKeys.length; i++) {
       const key = featureKeys[i];
 
-      if (!plankartConfig.some(member => member.name === key)) {
+      if (!featureMembers.some(member => member.name === key)) {
          continue;
       }
 

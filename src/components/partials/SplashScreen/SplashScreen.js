@@ -1,8 +1,9 @@
 import { useSelector } from "react-redux";
 import Logo from 'assets/gfx/logo-dibk.svg';
 import './SplashScreen.scss';
+import { Spinner } from "components/custom-elements";
 
-function SplashScreen({ mapDocument }) {
+function SplashScreen({ mapDocument, loading }) {
    const apiLoading = useSelector(state => state.api.loading);
 
    if (mapDocument || apiLoading) {
@@ -11,12 +12,20 @@ function SplashScreen({ mapDocument }) {
 
    return (
       <div className="splash-screen">
-         <img src={Logo} alt="DiBK" />
+         <div>
+            <img src={Logo} alt="DiBK" />
 
-         <div className="header">
-            <span>GML-plankart</span>
-            <span>Fellestjenester PLAN</span>
+            <div className="header">
+               <span>GML-plankart</span>
+               <span>Fellestjenester PLAN</span>
+            </div>
+            {
+               loading ?
+                  <Spinner /> :
+                  null
+            }
          </div>
+
       </div>
    );
 }

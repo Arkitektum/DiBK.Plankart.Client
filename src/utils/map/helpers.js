@@ -17,6 +17,10 @@ export function getFeaturesByName(vectorLayer, name) {
       .filter(feature => feature.get('name') === name);
 }
 
+export function getSymbolById(legends, id) {
+   return legends.flatMap(legend => legend.symbols).find(symbol => symbol.id === id);
+}
+
 export function zoomTo(map, features) {
    const featureExtent = features[0].getGeometry().getExtent();
 
