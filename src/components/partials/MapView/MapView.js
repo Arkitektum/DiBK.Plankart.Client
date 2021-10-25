@@ -19,46 +19,10 @@ function MapView({ mapDocument }) {
    const [selectedFeatures, setSelectedFeatures] = useState([]);
    const [filteredLegends, setFilteredLegends] = useState([]);
    const legends = useContext(LegendContext);
-   const apiLoading = useSelector(state => state.api.loading);
    const legend = useSelector(state => state.legend);
+   const apiLoading = useSelector(state => state.api.loading);
    const mapElement = useRef();
-
-   useEffect(
-      () => {
-         if (features.length && legends.length) {
-            addLegendToFeatures(features, legends);
-            setFilteredLegends(filterLegends(legends, features));
-         }
-      },
-      [features, legends]
-   );
-
-   useEffect(
-      () => {
-         if (legend.name) {
-            toggleFeatures(legend, map);
-         }
-      },
-      [legend, map]
-   );
-
-   useEffect(
-      () => {
-         if (!mapDocument) {
-            return;
-         }
-
-         createMap(mapDocument)
-            .then(olMap => {
-               setMap(olMap);
-
-               const vectorLayer = getLayer(olMap, 'features');
-               setFeatures(vectorLayer.getSource().getFeatures());
-            });
-      },
-      [mapDocument]
-   );
-
+   
    const selectFeature = useCallback(
       features => {
          highlightSelectedFeatures(map, features);
@@ -94,6 +58,23 @@ function MapView({ mapDocument }) {
 
    useEffect(
       () => {
+         async function create() {
+            const olMap = await createMap(mapDocument);
+            setMap(olMap);
+
+            const vectorLayer = getLayer(olMap, 'features');
+            setFeatures(vectorLayer.getSource().getFeatures())
+         }
+
+         if (mapDocument) {
+            create();
+         }
+      },
+      [mapDocument]
+   );
+
+   useEffect(
+      () => {
          if (!map) {
             return;
          }
@@ -116,6 +97,25 @@ function MapView({ mapDocument }) {
          }
       },
       [map, selectFeature, addMapInteraction]
+   );
+   
+   useEffect(
+      () => {
+         if (features.length && legends.length) {
+            addLegendToFeatures(features, legends);
+            setFilteredLegends(filterLegends(legends, features));
+         }
+      },
+      [features, legends]
+   );
+
+   useEffect(
+      () => {
+         if (legend.name) {
+            toggleFeatures(legend, map);
+         }
+      },
+      [legend, map]
    );
 
    return (

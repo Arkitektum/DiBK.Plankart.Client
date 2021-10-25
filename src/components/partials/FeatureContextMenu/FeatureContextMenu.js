@@ -69,8 +69,12 @@ function FeatureContextMenu({ map, data, onFeatureSelect }) {
       closeMenu();
    }
 
-   function getSymbolImage(id) {
-      return getSymbolById(legends, id)?.image;
+   function getSymbol(feature) {
+      return (
+         feature.get('symbolId') ?
+            <img src={getSymbolById(legends, feature.get('symbolId'))?.image} alt="" /> :
+            <span className="no-legend" />
+      );
    }
 
    if (!data) {
@@ -87,11 +91,7 @@ function FeatureContextMenu({ map, data, onFeatureSelect }) {
             data.features.getArray().map(feature => {
                return (
                   <div className="feature" onClick={() => handleFeatureSelect(feature)} key={feature.get('id')}>
-                     {
-                        feature.get('symbolId') ?
-                           <img src={getSymbolImage(feature.get('symbolId'))} alt="" /> :
-                           <span className="no-legend" />
-                     }
+                     {getSymbol(feature)}
                      <span className="label">{feature.get('label')}</span>
                   </div>
                );

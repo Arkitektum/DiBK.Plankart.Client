@@ -1,10 +1,10 @@
 import featureMembers from 'config/plankart.config';
 import { createOlStyleFunction } from 'utils/sld-reader';
 import { groupBy } from './helpers';
-import { sldStyles } from './sld';
+import { loadSldStyle } from './sld';
 
 export async function createStyle(name, callback) {
-   const style = sldStyles[name];
+   const style = await loadSldStyle(name);
    const featureTypeStyle = style.featuretypestyles[0];
 
    return createOlStyleFunction(featureTypeStyle, {

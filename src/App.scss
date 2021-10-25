@@ -4,6 +4,10 @@
    text-align: left;
    margin: auto;
    max-width: 1920px !important;
+   position: relative;
+   border-left: 1px solid #92b3c6;
+   border-right: 1px solid #92b3c6;
+   background-color: #ffffff;
 }
 
 .content {
@@ -37,29 +41,4 @@
    }
 }
 
-.capitalize {
-   text-transform: capitalize;
-}
-
-/*.spin {
-   position: absolute;
-   top: calc(50% - 130px);
-   left: calc(50% - 125px);
-   -webkit-animation:spin 2s linear infinite;
-   -moz-animation:spin 2s linear infinite;
-   animation:spin 2s linear infinite;
-}
-
-@-moz-keyframes spin { 
-   100% { -moz-transform: rotate(-360deg); } 
-}
-@-webkit-keyframes spin { 
-   100% { -webkit-transform: rotate(-360deg); } 
-}
-@keyframes spin { 
-   100% { 
-       -webkit-transform: rotate(-360deg); 
-       transform:rotate(-360deg); 
-   } 
-}*/
 

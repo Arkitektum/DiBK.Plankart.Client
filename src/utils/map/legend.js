@@ -2,9 +2,10 @@ import { Feature } from 'ol';
 import { Polygon } from 'ol/geom';
 import { toContext } from 'ol/render';
 import { Stroke, Style } from 'ol/style';
-import { sldStyles } from 'utils/map/sld';
+import { loadSldStyle } from 'utils/map/sld';
 import { getGeometryStyles, OlStyler } from 'utils/sld-reader';
 import { processExternalGraphicSymbolizersAsync } from 'utils/sld-reader/imageCache';
+import featureMembers from 'config/plankart.config';
 
 const SYMBOLIZER = {
    POLYGON: 'POLYGON',
@@ -13,7 +14,11 @@ const SYMBOLIZER = {
    TEXT: 'TEXT'
 };
 
-export async function createLegends(names) {
+export async function createLegends() {
+   const names = featureMembers
+      .filter(member => member.showLegend)
+      .map(member => member.name);
+
    const legends = [];
 
    for (let i = 0; i < names.length; i++) {
@@ -39,7 +44,7 @@ export function filterLegends(legends, features) {
 }
 
 async function createLegend(name) {
-   const style = sldStyles[name];
+   const style = await loadSldStyle(name);
    const rules = style.featuretypestyles[0].rules;
 
    const legend = {

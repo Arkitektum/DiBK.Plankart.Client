@@ -1,8 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { BottomBar, MapView, SplashScreen, TopBar } from 'components/partials';
 import { createLegends } from 'utils/map/legend';
-import { loadSldStyles } from 'utils/map/sld';
-import featureMembers from 'config/plankart.config';
 import './App.scss';
 
 function App() {
@@ -12,18 +10,12 @@ function App() {
 
    useEffect(
       () => {
-         async function loadSlds() {
-            await loadSldStyles();
-
-            const members = featureMembers
-               .filter(member => member.showLegend)
-               .map(member => member.name);
-
-            setLegends(await createLegends(members));
+         async function loadLegends() {
+            setLegends(await createLegends());
             setLoading(false);
          }
-
-         loadSlds();
+         
+         loadLegends();
       },
       []
    );

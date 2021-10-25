@@ -4,8 +4,10 @@
    width: auto;
 
    > .expand-button {
-      padding: 10px;
+      padding: 7px 10px;
       margin-bottom: 0 !important;
+      background: #f1f1f1;
+      border-radius: 0;
    }
 
    &.panel-expanded {
