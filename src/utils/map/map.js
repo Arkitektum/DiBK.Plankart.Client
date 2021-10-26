@@ -1,5 +1,5 @@
 import { View } from 'ol';
-import { defaults as defaultControls, FullScreen } from 'ol/control';
+import { defaults as defaultControls, FullScreen, ScaleLine } from 'ol/control';
 import GeoJSON from 'ol/format/GeoJSON';
 import { defaults as defaultInteractions, DragRotateAndZoom } from 'ol/interaction';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -51,6 +51,19 @@ function createTileLayer() {
    });
 }
 
+
+function scaleControl() {
+   return new ScaleLine({
+      units: 'metric',
+      bar: true,
+      steps: 4,
+      text: true,
+      minWidth: 140,
+      target: '#target'
+   });
+}
+
+
 export async function createMap(mapDocument) {
    if (!mapDocument) {
       return null;
@@ -66,7 +79,7 @@ export async function createMap(mapDocument) {
          projection: mapDocument.epsg,
          padding: [25, 25, 25, 25]
       }),
-      controls: defaultControls().extend([new FullScreen()]),
+      controls: defaultControls().extend([new FullScreen(), scaleControl()]),
       interactions: defaultInteractions().extend([new DragRotateAndZoom()]),
    });
 }

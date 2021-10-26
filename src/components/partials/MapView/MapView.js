@@ -10,7 +10,10 @@ import { filterLegends } from 'utils/map/legend';
 import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
 import { getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
+import NorthArrow from 'assets/gfx/symbol-north-arrow.svg';
+import { ScaleLine, defaults as defaultControls } from 'ol/control';
 import './MapView.scss';
+import { METERS_PER_UNIT } from 'ol/proj';
 
 function MapView({ mapDocument }) {
    const [map, setMap] = useState(null);
@@ -18,11 +21,12 @@ function MapView({ mapDocument }) {
    const [features, setFeatures] = useState([]);
    const [selectedFeatures, setSelectedFeatures] = useState([]);
    const [filteredLegends, setFilteredLegends] = useState([]);
+   const [rotation, setRotation] = useState(0);
    const legends = useContext(LegendContext);
    const legend = useSelector(state => state.legend);
    const apiLoading = useSelector(state => state.api.loading);
    const mapElement = useRef();
-   
+
    const selectFeature = useCallback(
       features => {
          highlightSelectedFeatures(map, features);
@@ -30,7 +34,7 @@ function MapView({ mapDocument }) {
       },
       [map]
    );
-   
+
    const addMapInteraction = useCallback(
       () => {
          const selectClick = new Select({
@@ -89,6 +93,11 @@ function MapView({ mapDocument }) {
          view.setMinZoom(6);
          view.setMaxZoom(18);
 
+         view.on('change:rotation', event => {
+            const rotation = event.target.getRotation();
+            setRotation(rotation);
+         });
+
          map.addControl(new ZoomToExtent({ extent }));
          addMapInteraction();
 
@@ -98,7 +107,7 @@ function MapView({ mapDocument }) {
       },
       [map, selectFeature, addMapInteraction]
    );
-   
+
    useEffect(
       () => {
          if (features.length && legends.length) {
@@ -141,6 +150,11 @@ function MapView({ mapDocument }) {
          <div className="right-content">
             <Features map={map} features={selectedFeatures} />
             <ValidationErrors map={map} validationResult={mapDocument?.validationResult} onMessageClick={selectFeature} />
+         </div>
+
+         <div className="north-arrow">
+            <span>N</span>
+            <img src={NorthArrow} style={{ transform: `rotate(${rotation}rad)` }} alt="" />
          </div>
       </div>
    );
