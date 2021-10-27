@@ -1,12 +1,15 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { BottomBar, MapView, SplashScreen, TopBar } from 'components/partials';
+import { useSelector } from 'react-redux';
+import { MapView, SplashScreen, TopBar } from 'components/partials';
 import { createLegends } from 'utils/map/legend';
+import { Spinner } from 'components/custom-elements';
 import './App.scss';
 
 function App() {
    const [mapDocument, setMapDocument] = useState(null);
    const [legends, setLegends] = useState([]);
    const [loading, setLoading] = useState(true);
+   const apiLoading = useSelector(state => state.api.loading);
 
    useEffect(
       () => {
@@ -25,8 +28,12 @@ function App() {
          <div className="app">
             <TopBar onUploadResponse={setMapDocument} loading={loading} />
             <MapView mapDocument={mapDocument} />
-            <BottomBar mapDocument={mapDocument} />
             <SplashScreen mapDocument={mapDocument} loading={loading} />
+            {
+               apiLoading ?
+                  <Spinner /> :
+                  null
+            }
          </div>
       </LegendContext.Provider>
    );

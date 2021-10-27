@@ -1,31 +1,8 @@
 .legends {
-   bottom: 32px;
-   border-top: 1px solid #8aaec3;
-   width: auto;
+   border-bottom: 0 !important;
 
-   > .expand-button {
-      padding: 7px 10px;
-      margin-bottom: 0 !important;
-      background: #f1f1f1;
-      border-radius: 0;
-   }
-
-   &.panel-expanded {
-      width: 350px !important;
-
-      > .expand-button {
-         width: 100%;
-      }
-
-      .content {
-         display: block;
-      }
-   }
-
-   .content {
-      display: none;
-      border-top: 1px solid #94b5c8;
-      padding: 20px 10px 15px 10px;
+   .box-content {
+      padding: 15px !important;
    }
 
    &.legends-show-all .symbol-hidden {
@@ -33,12 +10,14 @@
    }
 
    .show-all {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
    }
 
    .legend-list {
-      max-height: 500px;
+      max-height: 585px;
       overflow-y: auto;
+      border: 1px dashed #d5d5d5;
+      padding: 10px;      
    }
 
    .legend {

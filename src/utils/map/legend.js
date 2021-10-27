@@ -5,7 +5,7 @@ import { Stroke, Style } from 'ol/style';
 import { loadSldStyle } from 'utils/map/sld';
 import { getGeometryStyles, OlStyler } from 'utils/sld-reader';
 import { processExternalGraphicSymbolizersAsync } from 'utils/sld-reader/imageCache';
-import featureMembers from 'config/plankart.config';
+import featureMembers from 'config/features.config';
 
 const SYMBOLIZER = {
    POLYGON: 'POLYGON',

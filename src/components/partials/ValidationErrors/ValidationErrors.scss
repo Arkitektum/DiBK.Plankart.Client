@@ -1,7 +1,9 @@
 .validation-errors {
-   bottom: 32px;
-   border-top: 1px solid #8aaec3;
+   bottom: 0;
+   right: 0;
    width: auto;
+   position: absolute;
+   border-bottom: 0 !important;
 
    > .expand-button {
       color: #db3636;
@@ -11,14 +13,30 @@
       border-radius: 0;
    }
 
-   &.panel-expanded {
-      width: 550px !important;
+   .box-header {
+      border-bottom: 0 !important;
+   }
 
-      > .expand-button {
+   .box-content {
+      display: none;
+   }
+
+   &.box-expanded {
+      width: 450px !important;
+
+      .expand-button {
          width: 100%;
+
+         &::after {
+            transform: rotate(90deg);
+         }
       }
 
-      .rules {
+      .box-header {
+         border-bottom: 1px solid #8aaec3 !important;
+      }
+
+      .box-content {
          display: block;
       }
    }
@@ -32,11 +50,8 @@
    }
 
    .rules {
-      display: none;
       max-height: 500px;
       overflow-y: auto;
-      padding: 15px 15px 15px 10px;
-      border-top: 1px solid #94b5c8;
 
       .rule {
          margin-bottom: 20px;
@@ -46,14 +61,14 @@
          }
 
          .messages {
-            border-top: 1px solid #dddddd;
             line-height: 150%;
             font-size: 12px;
             margin: 5px 0;
-            padding: 10px 25px;
+            padding: 5px 0 5px 20px;
             max-height: 300px;
             overflow-y: auto;
-            border-bottom: 1px solid #dddddd;
+            margin-right: 25px;
+            border: 1px dashed #dddddd;
 
             li {
                padding: 5px 10px;

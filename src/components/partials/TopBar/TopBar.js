@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import Upload from './Upload/Upload';
 import filesize from 'filesize';
 import './TopBar.scss';
+import { Button } from 'react-bootstrap';
+import IconHidePanel from 'assets/gfx/icon-hide-panel.svg';
 
 function TopBar({ loading, onUploadResponse }) {
    const [mapDocument, setMapDocument] = useState(null);
+
+   function toggleLeftPanel() {
+      document.body.classList.toggle('left-panel-hidden');
+   }
 
    function handleUploadResponse(response) {
       setMapDocument(response);
@@ -14,7 +20,7 @@ function TopBar({ loading, onUploadResponse }) {
    return (
       <div className="top-bar">
          <div className="upload-button" style={{ display: loading ? 'none' : 'block' }}>
-            <Upload onResponse={handleUploadResponse} />
+            <Upload onResponse={handleUploadResponse} />            
          </div>
          {
             mapDocument ?

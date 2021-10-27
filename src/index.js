@@ -5,7 +5,7 @@ import { ModalsProvider } from 'context/ModalsContext';
 import App from './App';
 import store from 'store';
 import modals from 'components/modals/modals';
-import 'config/map.config';
+import 'config/projections.config';
 import './index.scss';
 
 ReactDOM.render(

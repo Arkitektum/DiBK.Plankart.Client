@@ -1,4 +1,4 @@
-import featureMembers from 'config/plankart.config';
+import featureMembers from 'config/features.config';
 import { createOlStyleFunction } from 'utils/sld-reader';
 import { groupBy } from './helpers';
 import { loadSldStyle } from './sld';

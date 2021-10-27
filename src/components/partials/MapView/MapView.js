@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { LegendContext } from 'App';
-import { Spinner } from 'components/custom-elements';
-import { FeatureContextMenu, Features, Legends, ValidationErrors } from 'components/partials';
+import { FeatureContextMenu, Features, Legends, MapInfo, PlanInfo, ValidationErrors } from 'components/partials';
 import { ZoomToExtent } from 'ol/control';
 import { click } from 'ol/events/condition';
 import { Select } from 'ol/interaction';
@@ -10,10 +9,7 @@ import { filterLegends } from 'utils/map/legend';
 import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
 import { getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
-import NorthArrow from 'assets/gfx/symbol-north-arrow.svg';
-import { ScaleLine, defaults as defaultControls } from 'ol/control';
 import './MapView.scss';
-import { METERS_PER_UNIT } from 'ol/proj';
 
 function MapView({ mapDocument }) {
    const [map, setMap] = useState(null);
@@ -21,10 +17,8 @@ function MapView({ mapDocument }) {
    const [features, setFeatures] = useState([]);
    const [selectedFeatures, setSelectedFeatures] = useState([]);
    const [filteredLegends, setFilteredLegends] = useState([]);
-   const [rotation, setRotation] = useState(0);
    const legends = useContext(LegendContext);
    const legend = useSelector(state => state.legend);
-   const apiLoading = useSelector(state => state.api.loading);
    const mapElement = useRef();
 
    const selectFeature = useCallback(
@@ -93,11 +87,6 @@ function MapView({ mapDocument }) {
          view.setMinZoom(6);
          view.setMaxZoom(18);
 
-         view.on('change:rotation', event => {
-            const rotation = event.target.getRotation();
-            setRotation(rotation);
-         });
-
          map.addControl(new ZoomToExtent({ extent }));
          addMapInteraction();
 
@@ -130,31 +119,20 @@ function MapView({ mapDocument }) {
    return (
       <div className="content">
          <div className="left-content">
+            <PlanInfo mapDocument={mapDocument} />
+            <MapInfo mapDocument={mapDocument} map={map} />
             <Legends legends={filteredLegends} />
+
          </div>
 
-         <div className="mid-content">
-            {
-               apiLoading ?
-                  <Spinner /> :
-                  null
-            }
-
+         <div className="right-content">
             <div className="map-container">
                <div ref={mapElement} className="map"></div>
             </div>
 
             <FeatureContextMenu map={map} data={contextMenuData} onFeatureSelect={selectFeature} />
-         </div>
-
-         <div className="right-content">
             <Features map={map} features={selectedFeatures} />
             <ValidationErrors map={map} validationResult={mapDocument?.validationResult} onMessageClick={selectFeature} />
-         </div>
-
-         <div className="north-arrow">
-            <span>N</span>
-            <img src={NorthArrow} style={{ transform: `rotate(${rotation}rad)` }} alt="" />
          </div>
       </div>
    );

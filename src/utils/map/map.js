@@ -1,5 +1,5 @@
 import { View } from 'ol';
-import { defaults as defaultControls, FullScreen, ScaleLine } from 'ol/control';
+import { defaults as defaultControls, FullScreen } from 'ol/control';
 import GeoJSON from 'ol/format/GeoJSON';
 import { defaults as defaultInteractions, DragRotateAndZoom } from 'ol/interaction';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -9,6 +9,7 @@ import TileWMS from 'ol/source/TileWMS';
 import VectorSource from 'ol/source/Vector';
 import { addValidationResultToFeatures } from './features';
 import { addStyling } from './styling';
+import { baseMap } from 'config/baseMap.config';
 
 async function createFeaturesLayer(mapDocument) {
    const features = new GeoJSON().readFeatures(mapDocument.geoJson);
@@ -41,28 +42,15 @@ function createSelectedFeaturesLayer() {
 function createTileLayer() {
    return new TileLayer({
       source: new TileWMS({
-         url: 'https://opencache.statkart.no/gatekeeper/gk/gk.open?',
+         url: baseMap.url,
          params: {
-            LAYERS: 'norges_grunnkart_graatone',
+            LAYERS: baseMap.layer,
             VERSION: '1.1.1',
          }
       }),
-      maxZoom: 18
+      maxZoom: baseMap.maxZoom
    });
 }
-
-
-function scaleControl() {
-   return new ScaleLine({
-      units: 'metric',
-      bar: true,
-      steps: 4,
-      text: true,
-      minWidth: 140,
-      target: '#target'
-   });
-}
-
 
 export async function createMap(mapDocument) {
    if (!mapDocument) {
@@ -76,10 +64,10 @@ export async function createMap(mapDocument) {
          createSelectedFeaturesLayer()
       ],
       view: new View({
-         projection: mapDocument.epsg,
+         projection: mapDocument.epsg.code,
          padding: [25, 25, 25, 25]
       }),
-      controls: defaultControls().extend([new FullScreen(), scaleControl()]),
+      controls: defaultControls().extend([new FullScreen()]),
       interactions: defaultInteractions().extend([new DragRotateAndZoom()]),
    });
 }

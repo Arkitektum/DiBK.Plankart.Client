@@ -1,5 +1,5 @@
 import { LegendContext } from 'App';
-import featureMembers from 'config/plankart.config';
+import featureMembers from 'config/features.config';
 import { useContext } from 'react';
 import { getSymbolById, zoomTo } from 'utils/map/helpers';
 import './Features.scss';
@@ -22,7 +22,7 @@ function Features({ map, features }) {
       return (
          infoProps.map((prop) => {
             return (
-               <div className="info-row" key={`${feature.get('id')}-${prop}`}>
+               <div className="box-row" key={`${feature.get('id')}-${prop}`}>
                   <div className="label capitalize">{prop}:</div>
                   <div className="value">{feature.get(prop)}</div>
                </div>
@@ -53,31 +53,37 @@ function Features({ map, features }) {
    }
 
    return (
-      <div className="feature-info">
-         {features.map(feature => {
-            return (
-               <div className="feature" key={feature.get('id')}>
-                  <div className="header">
-                     {
-                        feature.get('symbolId') ?
-                           <img src={getSymbolImage(feature.get('symbolId'))} alt="" /> :
-                           null
-                     }
-                     <span className="name">{feature.get('name')}</span>
-                     <button className="zoom" onClick={() => zoomTo(map, [feature])} title="Gå til objekt"></button>
-                  </div>
+      <div className="feature-info box">
+         <div className="box-header">Objekt</div>
 
-                  <div className="info-row">
-                     <div className="label">GML-ID:</div>
-                     <div className="value">{feature.get('id')}</div>
-                  </div>
+         <div className="box-content">
+            {
+               features.map(feature => {
+                  return (
+                     <div className="feature" key={feature.get('id')}>
+                        <div className="header">
+                           {
+                              feature.get('symbolId') ?
+                                 <img src={getSymbolImage(feature.get('symbolId'))} alt="" /> :
+                                 null
+                           }
+                           <span className="name">{feature.get('name')}</span>
+                           <button className="zoom" onClick={() => zoomTo(map, [feature])} title="Gå til objekt"></button>
+                        </div>
 
-                  {getFeatureInfo(feature)}
+                        <div className="box-row">
+                           <div className="label">GML-ID:</div>
+                           <div className="value">{feature.get('id')}</div>
+                        </div>
 
-                  {getErrorMessages(feature)}
-               </div>
-            );
-         })}
+                        {getFeatureInfo(feature)}
+
+                        {getErrorMessages(feature)}
+                     </div>
+                  );
+               })
+            }
+         </div>
       </div>
    );
 }

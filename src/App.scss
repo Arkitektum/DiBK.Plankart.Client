@@ -8,6 +8,25 @@
    border-left: 1px solid #92b3c6;
    border-right: 1px solid #92b3c6;
    background-color: #ffffff;
+
+   ::-webkit-scrollbar {
+      width: 20px;
+   }
+
+   ::-webkit-scrollbar-track {
+      background-color: transparent;
+   }
+
+   ::-webkit-scrollbar-thumb {
+      background-color: #d6dee1;
+      border-radius: 20px;
+      border: 6px solid transparent;
+      background-clip: content-box;
+   }
+
+   ::-webkit-scrollbar-thumb:hover {
+      background-color: #8aaec3;
+   }
 }
 
 .content {
@@ -15,30 +34,67 @@
    position: relative;
 
    .left-content {
-      > div {
+      display: flex;
+      flex-direction: column;
+      margin-top: 32px;
+      width: 400px;
+
+      .box {
+         border-left: 0 !important;
          border-right: 1px solid #8aaec3;
-         position: absolute;
-         left: 0;
-         background-color: rgb(255 255 255 / 90%);
-         z-index: 999;
+         border-top: 0 !important;
+         position: static;
       }
    }
 
-   .mid-content {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-   }
-
    .right-content {
-      > div {
-         position: absolute;
-         right: 0;
-         border-left: 1px solid #8aaec3;   
+      flex-grow: 1;
+      position: relative;
+
+      .box {
+         border-right: 0 !important;
          background-color: rgb(255 255 255 / 90%);
+         right: 0;
       }
    }
 }
 
+.left-panel-hidden {
+   .left-content {
+      display: none;
+   }
+}
 
+.box {
+   font-size: 13px;
+   position: absolute;
+   display: flex;
+   flex-direction: column;
+   border: 1px solid #8aaec3;
+   background-color: #ffffff;
+   z-index: 999;
+
+   .box-header {
+      line-height: 16px;
+      padding: 7px 15px;
+      border-bottom: 1px solid #8aaec3;
+      background-color: #f1f1f1;
+   }
+
+   .box-content {
+      padding: 10px 15px;
+
+      .box-row {
+         display: flex;
+         margin-bottom: 5px;
+
+         .label {
+            width: 35%;
+         }
+
+         .value {
+            width: 65%;
+         }
+      }
+   }
+}
