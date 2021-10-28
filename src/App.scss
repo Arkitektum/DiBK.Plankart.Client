@@ -9,23 +9,8 @@
    border-right: 1px solid #92b3c6;
    background-color: #ffffff;
 
-   ::-webkit-scrollbar {
-      width: 20px;
-   }
-
-   ::-webkit-scrollbar-track {
-      background-color: transparent;
-   }
-
-   ::-webkit-scrollbar-thumb {
-      background-color: #d6dee1;
-      border-radius: 20px;
-      border: 6px solid transparent;
-      background-clip: content-box;
-   }
-
-   ::-webkit-scrollbar-thumb:hover {
-      background-color: #8aaec3;
+   &.api-loading .content {
+      opacity: .1;
    }
 }
 
@@ -36,7 +21,6 @@
    .left-content {
       display: flex;
       flex-direction: column;
-      margin-top: 32px;
       width: 400px;
 
       .box {

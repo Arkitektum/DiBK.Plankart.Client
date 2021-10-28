@@ -64,32 +64,35 @@ function pointStyle(pointsymbolizer) {
 
    if (style.mark) {
       const { wellknownname } = style.mark;
-      const olFill = getSimpleFill(style.mark.fill);
-      const olStroke = getSimpleStroke(style.mark.stroke);
-      const ttfMatch = wellknownname.match(ttfRegex);
 
-      if (ttfMatch !== null) {
+      if (wellknownname) {
+         const olFill = getSimpleFill(style.mark.fill);
+         const olStroke = getSimpleStroke(style.mark.stroke);
+         const ttfMatch = wellknownname.match(ttfRegex);
+   
+         if (ttfMatch !== null) {
+            return new Style({
+               text: new Text({
+                  font: `normal ${style.size || 12}px ${ttfMatch.groups.fontFamily}`,
+                  text: String.fromCharCode(ttfMatch.groups.charCode),
+                  rotation: rotationDegrees,
+                  fill: olFill,
+                  stroke: olStroke
+               })
+            });
+         }
+   
          return new Style({
-            text: new Text({
-               font: `normal ${style.size || 12}px ${ttfMatch.groups.fontFamily}`,
-               text: String.fromCharCode(ttfMatch.groups.charCode),
-               rotation: rotationDegrees,
-               fill: olFill,
-               stroke: olStroke
-            })
+            // Note: size will be set dynamically later.
+            image: getWellKnownSymbol(
+               wellknownname,
+               pointSizeValue,
+               olStroke,
+               olFill,
+               rotationDegrees
+            )
          });
       }
-
-      return new Style({
-         // Note: size will be set dynamically later.
-         image: getWellKnownSymbol(
-            wellknownname,
-            pointSizeValue,
-            olStroke,
-            olFill,
-            rotationDegrees
-         )
-      });
    }
 
    // SLD spec: when no ExternalGraphic or Mark is specified,

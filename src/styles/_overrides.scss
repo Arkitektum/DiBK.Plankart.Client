@@ -51,25 +51,6 @@ h3 {
 .modal-dialog {
    max-width: 1000px;
    transform: none !important;
-
-   ::-webkit-scrollbar {
-      width: 20px;
-   }
-
-   ::-webkit-scrollbar-track {
-      background-color: transparent;
-   }
-
-   ::-webkit-scrollbar-thumb {
-      background-color: #d6dee1;
-      border-radius: 20px;
-      border: 6px solid transparent;
-      background-clip: content-box;
-   }
-
-   ::-webkit-scrollbar-thumb:hover {
-      background-color: #8aaec3;
-   }
 }
 
 .modal-header {
@@ -103,16 +84,6 @@ h3 {
    color: #6f92a7;
 }
 
-.ol-full-screen {
-   top: 50px;
-   left: 15px;
-   right: unset;
-
-   button {
-      font-family: sans-serif !important;
-   }
-}
-
 .ol-full-screen,
 .ol-zoom,
 .ol-zoom-extent,
@@ -127,20 +98,53 @@ h3 {
    }
 }
 
+.ol-full-screen {
+   top: 15px;
+   left: 15px;
+   right: unset;
+
+   button {
+      font-family: sans-serif !important;
+   }
+}
+
 .ol-zoom {
-   top: 85px;
+   top: 50px;
    left: 15px;
    right: unset;
 }
 
 .ol-zoom-extent {
-   top: 145px;
+   top: 110px;
    left: 15px;
    right: unset;
 }
 
 .ol-rotate {
-   top: 185px;
+   top: 150px;
    left: 15px;
    right: unset;
+}
+
+
+.app,
+.modal-dialog {
+   ::-webkit-scrollbar {
+      width: 20px;
+   }
+
+   ::-webkit-scrollbar-track {
+      background-color: transparent;
+   }
+
+   ::-webkit-scrollbar-thumb {
+      background-color: #d6dee1;
+      border-radius: 20px;
+      border: 6px solid transparent;
+      background-clip: content-box;
+   }
+
+   ::-webkit-scrollbar-thumb:hover {
+      background-color: #8aaec3;
+   }   
 }

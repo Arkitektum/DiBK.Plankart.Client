@@ -25,7 +25,7 @@ function App() {
 
    return (
       <LegendContext.Provider value={legends}>
-         <div className="app">
+         <div className={`app ${apiLoading ? 'api-loading' : ''}`}>
             <TopBar onUploadResponse={setMapDocument} loading={loading} />
             <MapView mapDocument={mapDocument} />
             <SplashScreen mapDocument={mapDocument} loading={loading} />
