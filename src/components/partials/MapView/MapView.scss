@@ -1,3 +1,7 @@
+.sidebar-hidden .left-content {
+   display: none !important;
+}
+
 .map-container {
    display: flex;
 
@@ -6,4 +10,3 @@
       height: 100vh;
    }
 }
-

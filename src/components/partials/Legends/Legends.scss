@@ -1,8 +1,14 @@
 .legends {
    border-bottom: 0 !important;
+   flex-grow: 1;
 
    .box-content {
       padding: 15px !important;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      height: 1px;      
+      min-height: 0;
    }
 
    &.legends-show-all .symbol-hidden {
@@ -14,7 +20,7 @@
    }
 
    .legend-list {
-      max-height: 585px;
+      min-height: 0;
       overflow-y: auto;
       border: 1px dashed #d5d5d5;
       padding: 10px;      

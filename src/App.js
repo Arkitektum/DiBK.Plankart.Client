@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { MapView, SplashScreen, TopBar } from 'components/partials';
 import { createLegends } from 'utils/map/legend';

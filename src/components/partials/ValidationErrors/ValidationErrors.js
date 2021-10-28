@@ -29,9 +29,7 @@ function ValidationErrors({ map, validationResult, onMessageClick }) {
 
    return (
       <div className={`validation-errors box ${expanded ? 'box-expanded' : ''}`}>
-         <div className="box-header">
-            <Button className="expand-button" variant="link" onClick={toggle}>Valideringsfeil ({getErrorCount()})</Button>
-         </div>
+         <div className="box-header expand-button" role="button" onClick={toggle}>Valideringsfeil ({getErrorCount()})</div>
 
          <div className="box-content">
             <div className="rules">

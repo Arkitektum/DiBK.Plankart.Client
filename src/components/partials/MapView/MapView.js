@@ -1,13 +1,13 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { LegendContext } from 'App';
-import { FeatureContextMenu, Features, Legends, MapInfo, PlanInfo, ValidationErrors } from 'components/partials';
+import { FeatureContextMenu, FeatureInfo, Legends, MapInfo, PlanInfo, ValidationErrors } from 'components/partials';
 import { ZoomToExtent } from 'ol/control';
 import { click } from 'ol/events/condition';
 import { Select } from 'ol/interaction';
 import { useSelector } from 'react-redux';
 import { filterLegends } from 'utils/map/legend';
 import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
-import { getLayer } from 'utils/map/helpers';
+import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 import './MapView.scss';
 
@@ -18,7 +18,9 @@ function MapView({ mapDocument }) {
    const [selectedFeatures, setSelectedFeatures] = useState([]);
    const [filteredLegends, setFilteredLegends] = useState([]);
    const legends = useContext(LegendContext);
-   const legend = useSelector(state => state.legend);
+   const legend = useSelector(state => state.map.legend);
+   const sidebar = useSelector(state => state.map.sidebar);
+   const sidebarVisible = useRef(true);
    const mapElement = useRef();
 
    const selectFeature = useCallback(
@@ -52,6 +54,17 @@ function MapView({ mapDocument }) {
          });
       },
       [map, selectFeature]
+   );
+   
+   const { onWindowResize } = useMemo(
+      () => {
+         const onWindowResize = debounce(_ => {
+            map.updateSize();
+         }, 500)
+
+         return { onWindowResize };
+      },
+      [map]
    );
 
    useEffect(
@@ -90,11 +103,14 @@ function MapView({ mapDocument }) {
          map.addControl(new ZoomToExtent({ extent }));
          addMapInteraction();
 
+         window.addEventListener('resize', onWindowResize)
+
          return () => {
             map.dispose();
+            window.removeEventListener('resize', onWindowResize);
          }
       },
-      [map, selectFeature, addMapInteraction]
+      [map, selectFeature, addMapInteraction, onWindowResize]
    );
 
    useEffect(
@@ -115,14 +131,23 @@ function MapView({ mapDocument }) {
       },
       [legend, map]
    );
+   
+   useEffect(
+      () => {
+         if (map && sidebar.visible !== sidebarVisible.current) {
+            map.updateSize();
+            sidebarVisible.current = sidebar.visible;            
+         }
+      },
+      [sidebar, map]
+   );
 
    return (
-      <div className="content">
+      <div className={`content ${!sidebar.visible ? 'sidebar-hidden' : ''}`}>
          <div className="left-content">
             <PlanInfo mapDocument={mapDocument} />
             <MapInfo mapDocument={mapDocument} map={map} />
             <Legends legends={filteredLegends} />
-
          </div>
 
          <div className="right-content">
@@ -131,7 +156,7 @@ function MapView({ mapDocument }) {
             </div>
 
             <FeatureContextMenu map={map} data={contextMenuData} onFeatureSelect={selectFeature} />
-            <Features map={map} features={selectedFeatures} />
+            <FeatureInfo map={map} features={selectedFeatures} />
             <ValidationErrors map={map} validationResult={mapDocument?.validationResult} onMessageClick={selectFeature} />
          </div>
       </div>

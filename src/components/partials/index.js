@@ -1,4 +1,4 @@
-export { default as Features } from './Features/Features';
+export { default as FeatureInfo } from './FeatureInfo/FeatureInfo';
 export { default as FeatureContextMenu } from './FeatureContextMenu/FeatureContextMenu';
 export { default as Legends } from './Legends/Legends';
 export { default as MapInfo } from './MapInfo/MapInfo';

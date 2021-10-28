@@ -1,14 +1,15 @@
+import { useContext, useState } from 'react';
 import { LegendContext } from 'App';
-import featureMembers from 'config/features.config';
-import { useContext } from 'react';
 import { getSymbolById, zoomTo } from 'utils/map/helpers';
-import './Features.scss';
+import featureMembers from 'config/features.config';
+import './FeatureInfo.scss';
 
-function Features({ map, features }) {
+function FeatureInfo({ map, features }) {
+   const [expanded, setExpanded] = useState(true);
    const legends = useContext(LegendContext);
 
-   if (!map || !features.length) {
-      return null;
+   function toggle() {
+      setExpanded(!expanded);
    }
 
    function getFeatureInfo(feature) {
@@ -52,9 +53,13 @@ function Features({ map, features }) {
       );
    }
 
+   if (!map || !features.length) {
+      return null;
+   }
+
    return (
-      <div className="feature-info box">
-         <div className="box-header">Objekt</div>
+      <div className={`feature-info box ${expanded ? 'box-expanded' : ''}`}>
+         <div className="box-header expand-button" role="button" onClick={toggle}>Objekt</div>
 
          <div className="box-content">
             {
@@ -88,4 +93,4 @@ function Features({ map, features }) {
    );
 }
 
-export default Features;
+export default FeatureInfo;

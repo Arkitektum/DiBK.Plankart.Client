@@ -1,31 +1,65 @@
 .top-bar {
-   height: 32px;
+   align-items: center;
    background-color: #8aaec3;
    color: #ffffff;
    display: flex;
+   height: 32px;
    justify-content: center;
-   align-items: center;
+   left: 0;
+   line-height: 32px;
    position: absolute;
    top: 0;
-   left: 0;
    width: 100%;
    z-index: 999;
 
-   .upload-button {
+   .top-bar-left {
+      display: flex;
+      justify-content: space-between;
       position: absolute;
-      left: 15px;
+      left: 0;
+      padding-left: 15px;
+      width: 400px;
+
+      .toggle-sidebar {
+         background: url("../../../assets/gfx/icon-menu.svg") no-repeat center center;
+         position: relative;
+         width: 32px;
+         
+         &::before {
+            content: "";
+            background: url("../../../assets/gfx/icon-arrow-white.svg") no-repeat center center;
+            height: 32px;
+            width: 10px;
+            display: block;
+            transform: rotate(-180deg);
+            transition: all 0.25s ease;
+            background-size: 10px;
+            position: absolute;
+            left: -6px;
+         }
+
+         &.sidebar-hidden::before {
+            transform: rotate(0);
+         }
+      }
    }
 
-   .file-name {
-      margin-right: 15px;
+   .top-bar-right {
+      display: flex;
+      width: 100%;
+      justify-content: center;
 
-      &::after {
-         content: "\2013";
-         margin-left: 15px;
-      }
-
-      span {
-         margin-left: 10px;
+      .file-name {
+         margin-right: 15px;
+   
+         &::after {
+            content: "\2013";
+            margin-left: 15px;
+         }
+   
+         span {
+            margin-left: 10px;
+         }
       }
    }
 }

@@ -1,45 +1,9 @@
 .validation-errors {
    bottom: 0;
    right: 0;
-   width: auto;
+   width: 450px;
    position: absolute;
    border-bottom: 0 !important;
-
-   > .expand-button {
-      color: #db3636;
-      padding: 7px 10px;
-      margin-bottom: 0 !important;
-      background: #f1f1f1;
-      border-radius: 0;
-   }
-
-   .box-header {
-      border-bottom: 0 !important;
-   }
-
-   .box-content {
-      display: none;
-   }
-
-   &.box-expanded {
-      width: 450px !important;
-
-      .expand-button {
-         width: 100%;
-
-         &::after {
-            transform: rotate(90deg);
-         }
-      }
-
-      .box-header {
-         border-bottom: 1px solid #8aaec3 !important;
-      }
-
-      .box-content {
-         display: block;
-      }
-   }
 
    .expand-button {
       color: #db3636;
@@ -49,8 +13,22 @@
       }
    }
 
+   &:not(.box-expanded) {
+      width: auto !important;
+
+
+
+      .box-header {
+         border-bottom: 0 !important;
+      }
+
+      .box-content {
+         display: none !important;
+      }
+   }
+
    .rules {
-      max-height: 500px;
+      max-height: 450px;
       overflow-y: auto;
 
       .rule {

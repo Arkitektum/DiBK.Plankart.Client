@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import apiReducer from './slices/apiSlice';
-import legendReducer from './slices/legendSlice';
+import mapReducer from './slices/mapSlice';
 
 export default configureStore({
    reducer: {
       api: apiReducer,
-      legend: legendReducer,
+      map: mapReducer,
    }
 });

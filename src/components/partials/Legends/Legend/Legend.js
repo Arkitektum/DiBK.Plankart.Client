@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { toggleLegend } from 'store/slices/legendSlice';
+import { toggleLegend } from 'store/slices/mapSlice';
 
 function Legend({ legend }) {
    const [expanded, setExpanded] = useState(true);

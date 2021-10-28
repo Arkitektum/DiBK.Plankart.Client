@@ -53,15 +53,8 @@
 
       .box {
          border-right: 0 !important;
-         background-color: rgb(255 255 255 / 90%);
          right: 0;
       }
-   }
-}
-
-.left-panel-hidden {
-   .left-content {
-      display: none;
    }
 }
 
@@ -75,6 +68,7 @@
    z-index: 999;
 
    .box-header {
+      display: flex;
       line-height: 16px;
       padding: 7px 15px;
       border-bottom: 1px solid #8aaec3;
