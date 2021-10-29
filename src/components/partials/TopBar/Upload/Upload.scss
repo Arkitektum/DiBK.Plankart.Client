@@ -7,9 +7,10 @@
       cursor: pointer;
       font-weight: 500;      
       user-select: none;
+      text-decoration: underline;
 
       &:hover {
-         text-decoration: underline;
+         text-decoration: none;
       }
    }
 }

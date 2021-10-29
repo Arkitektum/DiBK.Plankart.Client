@@ -16,7 +16,7 @@ function SplashScreen({ mapDocument, loading }) {
             <img src={Logo} alt="DiBK" />
 
             <div className="header">
-               <span>GML-plankart</span>
+               <span>GML-kart</span>
                <span>Fellestjenester PLAN</span>
             </div>
             {

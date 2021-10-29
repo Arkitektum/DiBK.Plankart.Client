@@ -1,23 +1,22 @@
 .splash-screen > div {
    position: absolute;
-   width: 396px;
-   height: 180px;
+   width: 369px;
+   height: 200px;
    top: calc(50% - 90px);
    background: white;
-   padding: 20px;
-   box-shadow: 0 3px 10px rgb(0 0 0 / 5%);
+   padding: 25px;
+   box-shadow: 0 3px 10px rgb(0 0 0 / 7%);
    display: flex;
-   left: calc(50% - 198px);
+   left: calc(50% - 184px);
 
    img {
-      margin-right: 15px;
+      margin-right: 25px;
    }
 
    .header {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      margin-bottom: 16px;
 
       span {
          font-weight: 100;
@@ -25,11 +24,14 @@
 
       span:nth-child(1) {
          margin-bottom: 0px;
-         font-size: 36px;
+         font-size: 30px;
+         line-height: 30px;
+         color: #8aaec3;
+         font-weight: 500;
       }
 
       span:nth-child(2) {
-         font-size: 22px;
+         font-size: 20px;
       }
    }
 

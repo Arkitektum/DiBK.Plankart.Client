@@ -37,7 +37,7 @@ function ValidationErrors({ map, validationResult, onMessageClick }) {
                   rules.map(rule => {
                      return (
                         <div className="rule" key={rule.id}>
-                           <div className="rule-name">{rule.id}: {rule.name}</div>
+                           <div className="rule-name">{rule.id}: {rule.name} ({rule.messages.length})</div>
                            <ol className="messages">
                               {
                                  rule.messages.map((message, index) => {

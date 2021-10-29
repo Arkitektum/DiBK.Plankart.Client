@@ -3,21 +3,20 @@
    flex-direction: column;
    text-align: left;
    margin: auto;
-   max-width: 1920px !important;
    position: relative;
    border-left: 1px solid #92b3c6;
    border-right: 1px solid #92b3c6;
-   background-color: #ffffff;
+   background-color: #f7f7f7;
 
    &.api-loading .content {
-      opacity: .1;
+      opacity: .25;
    }
 }
 
 .content {
    display: flex;
-   position: relative;
-
+   position: relative;  
+   
    .left-content {
       display: flex;
       flex-direction: column;
@@ -36,8 +35,28 @@
       position: relative;
 
       .box {
-         border-right: 0 !important;
+         border: 0;
          right: 0;
+         align-items: flex-end;
+         background: transparent;
+
+         .box-header {
+            background-color: #8aaec3;
+            color: #ffffff;
+            font-weight: 500;
+
+            &::after {
+               background: url("assets/gfx/icon-arrow-white.svg") no-repeat center;
+               background-size: 11px;
+            }
+         }
+
+         .box-content {
+            border: 1px solid #8aaec3;
+            background: #ffffff;
+            border-right: 0;
+            width: 100%;
+         }
       }
    }
 }

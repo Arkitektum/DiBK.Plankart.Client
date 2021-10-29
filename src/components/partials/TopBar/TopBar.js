@@ -46,7 +46,7 @@ function TopBar({ loading, onUploadResponse }) {
                   :
                   null
             }
-            <span className="app-name">GML-plankart | Fellestjenester PLAN</span>
+            <span className="app-name">GML-kart | Fellestjenester PLAN</span>
          </div>
       </div>
    );

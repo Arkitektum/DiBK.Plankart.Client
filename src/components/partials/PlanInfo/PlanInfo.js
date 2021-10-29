@@ -7,7 +7,7 @@ function PlanInfo({ mapDocument }) {
 
    return (
       <div className="plan-info box">
-         <div className="box-header">{mapDocument.planType}</div>
+         <div className="box-header">{mapDocument.planType} for</div>
          <div className="box-content">
             <span className="name">{mapDocument.name}</span>
             <span className="id">Arealplan-ID: {mapDocument.id}</span>

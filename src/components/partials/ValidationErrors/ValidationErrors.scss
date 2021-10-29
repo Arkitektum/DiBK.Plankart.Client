@@ -5,18 +5,17 @@
    position: absolute;
    border-bottom: 0 !important;
 
-   .expand-button {
-      color: #db3636;
+   .box-header {
+      background-color: #db3636 !important;
+      border-bottom: 1px solid #db3636 !important;
+   }
 
-      &:hover {
-         color: #db3636;
-      }
+   .box-content {
+      border-bottom: 0 !important;
    }
 
    &:not(.box-expanded) {
       width: auto !important;
-
-
 
       .box-header {
          border-bottom: 0 !important;
@@ -32,7 +31,11 @@
       overflow-y: auto;
 
       .rule {
-         margin-bottom: 20px;
+         margin-bottom: 15px;
+
+         &:last-child {
+            margin-bottom: 0;
+         }
 
          .rule-name {
             font-style: italic;
