@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { getFeatureById, getLayer, zoomTo } from 'utils/map/helpers';
 import './ValidationErrors.scss';
 
 function ValidationErrors({ map, validationResult, onMessageClick }) {
    const [expanded, setExpanded] = useState(false);
+   const validationResultId = useRef(null);
    const rules = validationResult?.rules || [];
+
+   useEffect(
+      () => {
+         if (validationResult?.Id !== validationResultId.current) {
+            setExpanded(false);
+         }
+      },
+      [validationResult]
+   );
 
    function toggle() {
       setExpanded(!expanded);

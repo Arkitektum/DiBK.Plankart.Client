@@ -108,6 +108,7 @@ function MapView({ mapDocument }) {
          return () => {
             map.dispose();
             window.removeEventListener('resize', onWindowResize);
+            setSelectedFeatures([]);
          }
       },
       [map, selectFeature, addMapInteraction, onWindowResize]
