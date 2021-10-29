@@ -33,13 +33,13 @@ function FeatureContextMenu({ map, data, onFeatureSelect }) {
          if (visible) {
             let top, left;
 
-            if (data.left + menuElement.current.offsetWidth > window.innerWidth) {
+            if (data.left + menuElement.current.offsetWidth > map.getTarget().clientWidth) {
                left = data.left - menuElement.current.offsetWidth;
             } else {
                left = data.left;
             }
 
-            if (data.top + menuElement.current.offsetHeight > window.innerHeight) {
+            if (data.top + menuElement.current.offsetHeight > map.getTarget().clientHeight) {
                top = data.top - menuElement.current.offsetHeight;
             } else {
                top = data.top;
@@ -48,7 +48,7 @@ function FeatureContextMenu({ map, data, onFeatureSelect }) {
             setPosition({ top, left });
          }
       },
-      [visible, data]
+      [visible, data, map]
    );
 
    useEffect(
