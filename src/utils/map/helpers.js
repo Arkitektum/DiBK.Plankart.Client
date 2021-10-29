@@ -1,6 +1,6 @@
 import { extend, getCenter } from 'ol/extent';
 
-const MAX_ZOOM = 18;
+const MAX_ZOOM = 24;
 
 export function getLayer(map, id) {
    return map.getLayers().getArray()
