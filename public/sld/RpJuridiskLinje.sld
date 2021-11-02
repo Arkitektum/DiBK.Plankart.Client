@@ -10,9 +10,9 @@
          <se:Name>RpJuridiskLinje</se:Name>
          <se:FeatureTypeStyle>
             <se:Rule>
-               <se:Name>Regulert tomtegrense</se:Name>
+               <se:Name>1203 - Regulert tomtegrense</se:Name>
                <se:Description>
-                  <se:Title>Regulert tomtegrense</se:Title>
+                  <se:Title>1203 - Regulert tomtegrense</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -30,9 +30,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Eiendomsgrense som skal oppheves</se:Name>
+               <se:Name>1204 - Eiendomsgrense som skal oppheves</se:Name>
                <se:Description>
-                  <se:Title>Eiendomsgrense som skal oppheves</se:Title>
+                  <se:Title>1204 -Eiendomsgrense som skal oppheves</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -71,9 +71,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Bygg, kulturminner, mm som skal bevares</se:Name>
+               <se:Name>1210 - Bygg, kulturminner, m.m. som skal bevares</se:Name>
                <se:Description>
-                  <se:Title>Bygg, kulturminner, mm som skal bevares</se:Title>
+                  <se:Title>1210 - Bygg, kulturminner, m.m. som skal bevares</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -91,9 +91,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Byggegrense</se:Name>
+               <se:Name>1211 - Byggegrense</se:Name>
                <se:Description>
-                  <se:Title>Byggegrense</se:Title>
+                  <se:Title>1211 - Byggegrense</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -112,29 +112,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>1212 ???</se:Name>
+               <se:Name>1213 - Planlagt bebyggelse</se:Name>
                <se:Description>
-                  <se:Title>1212 ???</se:Title>
-               </se:Description>
-               <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
-                  <ogc:PropertyIsEqualTo>
-                     <ogc:PropertyName>juridisklinje</ogc:PropertyName>
-                     <ogc:Literal>1212</ogc:Literal>
-                  </ogc:PropertyIsEqualTo>
-               </ogc:Filter>
-               <se:LineSymbolizer>
-                  <se:Stroke>
-                     <se:SvgParameter name="stroke">#2259e4</se:SvgParameter>
-                     <se:SvgParameter name="stroke-width">1</se:SvgParameter>
-                     <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-                     <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
-                  </se:Stroke>
-               </se:LineSymbolizer>
-            </se:Rule>
-            <se:Rule>
-               <se:Name>Planlagt bebyggelse</se:Name>
-               <se:Description>
-                  <se:Title>Planlagt bebyggelse</se:Title>
+                  <se:Title>1213 - Planlagt bebyggelse</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -152,9 +132,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Bebyggelse som inngår i planen </se:Name>
+               <se:Name>1214 - Bebyggelse som inngår i planen </se:Name>
                <se:Description>
-                  <se:Title>Bebyggelse som inngår i planen </se:Title>
+                  <se:Title>1214 - Bebyggelse som inngår i planen </se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -172,9 +152,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Bebyggelse som forutsettes fjernet</se:Name>
+               <se:Name>1215 - Bebyggelse som forutsettes fjernet</se:Name>
                <se:Description>
-                  <se:Title>Bebyggelse som forutsettes fjernet</se:Title>
+                  <se:Title>1215 - Bebyggelse som forutsettes fjernet</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -193,9 +173,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Regulert senterlinje</se:Name>
+               <se:Name>1221 - Regulert senterlinje</se:Name>
                <se:Description>
-                  <se:Title>Regulert senterlinje</se:Title>
+                  <se:Title>1221 - Regulert senterlinje</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -214,9 +194,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Frisiktlinje</se:Name>
+               <se:Name>1222 - Frisiktlinje</se:Name>
                <se:Description>
-                  <se:Title>Frisiktlinje</se:Title>
+                  <se:Title>1222 - Frisiktlinje</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -235,9 +215,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Regulert kant kjørebane </se:Name>
+               <se:Name>1223 - Regulert kant kjørebane </se:Name>
                <se:Description>
-                  <se:Title>Regulert kant kjørebane </se:Title>
+                  <se:Title>1223 - Regulert kant kjørebane </se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -256,9 +236,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Regulert kjørefelt</se:Name>
+               <se:Name>1224 - Regulert kjørefelt</se:Name>
                <se:Description>
-                  <se:Title>Regulert kjørefelt</se:Title>
+                  <se:Title>1224 - Regulert kjørefelt</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -277,9 +257,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Regulert parkeringsfelt</se:Name>
+               <se:Name>1225 - Regulert parkeringsfelt</se:Name>
                <se:Description>
-                  <se:Title>Regulert parkeringsfelt</se:Title>
+                  <se:Title>1225 - Regulert parkeringsfelt</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -298,9 +278,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Regulert fotgjengerfelt</se:Name>
+               <se:Name>1226 - Regulert fotgjengerfelt</se:Name>
                <se:Description>
-                  <se:Title>Regulert fotgjengerfelt</se:Title>
+                  <se:Title>1226 - Regulert fotgjengerfelt</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -319,9 +299,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Regulert støyskjerm</se:Name>
+               <se:Name>1227 - Regulert støyskjerm</se:Name>
                <se:Description>
-                  <se:Title>Regulert støyskjerm</se:Title>
+                  <se:Title>1227 - Regulert støyskjerm</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -334,7 +314,7 @@
                      <se:GraphicStroke>
                         <se:Graphic>
                            <se:ExternalGraphic>
-                              <se:OnlineResource xlink:type="simple" xlink:href="https://dibk-plankart.azurewebsites.net/sld/gfx/juridisk-linje-1227.svg" />
+                              <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/sld-local/gfx/juridisk-linje-1227.svg" />
                               <se:Format>image/svg+xml</se:Format>
                            </se:ExternalGraphic>
                            <se:Size>8</se:Size>
@@ -350,9 +330,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Regulert støttemur</se:Name>
+               <se:Name>1228 - Regulert støttemur</se:Name>
                <se:Description>
-                  <se:Title>Regulert støttemur</se:Title>
+                  <se:Title>1228 - Regulert støttemur</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -389,9 +369,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Sikringsgjerde</se:Name>
+               <se:Name>1235 - Sikringsgjerde</se:Name>
                <se:Description>
-                  <se:Title>Sikringsgjerde</se:Title>
+                  <se:Title>1235 - Sikringsgjerde</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -429,9 +409,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Bru</se:Name>
+               <se:Name>1252 - Bru</se:Name>
                <se:Description>
-                  <se:Title>Bru</se:Title>
+                  <se:Title>1252 - Bru</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -450,9 +430,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Tunnel</se:Name>
+               <se:Name>1254 - Tunnel</se:Name>
                <se:Description>
-                  <se:Title>Tunnel</se:Title>
+                  <se:Title>1254 - Tunnel</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -471,9 +451,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Måle og avstandslinje</se:Name>
+               <se:Name>1259 - Måle og avstandslinje</se:Name>
                <se:Description>
-                  <se:Title>Måle og avstandslinje</se:Title>
+                  <se:Title>1259 - Måle og avstandslinje</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -537,9 +517,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Strandlinje sjø</se:Name>
+               <se:Name>1260 - Strandlinje sjø</se:Name>
                <se:Description>
-                  <se:Title>Strandlinje sjø</se:Title>
+                  <se:Title>1260 - Strandlinje sjø</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -558,9 +538,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Strandlinje vassdrag</se:Name>
+               <se:Name>1261 - Strandlinje vassdrag</se:Name>
                <se:Description>
-                  <se:Title>Strandlinje vassdrag</se:Title>
+                  <se:Title>1261 - Strandlinje vassdrag</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -579,9 +559,9 @@
                </se:LineSymbolizer>
             </se:Rule>
             <se:Rule>
-               <se:Name>Midtlinje vassdrag</se:Name>
+               <se:Name>1262 - Midtlinje vassdrag</se:Name>
                <se:Description>
-                  <se:Title>Midtlinje vassdrag</se:Title>
+                  <se:Title>1262 - Midtlinje vassdrag</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
@@ -596,26 +576,6 @@
                      <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
                      <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
                      <se:SvgParameter name="stroke-dasharray">14 7 1 7</se:SvgParameter>
-                  </se:Stroke>
-               </se:LineSymbolizer>
-            </se:Rule>
-            <se:Rule>
-               <se:Name>9999</se:Name>
-               <se:Description>
-                  <se:Title>9999</se:Title>
-               </se:Description>
-               <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
-                  <ogc:PropertyIsEqualTo>
-                     <ogc:PropertyName>juridisklinje</ogc:PropertyName>
-                     <ogc:Literal>9999</ogc:Literal>
-                  </ogc:PropertyIsEqualTo>
-               </ogc:Filter>
-               <se:LineSymbolizer>
-                  <se:Stroke>
-                     <se:SvgParameter name="stroke">#a7dd4a</se:SvgParameter>
-                     <se:SvgParameter name="stroke-width">1</se:SvgParameter>
-                     <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-                     <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
                   </se:Stroke>
                </se:LineSymbolizer>
             </se:Rule>

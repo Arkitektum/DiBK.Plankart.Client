@@ -75,7 +75,7 @@ function MapInfo({ mapDocument, map }) {
 
                <div className="box-row">
                   <div className="label">Høydegrunnlag:</div>
-                  <div className="value">{mapDocument.verticalDatum}</div>
+                  <div className="value">{mapDocument.verticalDatum || '-'}</div>
                </div>
             </div>
             <div>

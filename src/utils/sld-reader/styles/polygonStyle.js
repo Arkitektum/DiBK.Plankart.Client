@@ -15,7 +15,7 @@ function createPattern(graphic) {
    );
 
    const canvas = document.createElement('canvas');
-   canvas.style.imageRendering = 'pixelated';
+
    const context = canvas.getContext('2d');
 
    let imageRatio = DEVICE_PIXEL_RATIO;

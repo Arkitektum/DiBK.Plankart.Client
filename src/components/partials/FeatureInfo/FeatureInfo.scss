@@ -78,6 +78,8 @@
       ol {
          padding: 0 12px;
          margin-bottom: 0;
+         max-height: 150px;
+         overflow-y: auto;
       }
    }
 }

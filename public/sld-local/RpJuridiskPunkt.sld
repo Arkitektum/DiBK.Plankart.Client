@@ -10,9 +10,9 @@
          <se:Name>RpJuridiskPunkt</se:Name>
          <se:FeatureTypeStyle>
             <se:Rule>
-               <se:Name>Vegstengning/fysisk kjøresperre</se:Name>
+               <se:Name>1231 - Vegstengning/fysisk kjøresperre</se:Name>
                <se:Description>
-                  <se:Title>Vegstengning/fysisk kjøresperre</se:Title>
+                  <se:Title>1231 - Vegstengning/fysisk kjøresperre</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>

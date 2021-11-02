@@ -23,10 +23,12 @@ function Upload({ onResponse }) {
       const response = await sendAsync(MAP_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
       if (response) {
-         if (response.validationResult.xsdValidated) {
-            onResponse(response);
-         } else {
+         if (!response.validationResult.xsdValidated) {
             openModal('XSD_VALIDATION', { fileName: response.fileName, messages: response.validationResult.xsdValidationMessages });
+         } else if (!response.validationResult.epsgValidated) {
+            openModal('EPSG_VALIDATION', { fileName: response.fileName, messages: response.validationResult.epsgValidationMessages });
+         } else {
+            onResponse(response);
          }
       }
    }
