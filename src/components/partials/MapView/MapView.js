@@ -35,9 +35,9 @@ function MapView({ mapDocument }) {
       () => {
          const selectClick = new Select({
             condition: click,
-            hitTolerance: 10,
             layers: layer => layer.get('id') === 'features',
             multi: true,
+            hitTolerance: 10,
             style: null
          });
 

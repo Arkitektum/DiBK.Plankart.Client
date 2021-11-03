@@ -314,7 +314,7 @@
                      <se:GraphicStroke>
                         <se:Graphic>
                            <se:ExternalGraphic>
-                              <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/sld-local/gfx/juridisk-linje-1227.svg" />
+                              <se:OnlineResource xlink:type="simple" xlink:href="https://dibk-plankart.azurewebsites.net/sld/gfx/juridisk-linje-1227.svg" />
                               <se:Format>image/svg+xml</se:Format>
                            </se:ExternalGraphic>
                            <se:Size>8</se:Size>
