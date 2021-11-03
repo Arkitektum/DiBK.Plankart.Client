@@ -7,14 +7,14 @@
    background-color: #f7f7f7;
 
    &.api-loading .content {
-      opacity: .25;
+      opacity: 0.25;
    }
 }
 
 .content {
    display: flex;
-   position: relative;  
-   
+   position: relative;
+
    .left-content {
       display: flex;
       flex-direction: column;
