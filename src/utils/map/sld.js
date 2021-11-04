@@ -11,11 +11,11 @@ export async function loadSldStyle(name) {
 
    try {
       const response = await axios.get(`${SLD_BASE_URL}/${name}.sld`);
-      const sldObject = Reader(response.data);
+      const sldObject = Reader(response.data, name);
       const sldLayer = getSldLayer(sldObject);      
       const style = getStyle(sldLayer, name);
       sldStyles[name] = style; 
-
+      
       return style;    
    } catch {
       return null;

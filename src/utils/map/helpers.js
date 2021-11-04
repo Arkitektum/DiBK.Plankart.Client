@@ -85,3 +85,5 @@ export function debounce(func, wait, immediate) {
 };
 
 export const allEqual = array => array.every(value => value === array[0]);
+
+export const createId = () => '_' + Math.random().toString(36).substr(2, 9);

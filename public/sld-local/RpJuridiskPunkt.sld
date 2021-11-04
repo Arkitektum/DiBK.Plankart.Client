@@ -10,28 +10,47 @@
          <se:Name>RpJuridiskPunkt</se:Name>
          <se:FeatureTypeStyle>
             <se:Rule>
-               <se:Name>1231 - Vegstengning/fysisk kjøresperre</se:Name>
+               <se:Name>1271 - Eksisterende tre som skal bevares</se:Name>
                <se:Description>
-                  <se:Title>1231 - Vegstengning/fysisk kjøresperre</se:Title>
+                  <se:Title>1271 - Eksisterende tre som skal bevares</se:Title>
                </se:Description>
                <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
                   <ogc:PropertyIsEqualTo>
                      <ogc:PropertyName>juridiskpunkt</ogc:PropertyName>
-                     <ogc:Literal>1231</ogc:Literal>
+                     <ogc:Literal>1271</ogc:Literal>
                   </ogc:PropertyIsEqualTo>
                </ogc:Filter>
                <se:PointSymbolizer>
                   <se:Graphic>
-                     <se:Mark>
-                        <se:WellKnownName>ttf://Wingdings#0xE7</se:WellKnownName>
-                     </se:Mark>
-                     <se:Size>18</se:Size>
-                     <se:Rotation>
-                        <ogc:Literal>0</ogc:Literal>
-                     </se:Rotation>
-                  </Graphic>
-               </PointSymbolizer>
-            </se:Rule>
+                     <se:ExternalGraphic>
+                        <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/sld-local/gfx/rp-juridisk-punkt-1271.svg" />
+                        <se:Format>image/svg+xml</se:Format>
+                     </se:ExternalGraphic>
+                     <se:Size>25</se:Size>
+                  </se:Graphic>
+               </se:PointSymbolizer>
+            </se:Rule>   
+            <se:Rule>
+               <se:Name>1272 - Regulert nytt tre</se:Name>
+               <se:Description>
+                  <se:Title>1272 - Regulert nytt tre</se:Title>
+               </se:Description>
+               <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                  <ogc:PropertyIsEqualTo>
+                     <ogc:PropertyName>juridiskpunkt</ogc:PropertyName>
+                     <ogc:Literal>1272</ogc:Literal>
+                  </ogc:PropertyIsEqualTo>
+               </ogc:Filter>
+               <se:PointSymbolizer>
+                  <se:Graphic>
+                     <se:ExternalGraphic>
+                        <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/sld-local/gfx/rp-juridisk-punkt-1272.svg" />
+                        <se:Format>image/svg+xml</se:Format>
+                     </se:ExternalGraphic>
+                     <se:Size>25</se:Size>
+                  </se:Graphic>
+               </se:PointSymbolizer>
+            </se:Rule>     
          </se:FeatureTypeStyle>
       </UserStyle>
    </NamedLayer>

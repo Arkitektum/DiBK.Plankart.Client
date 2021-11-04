@@ -11,8 +11,11 @@
       min-height: 0;
    }
 
-   &.legends-show-all .symbol-hidden {
-      display: block !important;
+   &.legends-show-all {
+      .legend-hidden,      
+      .symbol-hidden {
+         display: block !important;
+      }
    }
 
    .show-all {

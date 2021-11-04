@@ -7,10 +7,12 @@ import featureMembers from 'config/features.config';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { get, set } from 'idb-keyval';
+import { createId } from './helpers';
 
 const APP_VERSION = process.env.REACT_APP_VERSION;
 const IDB_KEY = 'gml-kart-legend';
 const SYMBOLIZER = { POLYGON: 'POLYGON', LINE: 'LINE', POINT: 'POINT', TEXT: 'TEXT' };
+const LEGEND_WIDTH = 50;
 
 export async function createLegends() {
    const legendsFromIdb = await loadFromIdb();
@@ -21,6 +23,7 @@ export async function createLegends() {
 
    const legends = [];
    const [map, mapElement] = createLegendTempMap();
+   const vectorLayer = map.getLayers().getArray()[0];
 
    const names = featureMembers
       .filter(member => member.showLegend)
@@ -28,7 +31,7 @@ export async function createLegends() {
 
    for (let i = 0; i < names.length; i++) {
       const name = names[i];
-      const legend = await createLegend(name, map.getLayers().getArray()[0]);
+      const legend = await createLegend(name, vectorLayer);
 
       legends.push(legend);
    }
@@ -67,16 +70,15 @@ async function createLegend(name, vectorLayer) {
 
    for (let i = 0; i < rules.length; i++) {
       const rule = rules[i];
-
       const feature = new Feature({ geometry: createGeometry(rule) });
       const styles = getGeometryStyles([rule]);
-      const olStyles = OlStyler(styles, feature);
+      const olStyles = getOlStyles(styles, feature, rule);
 
       feature.setStyle(olStyles);
 
       legend.symbols.push({
-         id: '_' + Math.random().toString(36).substr(2, 9),
-         image: await createSymbol(vectorLayer, feature),
+         id: createId(),
+         image: await createSymbolImage(vectorLayer, feature),
          rule,
          hidden: false
       });
@@ -85,7 +87,26 @@ async function createLegend(name, vectorLayer) {
    return legend;
 }
 
-async function createSymbol(vectorLayer, feature) {
+function getOlStyles(styles, feature, rule) {
+   const olStyles = OlStyler(styles, feature);
+
+   if (getSymbolizerType(rule) === SYMBOLIZER.POINT) {
+      return olStyles.map(olStyle => {
+         const clone = olStyle.clone();
+         const image = clone.getImage();
+
+         if (image) {
+            image.setScale(LEGEND_WIDTH / image.getSize()[0]);
+         }
+
+         return clone;
+      })
+   }
+
+   return olStyles;
+}
+
+async function createSymbolImage(vectorLayer, feature) {
    return new Promise((resolve) => {
       vectorLayer.once('postrender', event => {
          resolve(event.context.canvas.toDataURL());
@@ -123,6 +144,7 @@ function createGeometry(rule) {
       case SYMBOLIZER.LINE:
          return new LineString([[0, 50], [50, 0]]);
       case SYMBOLIZER.POINT:
+      case SYMBOLIZER.TEXT:
          return new Point([25, 25]);
       default:         
          return new Polygon([[[0, 0], [0, 50], [50, 50], [50, 0], [0, 0]]]);
@@ -157,7 +179,7 @@ function createLegendTempMap() {
    });
 
    const mapElement = document.createElement('div');   
-   Object.assign(mapElement.style, { position: 'absolute', left: '-9999px', top: '-9999px', width: '50px', height: '50px' });
+   Object.assign(mapElement.style, { position: 'absolute', top: '-9999px', left: '-9999px', width: '50px', height: '50px' });
    document.getElementsByTagName('body')[0].appendChild(mapElement);
 
    map.setTarget(mapElement);

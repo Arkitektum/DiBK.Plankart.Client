@@ -13,6 +13,7 @@ const featureMembers = [
    new FeatureMember('RpDetaljeringSone'),
    new FeatureMember('RpGjennomføringSone'),
    new FeatureMember('RpJuridiskLinje', { infoProps: ['juridisklinje'] }),
+   new FeatureMember('RpJuridiskPunkt', { infoProps: ['juridiskpunkt'] }),
    new FeatureMember('RpGrense', { showLegend: false }),
    new FeatureMember('RpFormålGrense'),
    new FeatureMember('RpPåskrift', { infoProps: ['tekststreng', 'påskriftType'], showLegend: false }),

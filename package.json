@@ -1,7 +1,7 @@
 {
-   "name": "dibk-plankart",
-   "description": "Visning av plankart i GML-format",
-   "version": "0.5.1",
+   "name": "dibk-gml-kart",
+   "description": "Visning av GML-kart i OpenLayers",
+   "version": "0.5.2",
    "private": true,
    "dependencies": {
       "@reduxjs/toolkit": "^1.6.1",

@@ -37,7 +37,7 @@ function MapView({ mapDocument }) {
             condition: click,
             layers: layer => layer.get('id') === 'features',
             multi: true,
-            hitTolerance: 10,
+            hitTolerance: 5,
             style: null
          });
 
