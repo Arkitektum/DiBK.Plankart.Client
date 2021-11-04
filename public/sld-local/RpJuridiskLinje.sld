@@ -54,7 +54,7 @@
                      <se:GraphicStroke>
                         <se:Graphic>
                            <se:ExternalGraphic>
-                              <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/sld-local/gfx/rp-juridisk-linje-1204.svg" />
+                              <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/sld-local/gfx/z.svg" />
                               <se:Format>image/svg+xml</se:Format>
                            </se:ExternalGraphic>
                            <se:Size>11</se:Size>

@@ -53,15 +53,14 @@
                   <se:Stroke>
                      <se:GraphicStroke>
                         <se:Graphic>
-                           <se:Mark>
-                              <se:OnlineResource xlink:type="simple" xlink:href="ttf://Sk_PBL-symboler"/>
-                              <se:Format>ttf</se:Format>
-                              <se:MarkIndex>82</se:MarkIndex>
-                              <se:Fill>
-                                 <se:SvgParameter name="fill">#000000</se:SvgParameter>
-                              </se:Fill>
-                           </se:Mark>
-                           <se:Size>14</se:Size>
+                           <se:ExternalGraphic>
+                              <se:OnlineResource xlink:type="simple" xlink:href="https://dibk-plankart.azurewebsites.net/sld/gfx/z.svg" />
+                              <se:Format>image/svg+xml</se:Format>
+                           </se:ExternalGraphic>
+                           <se:Size>11</se:Size>
+                           <se:Rotation>
+                              <ogc:Literal>90</ogc:Literal>
+                           </se:Rotation>
                         </se:Graphic>
                         <se:Gap>
                            <ogc:Literal>29</ogc:Literal>
