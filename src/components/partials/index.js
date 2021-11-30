@@ -8,3 +8,4 @@ export { default as ScaleBar } from './ScaleBar/ScaleBar';
 export { default as SplashScreen } from './SplashScreen/SplashScreen';
 export { default as TopBar } from './TopBar/TopBar';
 export { default as ValidationErrors } from './ValidationErrors/ValidationErrors';
+export { default as CesiumMapView } from './CesiumMapView/CesiumMapView';

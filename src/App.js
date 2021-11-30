@@ -1,6 +1,7 @@
+import { hot } from "react-hot-loader/root";
 import { createContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { MapView, SplashScreen, TopBar } from 'components/partials';
+import { CesiumMapView, SplashScreen, TopBar } from 'components/partials';
 import { createLegends } from 'utils/map/legend';
 import { Spinner } from 'components/custom-elements';
 import './App.scss';
@@ -27,7 +28,7 @@ function App() {
       <LegendContext.Provider value={legends}>
          <div className={`app ${apiLoading ? 'api-loading' : ''}`}>
             <TopBar onUploadResponse={setMapDocument} loading={loading} />
-            <MapView mapDocument={mapDocument} />
+            <CesiumMapView show={true} />
             <SplashScreen mapDocument={mapDocument} loading={loading} />
             {
                apiLoading ?
@@ -39,5 +40,5 @@ function App() {
    );
 }
 
-export default App;
+export default hot(App);
 export const LegendContext = createContext([]);
