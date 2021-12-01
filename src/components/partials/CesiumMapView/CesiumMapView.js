@@ -13,7 +13,7 @@ function CesiumMapView({show}) {
         });
 
     return (
-        <Viewer style={{position: "absolute", top:30, left:0, right:0, bottom:0}} terrainProvider={terrainProvider}>
+        <Viewer terrainProvider={terrainProvider}>
             <Scene />
             <Entity />
             <ImageryLayerCollection>
