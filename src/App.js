@@ -28,8 +28,8 @@ function App() {
       <LegendContext.Provider value={legends}>
          <div className={`app ${apiLoading ? 'api-loading' : ''}`}>
             <TopBar onUploadResponse={setMapDocument} loading={loading} />
-            <CesiumMapView show={true} />
-            <SplashScreen mapDocument={mapDocument} loading={loading} />
+            <CesiumMapView mapDocument={mapDocument} />
+            {/*<SplashScreen mapDocument={mapDocument} loading={loading} />*/}
             {
                apiLoading ?
                   <Spinner /> :
