@@ -10,7 +10,7 @@ import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from '
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 
-import { WebMapServiceImageryProvider, createWorldTerrain, GeoJsonDataSource, Color } from 'cesium';
+import { WebMapServiceImageryProvider, ArcGISTiledElevationTerrainProvider, GeoJsonDataSource, Color } from 'cesium';
 import { Viewer, ImageryLayer, ImageryLayerCollection, GeoJsonDataSource as ResiumGeoJsonDataSource } from 'resium';
 import { baseMap } from 'config/baseMap.config';
 import './CesiumMapView.scss';
@@ -154,7 +154,9 @@ function CesiumMapView({ mapDocument }) {
         [sidebar, map]
      );
 
-    const terrainProvider = createWorldTerrain();
+    const terrainProvider = new ArcGISTiledElevationTerrainProvider({
+      url : 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
+   });
     const imageryProvider = new WebMapServiceImageryProvider({
             url: baseMap.url,
             layers: baseMap.layer

@@ -9,6 +9,7 @@ import { filterLegends } from 'utils/map/legend';
 import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
+import OLCesium from 'ol-cesium';
 import './MapView.scss';
 
 function MapView({ mapDocument }) {
@@ -22,6 +23,8 @@ function MapView({ mapDocument }) {
    const sidebar = useSelector(state => state.map.sidebar);
    const sidebarVisible = useRef(true);
    const mapElement = useRef();
+   const ol3dMap = useRef();
+   const ol3dMapEnabled = useRef(false);
 
    const selectFeature = useCallback(
       features => {
@@ -72,10 +75,11 @@ function MapView({ mapDocument }) {
       () => {
          async function create() {
             const olMap = await createMap(mapDocument);
-            setMap(olMap);
 
             const vectorLayer = getLayer(olMap, 'features');
             setFeatures(vectorLayer.getSource().getFeatures())
+
+            setMap(olMap);
          }
 
          if (mapDocument) {
@@ -144,6 +148,27 @@ function MapView({ mapDocument }) {
       [sidebar, map]
    );
 
+   useEffect(
+      () => {
+         if (!map) {
+            return;
+         }
+         ol3dMap.current = new OLCesium({map: map});
+         ol3dMap.current.setEnabled(ol3dMapEnabled.current);
+      },
+      [map]
+   )
+
+   useEffect(
+      () => {
+         if (!ol3dMap.current){
+            return;
+         }
+         ol3dMap.setEnabled(ol3dMapEnabled.current);
+      },
+      [ol3dMapEnabled]
+   )
+
    return (
       <div className={`content ${!sidebar.visible ? 'sidebar-hidden' : ''}`}>
          <div className="left-content">
@@ -155,6 +180,9 @@ function MapView({ mapDocument }) {
          <div className="right-content">
             <div className="map-container">
                <div ref={mapElement} className="map"></div>
+               {<button onClick={ol3dMap.current.setEnabled(false)}>
+                  Vis/Skjul 3d-kart
+               </button>}
             </div>
 
             <FeatureContextMenu map={map} data={contextMenuData} onFeatureSelect={selectFeature} />
