@@ -10,7 +10,9 @@ import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from '
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 import OLCesium from 'ol-cesium';
+import {WebMercatorProjection, WebMapServiceImageryProvider, Credit, ArcGISTiledElevationTerrainProvider } from 'cesium';
 import './MapView.scss';
+import { baseMap } from 'config/baseMap.config';
 
 function MapView({ mapDocument }) {
    const [map, setMap] = useState(null);
@@ -23,8 +25,8 @@ function MapView({ mapDocument }) {
    const sidebar = useSelector(state => state.map.sidebar);
    const sidebarVisible = useRef(true);
    const mapElement = useRef();
-   const ol3dMap = useRef();
-   const ol3dMapEnabled = useRef(false);
+   const [ol3dMap, setOl3dMap] = useState(null);
+   const ol3dMapEnabled = useRef(true);
 
    const selectFeature = useCallback(
       features => {
@@ -75,6 +77,8 @@ function MapView({ mapDocument }) {
       () => {
          async function create() {
             const olMap = await createMap(mapDocument);
+
+            console.log('mapDocument: ', mapDocument);
 
             const vectorLayer = getLayer(olMap, 'features');
             setFeatures(vectorLayer.getSource().getFeatures())
@@ -153,21 +157,51 @@ function MapView({ mapDocument }) {
          if (!map) {
             return;
          }
-         ol3dMap.current = new OLCesium({map: map});
-         ol3dMap.current.setEnabled(ol3dMapEnabled.current);
+         setOl3dMap(new OLCesium({
+            map: map,
+            sceneOptions: {
+               mapProjection: new WebMercatorProjection()
+            },
+         }));
       },
       [map]
    )
 
    useEffect(
       () => {
-         if (!ol3dMap.current){
+         if (!ol3dMap){
+            console.log('ol3dMap not ready');
             return;
          }
+
+         var scene = ol3dMap.getCesiumScene();
+
+         var plankartLayer = scene.imageryLayers.get(0);
+
+         console.log('plankartLayer: ', plankartLayer)
+
+         scene.imageryLayers.addImageryProvider(new WebMapServiceImageryProvider({
+            url : baseMap.url,
+            layers : baseMap.layer,
+            credit : new Credit("CC-BY Kartverket","", "http://www.kartverket.no/")
+         }));
+         
+         scene.terrainProvider =  new ArcGISTiledElevationTerrainProvider({
+            url : 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
+         });
+
          ol3dMap.setEnabled(ol3dMapEnabled.current);
       },
-      [ol3dMapEnabled]
+      [ol3dMap, ol3dMapEnabled, map]
    )
+
+   function toggle3dMap() {
+      ol3dMapEnabled.current = !ol3dMapEnabled.current;
+
+      if (ol3dMap){
+         ol3dMap.setEnabled(ol3dMapEnabled.current);
+      }
+   }
 
    return (
       <div className={`content ${!sidebar.visible ? 'sidebar-hidden' : ''}`}>
@@ -180,7 +214,7 @@ function MapView({ mapDocument }) {
          <div className="right-content">
             <div className="map-container">
                <div ref={mapElement} className="map"></div>
-               {<button onClick={ol3dMap.current.setEnabled(false)}>
+               {<button onClick={toggle3dMap}>
                   Vis/Skjul 3d-kart
                </button>}
             </div>
