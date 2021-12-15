@@ -10,7 +10,7 @@ import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from '
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 import OLCesium from 'ol-cesium';
-import {WebMercatorProjection, WebMapServiceImageryProvider, Credit, ArcGISTiledElevationTerrainProvider } from 'cesium';
+import { WebMercatorProjection, WebMapServiceImageryProvider, ArcGISTiledElevationTerrainProvider } from 'cesium';
 import './MapView.scss';
 import { baseMap } from 'config/baseMap.config';
 
@@ -183,7 +183,6 @@ function MapView({ mapDocument }) {
          scene.imageryLayers.addImageryProvider(new WebMapServiceImageryProvider({
             url : baseMap.url,
             layers : baseMap.layer,
-            credit : new Credit("CC-BY Kartverket","", "http://www.kartverket.no/")
          }));
          
          scene.terrainProvider =  new ArcGISTiledElevationTerrainProvider({
