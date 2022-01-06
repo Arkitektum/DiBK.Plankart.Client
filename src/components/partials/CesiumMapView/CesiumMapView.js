@@ -10,10 +10,12 @@ import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from '
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 
-import { WebMapServiceImageryProvider, ArcGISTiledElevationTerrainProvider, GeoJsonDataSource, Color } from 'cesium';
+import { WebMapServiceImageryProvider, ArcGISTiledElevationTerrainProvider, GeoJsonDataSource, Color, CesiumTerrainProvider, createWorldTerrain } from 'cesium';
 import { Viewer, ImageryLayer, ImageryLayerCollection, GeoJsonDataSource as ResiumGeoJsonDataSource } from 'resium';
 import { baseMap } from 'config/baseMap.config';
 import './CesiumMapView.scss';
+import IonResource from 'cesium/Source/Core/IonResource';
+import Ion from 'cesium/Source/Core/Ion';
 
 function CesiumMapView({ mapDocument }) {
     const [map, setMap] = useState(null);
@@ -154,14 +156,26 @@ function CesiumMapView({ mapDocument }) {
         [sidebar, map]
      );
 
-    const terrainProvider = new ArcGISTiledElevationTerrainProvider({
+   const terrainProvider = new ArcGISTiledElevationTerrainProvider({
       url : 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
    });
-    const imageryProvider = new WebMapServiceImageryProvider({
-            url: baseMap.url,
-            layers: baseMap.layer
-        }
-    );
+
+   const imageryProvider = new WebMapServiceImageryProvider({
+      url: baseMap.url,
+      layers: baseMap.layer
+   });
+
+   Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MjcxMThmNC00YjRlLTQxN2EtOWVlYy01ZjlkMDI4OTk1MDYiLCJpZCI6Njk1ODcsImlhdCI6MTYzODk3MjM0Mn0.gk-hx6X_EMGF5iRzvKLLlu0dNNFUoIFe65HA83ZY7IE';
+
+   const customTerrainProvider1 = new CesiumTerrainProvider({
+      url: IonResource.fromAssetId(734967),
+   });
+
+   const customTerrainProvider2 = new CesiumTerrainProvider({
+      url: IonResource.fromAssetId(734978),
+   });
+
+   const cesiumWorldTerrain = createWorldTerrain();
 
     console.log('mapDocument.geoJson: ', mapDocument?.geoJson);
     console.log('geoJsonData: ', geoJsonData);
@@ -175,12 +189,12 @@ function CesiumMapView({ mapDocument }) {
             </div>
 
             <div className="right-content">
-                <Viewer terrainProvider={terrainProvider}>
+                <Viewer terrainProvider={cesiumWorldTerrain}>
                     <ImageryLayerCollection>
                         {<ImageryLayer imageryProvider={imageryProvider} />}
                         {/*<ImageryLayer imageryProvider="public/sld/RpArealformålOmråde.sld"/>*/}
                     </ImageryLayerCollection>
-                    <ResiumGeoJsonDataSource data={geoJsonData}/>
+                    {/*<ResiumGeoJsonDataSource data={geoJsonData}/>*/}
                 </Viewer>
 
                 <FeatureContextMenu map={map} data={contextMenuData} onFeatureSelect={selectFeature} />
