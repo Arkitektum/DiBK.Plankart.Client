@@ -71,11 +71,11 @@ function textStyle(textsymbolizer) {
       anchorpoint.anchorpointx === '' ? NaN : anchorpoint.anchorpointx
    );
 
-   if (anchorpointx < 0.25) {
+   if (isNaN(anchorpointx) || anchorpointx < 0.25) {
       textAlign = 'left';
    } else if (anchorpointx > 0.75) {
       textAlign = 'right';
-   }
+   } 
 
    let textBaseline = 'middle';
 
