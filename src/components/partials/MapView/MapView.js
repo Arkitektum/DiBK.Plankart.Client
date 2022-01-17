@@ -188,7 +188,7 @@ function MapView({ mapDocument }) {
          }));
          
          scene.terrainProvider = new CesiumTerrainProvider({
-            url: IonResource.fromAssetId(734978), //734967, 734978
+            url: IonResource.fromAssetId(738097)
          });
 
          ol3dMap.setEnabled(ol3dMapEnabled.current);
