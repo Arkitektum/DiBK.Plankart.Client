@@ -10,11 +10,11 @@ import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from '
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 import OLCesium from 'ol-cesium';
-import { Cartographic, WebMapServiceImageryProvider, CesiumTerrainProvider } from 'cesium';
-import './MapView.scss';
+import { WebMapServiceImageryProvider, CesiumTerrainProvider } from 'cesium';
 import { baseMap } from 'config/baseMap.config';
 import IonResource from 'cesium/Source/Core/IonResource';
 import Ion from 'cesium/Source/Core/Ion';
+import './MapView.scss';
 
 function MapView({ mapDocument }) {
    const [map, setMap] = useState(null);
