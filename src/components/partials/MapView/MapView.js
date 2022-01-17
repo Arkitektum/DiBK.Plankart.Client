@@ -10,9 +10,11 @@ import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from '
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 import OLCesium from 'ol-cesium';
-import { WebMercatorProjection, WebMapServiceImageryProvider, ArcGISTiledElevationTerrainProvider } from 'cesium';
+import { WebMercatorProjection, GeographicProjection, WebMapServiceImageryProvider, ArcGISTiledElevationTerrainProvider, Color, CesiumTerrainProvider, createWorldTerrain, Viewer, viewerDragDropMixin } from 'cesium';
 import './MapView.scss';
 import { baseMap } from 'config/baseMap.config';
+import IonResource from 'cesium/Source/Core/IonResource';
+import Ion from 'cesium/Source/Core/Ion';
 
 function MapView({ mapDocument }) {
    const [map, setMap] = useState(null);
@@ -157,12 +159,10 @@ function MapView({ mapDocument }) {
          if (!map) {
             return;
          }
-         setOl3dMap(new OLCesium({
-            map: map,
-            sceneOptions: {
-               mapProjection: new WebMercatorProjection()
-            },
-         }));
+
+         var olcs = new OLCesium({map: map});
+
+         setOl3dMap(olcs);
       },
       [map]
    )
@@ -185,9 +185,13 @@ function MapView({ mapDocument }) {
             layers : baseMap.layer,
          }));
          
-         scene.terrainProvider =  new ArcGISTiledElevationTerrainProvider({
-            url : 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
+         scene.terrainProvider = new CesiumTerrainProvider({
+            url: IonResource.fromAssetId(734967),
          });
+
+         /*scene.terrainProvider =  new ArcGISTiledElevationTerrainProvider({
+            url : 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
+         });*/
 
          ol3dMap.setEnabled(ol3dMapEnabled.current);
       },
@@ -201,6 +205,41 @@ function MapView({ mapDocument }) {
          ol3dMap.setEnabled(ol3dMapEnabled.current);
       }
    }
+
+   const terrainProvider = new ArcGISTiledElevationTerrainProvider({
+      url : 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
+   });
+
+   const imageryProvider = new WebMapServiceImageryProvider({
+      url: baseMap.url,
+      layers: baseMap.layer
+   });
+
+   Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MjcxMThmNC00YjRlLTQxN2EtOWVlYy01ZjlkMDI4OTk1MDYiLCJpZCI6Njk1ODcsImlhdCI6MTYzODk3MjM0Mn0.gk-hx6X_EMGF5iRzvKLLlu0dNNFUoIFe65HA83ZY7IE';
+
+   const customTerrainProvider1 = new CesiumTerrainProvider({
+      url: IonResource.fromAssetId(734967),
+   });
+
+   const customTerrainProvider2 = new CesiumTerrainProvider({
+      url: IonResource.fromAssetId(734978),
+   });
+
+   const cesiumWorldTerrain = createWorldTerrain();
+
+   /*var viewer = new Viewer('cesiumContainer', {
+      terrainProvider : customTerrainProvider1,
+      imageryProvider : imageryProvider,
+   });
+
+   //Add basic drag and drop functionality
+   viewer.extend(viewerDragDropMixin);
+
+   //Show a pop-up alert if we encounter an error when processing a dropped file
+   viewer.dropError.addEventListener(function(dropHandler, name, error) {
+   console.log(error);
+   window.alert(error);
+   });*/
 
    return (
       <div className={`content ${!sidebar.visible ? 'sidebar-hidden' : ''}`}>
@@ -216,6 +255,9 @@ function MapView({ mapDocument }) {
                {<button onClick={toggle3dMap}>
                   Vis/Skjul 3d-kart
                </button>}
+            </div>
+            <div id="loadingOverlay">
+               <h1>Loading...</h1>
             </div>
 
             <FeatureContextMenu map={map} data={contextMenuData} onFeatureSelect={selectFeature} />

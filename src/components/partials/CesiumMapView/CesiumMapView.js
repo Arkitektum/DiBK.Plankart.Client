@@ -10,8 +10,8 @@ import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from '
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 
-import { WebMapServiceImageryProvider, ArcGISTiledElevationTerrainProvider, GeoJsonDataSource, Color, CesiumTerrainProvider, createWorldTerrain } from 'cesium';
-import { Viewer, ImageryLayer, ImageryLayerCollection, GeoJsonDataSource as ResiumGeoJsonDataSource } from 'resium';
+import { WebMapServiceImageryProvider, ArcGISTiledElevationTerrainProvider, Color, CesiumTerrainProvider, createWorldTerrain, Viewer, viewerDragDropMixin } from 'cesium';
+import { ResiumViewer, ImageryLayer, ImageryLayerCollection, GeoJsonDataSource as ResiumGeoJsonDataSource } from 'resium';
 import { baseMap } from 'config/baseMap.config';
 import './CesiumMapView.scss';
 import IonResource from 'cesium/Source/Core/IonResource';
@@ -23,7 +23,6 @@ function CesiumMapView({ mapDocument }) {
     const [features, setFeatures] = useState([]);
     const [selectedFeatures, setSelectedFeatures] = useState([]);
     const [filteredLegends, setFilteredLegends] = useState([]);
-    const [geoJsonData, setGeoJsonData] = useState([]);
     const legends = useContext(LegendContext);
     const legend = useSelector(state => state.map.legend);
     const sidebar = useSelector(state => state.map.sidebar);
@@ -78,13 +77,8 @@ function CesiumMapView({ mapDocument }) {
      useEffect(
         () => {
             async function create() {
-                const olMap = await createMap(mapDocument);
-                setMap(olMap);
-
-                setGeoJsonData(await GeoJsonDataSource.load(mapDocument?.geoJson, {
-                    //clampToGround: true,
-                    fill: Color.LIGHTYELLOW,
-                }));
+               const olMap = await createMap(mapDocument);
+               setMap(olMap);
   
               const vectorLayer = getLayer(olMap, 'features');
               setFeatures(vectorLayer.getSource().getFeatures())
@@ -176,10 +170,21 @@ function CesiumMapView({ mapDocument }) {
    });
 
    const cesiumWorldTerrain = createWorldTerrain();
+   
+   var viewer = new Viewer('right-content', {
+      terrainProvider : terrainProvider,
+      imageryProvider : imageryProvider,
+   });
+    
 
-    console.log('mapDocument.geoJson: ', mapDocument?.geoJson);
-    console.log('geoJsonData: ', geoJsonData);
+   //Add basic drag and drop functionality
+   viewer.extend(viewerDragDropMixin);
 
+   //Show a pop-up alert if we encounter an error when processing a dropped file
+   viewer.dropError.addEventListener(function(dropHandler, name, error) {
+   console.log(error);
+   window.alert(error);
+   });
     return (
         <div className={`content ${!sidebar.visible ? 'sidebar-hidden' : ''}`}>
             <div className="left-content">
@@ -189,13 +194,13 @@ function CesiumMapView({ mapDocument }) {
             </div>
 
             <div className="right-content">
-                <Viewer terrainProvider={cesiumWorldTerrain}>
+                {/* <ResiumViewer terrainProvider={cesiumWorldTerrain}>
                     <ImageryLayerCollection>
                         {<ImageryLayer imageryProvider={imageryProvider} />}
-                        {/*<ImageryLayer imageryProvider="public/sld/RpArealformålOmråde.sld"/>*/}
+                        {/*<ImageryLayer imageryProvider="public/sld/RpArealformålOmråde.sld"/>}
                     </ImageryLayerCollection>
-                    {/*<ResiumGeoJsonDataSource data={geoJsonData}/>*/}
-                </Viewer>
+                    {/*<ResiumGeoJsonDataSource data={geoJsonData}/>}
+                </ResiumViewer> */}
 
                 <FeatureContextMenu map={map} data={contextMenuData} onFeatureSelect={selectFeature} />
                 <FeatureInfo map={map} features={selectedFeatures} />
