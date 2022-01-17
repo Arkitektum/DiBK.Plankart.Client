@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { toggleSidebar } from 'store/slices/mapSlice';
 import filesize from 'filesize';
 import Upload from './Upload/Upload';
-import Upload3D from './Upload/Upload3D';
 import './TopBar.scss';
 
 function TopBar({ loading, onUploadResponse }) {
@@ -50,9 +49,6 @@ function TopBar({ loading, onUploadResponse }) {
          <div className="top-bar-left">
             <div className="upload-button" style={{ display: loading ? 'none' : 'block' }}>
                <Upload onResponse={handleUploadResponse} />
-            </div>
-            <div className="upload-button" style={{ display: loading ? 'none' : 'block' }}>
-               <Upload3D onResponse={handleUploadResponse} />
             </div>
 
             <div
