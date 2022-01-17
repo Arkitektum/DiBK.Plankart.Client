@@ -184,6 +184,7 @@ function MapView({ mapDocument }) {
          scene.imageryLayers.addImageryProvider(new WebMapServiceImageryProvider({
             url : baseMap.url,
             layers : baseMap.layer,
+            maximumLevel : baseMap.maxZoom,
          }));
          
          scene.terrainProvider = new CesiumTerrainProvider({
