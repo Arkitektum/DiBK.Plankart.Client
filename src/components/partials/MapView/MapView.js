@@ -10,7 +10,7 @@ import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from '
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 import OLCesium from 'ol-cesium';
-import { WebMapServiceImageryProvider, CesiumTerrainProvider } from 'cesium';
+import { WebMapServiceImageryProvider, CesiumTerrainProvider, CzmlDataSource } from 'cesium';
 import { baseMap } from 'config/baseMap.config';
 import IonResource from 'cesium/Source/Core/IonResource';
 import Ion from 'cesium/Source/Core/Ion';
@@ -29,6 +29,7 @@ function MapView({ mapDocument }) {
    const mapElement = useRef();
    const [ol3dMap, setOl3dMap] = useState(null);
    const ol3dMapEnabled = useRef(true);
+   const [czmlObjects, setCzmlObjects] = useState(null);
 
    Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MjcxMThmNC00YjRlLTQxN2EtOWVlYy01ZjlkMDI4OTk1MDYiLCJpZCI6Njk1ODcsImlhdCI6MTYzODk3MjM0Mn0.gk-hx6X_EMGF5iRzvKLLlu0dNNFUoIFe65HA83ZY7IE';
 
@@ -85,6 +86,8 @@ function MapView({ mapDocument }) {
 
             const vectorLayer = getLayer(olMap, 'features');
             setFeatures(vectorLayer.getSource().getFeatures())
+
+            setCzmlObjects(mapDocument.czmlData)
          }
 
          if (mapDocument) {
@@ -174,12 +177,6 @@ function MapView({ mapDocument }) {
          }
 
          var scene = ol3dMap.getCesiumScene();
-         
-         var plankartLayer = scene.imageryLayers.get(0);
-
-         console.log('scene.imageryLayers: ', scene.imageryLayers)
-
-         console.log('plankartLayer: ', plankartLayer)
 
          scene.imageryLayers.addImageryProvider(new WebMapServiceImageryProvider({
             url : baseMap.url,
@@ -191,9 +188,19 @@ function MapView({ mapDocument }) {
             url: IonResource.fromAssetId(738097)
          });
 
+         console.log("czmlObjects:\n" + czmlObjects);
+
+         if (czmlObjects){
+            var dataSources = ol3dMap.getDataSources();
+   
+            czmlObjects.czmlStrings.forEach(czmlString =>
+               dataSources.add(CzmlDataSource.load(czmlString))
+            );
+         }
+
          ol3dMap.setEnabled(ol3dMapEnabled.current);
       },
-      [ol3dMap, ol3dMapEnabled, map]
+      [ol3dMap, ol3dMapEnabled, map, czmlObjects]
    )
 
    function toggle3dMap() {
