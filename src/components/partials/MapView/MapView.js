@@ -164,6 +164,8 @@ function MapView({ mapDocument }) {
 
          var olcs = new OLCesium({map: map});
 
+         olcs.warmUp(2000, 10000)
+
          setOl3dMap(olcs);
       },
       [map]
