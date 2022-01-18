@@ -67,7 +67,7 @@ export async function createMap(mapDocument) {
          createSelectedFeaturesLayer()
       ],
       view: new View({
-         projection: mapDocument.epsg.code,
+         projection: mapDocument.epsg.code2D,
          padding: [25, 25, 25, 25]
       }),
       controls: defaultControls().extend([new FullScreen()]),
