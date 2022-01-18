@@ -80,6 +80,10 @@ export function addValidationResultToFeatures(mapDocument, features) {
    for (let i = 0; i < messages.length; i++) {
       const message = messages[i];
 
+      if (!message.gmlIds){
+         continue;
+      }
+
       for (let j = 0; j < message.gmlIds.length; j++) {
          const gmlId = message.gmlIds[j];
          const feature = features.find(feat => feat.get('id') === gmlId);
