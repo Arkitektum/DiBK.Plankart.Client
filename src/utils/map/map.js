@@ -20,7 +20,6 @@ async function createFeaturesLayer(mapDocument) {
    });
 
    featuresLayer.set('id', 'features');
-   featuresLayer.set('altitudeMode', 'clampToGround');
 
    addValidationResultToFeatures(mapDocument, features);
    await addStyling(features, () => { featuresLayer.changed() });
@@ -36,7 +35,6 @@ function createSelectedFeaturesLayer() {
    });
 
    selectedFeaturesLayer.set('id', 'selected-features');
-   selectedFeaturesLayer.set('altitudeMode', 'clampToGround');
 
    return selectedFeaturesLayer;
 }
