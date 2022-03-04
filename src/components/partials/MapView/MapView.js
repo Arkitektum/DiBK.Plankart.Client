@@ -10,9 +10,10 @@ import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from '
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 import OLCesium from 'ol-cesium';
-import { WebMapServiceImageryProvider, ArcGISTiledElevationTerrainProvider, CzmlDataSource } from 'cesium';
+import { WebMapServiceImageryProvider, CzmlDataSource, CesiumTerrainProvider } from 'cesium';
 import { baseMap } from 'config/baseMap.config';
 import Ion from 'cesium/Source/Core/Ion';
+import IonResource from 'cesium/Source/Core/IonResource';
 import './MapView.scss';
 
 function MapView({ mapDocument }) {
@@ -179,17 +180,15 @@ function MapView({ mapDocument }) {
 
          var scene = ol3dMap.getCesiumScene();
 
+         scene.terrainProvider = new CesiumTerrainProvider({
+            url : IonResource.fromAssetId(827785),
+         })
+
          scene.imageryLayers.addImageryProvider(new WebMapServiceImageryProvider({
             url : baseMap.url,
             layers : baseMap.layer,
             maximumLevel : baseMap.maxZoom,
          }));
-         
-         scene.terrainProvider = new ArcGISTiledElevationTerrainProvider({
-            url: 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
-         });
-
-         console.log("czmlObjects:\n" + czmlObjects);
 
          if (czmlObjects){
             var dataSources = ol3dMap.getDataSources();
