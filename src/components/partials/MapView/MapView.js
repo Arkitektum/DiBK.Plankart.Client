@@ -11,7 +11,7 @@ import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 import OLCesium from 'ol-cesium';
 import { WebMapServiceImageryProvider, CzmlDataSource, CesiumTerrainProvider } from 'cesium';
-import { baseMap } from 'config/baseMap.config';
+import { cesiumBaseMap } from 'config/cesiumBaseMap.config';
 import Ion from 'cesium/Source/Core/Ion';
 import IonResource from 'cesium/Source/Core/IonResource';
 import './MapView.scss';
@@ -185,9 +185,9 @@ function MapView({ mapDocument }) {
          })
 
          scene.imageryLayers.addImageryProvider(new WebMapServiceImageryProvider({
-            url : baseMap.url,
-            layers : baseMap.layer,
-            maximumLevel : baseMap.maxZoom,
+            url: cesiumBaseMap.url,
+            layers: cesiumBaseMap.layers,
+            maximumLevel: cesiumBaseMap.maxZoom
          }));
 
          if (czmlObjects){
