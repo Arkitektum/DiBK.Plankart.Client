@@ -3,10 +3,12 @@ import { useDispatch } from 'react-redux';
 import { toggleSidebar } from 'store/slices/mapSlice';
 import filesize from 'filesize';
 import Upload from './Upload/Upload';
+import Upload3D from './Upload/Upload3D';
 import './TopBar.scss';
 
 function TopBar({ loading, onUploadResponse }) {
    const [mapDocument, setMapDocument] = useState(null);
+   const [_3dData, set3dData] = useState(null);
    const [sidebarVisible, setSidebarVisible] = useState(true);
    const [fullscreen, setFullscreen] = useState(false);
    const dispatch = useDispatch();
@@ -44,11 +46,32 @@ function TopBar({ loading, onUploadResponse }) {
       onUploadResponse(response);
    }
 
+   function handleUpload3dResponse(response) {
+      set3dData(response);
+   }
+
+   useEffect(
+      () => {
+         if (!_3dData || !mapDocument) {
+            return;
+         }
+
+         mapDocument.czmlData = _3dData.czmlData;
+         mapDocument.validationResult3d = _3dData.validationResult;
+
+         onUploadResponse({ ...mapDocument });
+      },
+      [_3dData]
+   );
+
    return (
       <div className="top-bar">
          <div className="top-bar-left">
             <div className="upload-button" style={{ display: loading ? 'none' : 'block' }}>
                <Upload onResponse={handleUploadResponse} />
+            </div>
+            <div className="upload-button" style={{ display: loading ? 'none' : 'block' }}>
+               <Upload3D onResponse={handleUpload3dResponse} />
             </div>
 
             <div

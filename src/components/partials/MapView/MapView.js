@@ -28,8 +28,7 @@ function MapView({ mapDocument }) {
    const sidebarVisible = useRef(true);
    const mapElement = useRef();
    const [ol3dMap, setOl3dMap] = useState(null);
-   const ol3dMapEnabled = useRef(true);
-   const [czmlObjects, setCzmlObjects] = useState(null);
+   const ol3dMapEnabled = useRef(false);
 
    Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MjcxMThmNC00YjRlLTQxN2EtOWVlYy01ZjlkMDI4OTk1MDYiLCJpZCI6Njk1ODcsImlhdCI6MTYzODk3MjM0Mn0.gk-hx6X_EMGF5iRzvKLLlu0dNNFUoIFe65HA83ZY7IE';
 
@@ -86,11 +85,9 @@ function MapView({ mapDocument }) {
 
             const vectorLayer = getLayer(olMap, 'features');
             setFeatures(vectorLayer.getSource().getFeatures())
-
-            setCzmlObjects(mapDocument.czmlData)
          }
 
-         if (mapDocument) {
+         if (mapDocument && mapDocument.czmlData.czmlStrings.length === 0) {
             create();
          }
       },
@@ -163,9 +160,6 @@ function MapView({ mapDocument }) {
          }
 
          var olcs = new OLCesium({map: map});
-
-         olcs.warmUp(2000, 10000)
-
          setOl3dMap(olcs);
       },
       [map]
@@ -179,28 +173,39 @@ function MapView({ mapDocument }) {
          }
 
          var scene = ol3dMap.getCesiumScene();
+         //scene.requestRenderMode = true;
 
          scene.terrainProvider = new CesiumTerrainProvider({
-            url : IonResource.fromAssetId(827785),
-         })
+            url: IonResource.fromAssetId(827785),
+            credit: "Norges Kartverk"
+         });
 
-         scene.imageryLayers.addImageryProvider(new WebMapServiceImageryProvider({
+         const cesiumBaseMapWMS = new WebMapServiceImageryProvider({
             url: cesiumBaseMap.url,
             layers: cesiumBaseMap.layers,
-            maximumLevel: cesiumBaseMap.maxZoom
-         }));
+            maximumLevel: cesiumBaseMap.maxZoom,
+         });
 
-         if (czmlObjects){
+         if (!scene.imageryLayers.contains(cesiumBaseMapWMS)){
+            scene.imageryLayers.addImageryProvider(cesiumBaseMapWMS);
+         }
+
+         preloadCesiumAsync();
+      },
+      [ol3dMap]
+   )
+
+   useEffect(
+      () => {
+         if (mapDocument?.czmlData.czmlStrings.length > 0){
             var dataSources = ol3dMap.getDataSources();
-   
-            czmlObjects.czmlStrings.forEach(czmlString =>
+
+            mapDocument.czmlData.czmlStrings.forEach(czmlString =>
                dataSources.add(CzmlDataSource.load(czmlString))
             );
          }
-
-         ol3dMap.setEnabled(ol3dMapEnabled.current);
       },
-      [ol3dMap, ol3dMapEnabled, map, czmlObjects]
+      [mapDocument]
    )
 
    function toggle3dMap() {
@@ -209,6 +214,10 @@ function MapView({ mapDocument }) {
       if (ol3dMap){
          ol3dMap.setEnabled(ol3dMapEnabled.current);
       }
+   }
+
+   async function preloadCesiumAsync() {
+      ol3dMap.warmUp(0, 20000);
    }
 
    return (
