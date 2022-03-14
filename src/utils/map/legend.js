@@ -15,11 +15,11 @@ const SYMBOLIZER = { POLYGON: 'POLYGON', LINE: 'LINE', POINT: 'POINT', TEXT: 'TE
 const LEGEND_WIDTH = 50;
 
 export async function createLegends() {
-   const legendsFromIdb = await loadFromIdb();
+   /*const legendsFromIdb = await loadFromIdb();
 
    if (legendsFromIdb) {
       return legendsFromIdb;
-   }
+   }*/
 
    const legends = [];
    const [map, mapElement] = createLegendTempMap();
@@ -96,7 +96,7 @@ function getOlStyles(styles, feature, rule) {
          const image = clone.getImage();
 
          if (image) {
-            image.setScale(LEGEND_WIDTH / image.getSize()[0]);
+            image.setScale(64 / image.getSize()[0]);
          }
 
          return clone;
@@ -140,14 +140,14 @@ function createGeometry(rule) {
 
    switch (symbolizer) {
       case SYMBOLIZER.POLYGON:
-         return new Polygon([[[0, 0], [0, 50], [50, 50], [50, 0], [0, 0]]]);
+         return new Polygon([[[0, 0], [0, 64], [64, 64], [64, 0], [0, 0]]]);
       case SYMBOLIZER.LINE:
-         return new LineString([[0, 50], [50, 0]]);
+         return new LineString([[0, 64], [64, 0]]);
       case SYMBOLIZER.POINT:
       case SYMBOLIZER.TEXT:
-         return new Point([25, 25]);
+         return new Point([32, 32]);
       default:         
-         return new Polygon([[[0, 0], [0, 50], [50, 50], [50, 0], [0, 0]]]);
+         return new Polygon([[[0, 0], [0, 64], [64, 64], [64, 0], [0, 0]]]);
    }
 }
 
@@ -174,16 +174,16 @@ function createLegendTempMap() {
          })
       ],
       view: new View({
-         extent: [0, 0, 50, 50]
+         extent: [0, 0, 64, 64]
       })
    });
 
    const mapElement = document.createElement('div');   
-   Object.assign(mapElement.style, { position: 'absolute', top: '-9999px', left: '-9999px', width: '50px', height: '50px' });
+   Object.assign(mapElement.style, { position: 'absolute', top: '-9999px', left: '-9999px', width: '64px', height: '64px' });
    document.getElementsByTagName('body')[0].appendChild(mapElement);
 
    map.setTarget(mapElement);
-   map.getView().fit([0, 0, 50, 50], map.getSize());
+   map.getView().fit([0, 0, 64, 64], map.getSize());
 
    return [map, mapElement];
 }

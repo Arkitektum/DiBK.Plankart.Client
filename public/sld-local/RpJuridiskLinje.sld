@@ -313,16 +313,16 @@
                      <se:GraphicStroke>
                         <se:Graphic>
                            <se:ExternalGraphic>
-                              <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/sld-local/gfx/rp-juridisk-linje-1227.svg" />
+                              <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/sld-local/gfx/juridisk-linje-1227.svg" />
                               <se:Format>image/svg+xml</se:Format>
                            </se:ExternalGraphic>
-                           <se:Size>8</se:Size>
+                           <se:Size>10</se:Size>
                            <se:Rotation>
                               <ogc:Literal>90</ogc:Literal>
                            </se:Rotation>
                         </se:Graphic>
                         <se:Gap>
-                           <ogc:Literal>20</ogc:Literal>
+                           <ogc:Literal>10</ogc:Literal>
                         </se:Gap>
                      </se:GraphicStroke>
                   </se:Stroke>
@@ -390,18 +390,17 @@
                   <se:Stroke>
                      <se:GraphicStroke>
                         <se:Graphic>
-                           <se:Mark>
-                              <se:OnlineResource xlink:type="simple" xlink:href="ttf://Sk_PBL-symboler"/>
-                              <se:Format>ttf</se:Format>
-                              <se:MarkIndex>93</se:MarkIndex>
-                              <se:Fill>
-                                 <se:SvgParameter name="fill">#000000</se:SvgParameter>
-                              </se:Fill>
-                           </se:Mark>
-                           <se:Size>14</se:Size>
+                           <se:ExternalGraphic>
+                              <se:OnlineResource xlink:type="simple" xlink:href="http://localhost:3000/sld-local/gfx/sikringsgjerde.svg" />
+                              <se:Format>image/svg+xml</se:Format>
+                           </se:ExternalGraphic>
+                           <se:Size>11</se:Size>
+                           <se:Rotation>
+                              <ogc:Literal>90</ogc:Literal>
+                           </se:Rotation>
                         </se:Graphic>
                         <se:Gap>
-                           <ogc:Literal>36</ogc:Literal>
+                           <ogc:Literal>50</ogc:Literal>
                         </se:Gap>
                      </se:GraphicStroke>
                   </se:Stroke>
@@ -471,47 +470,21 @@
                <se:LineSymbolizer>
                   <se:VendorOption name="placement">firstPoint</se:VendorOption>
                   <se:Stroke>
-                     <se:GraphicStroke>
-                        <se:Graphic>
-                           <se:Mark>
-                              <se:WellKnownName>line</se:WellKnownName>
-                              <se:Fill>
-                                 <se:SvgParameter name="fill">#000000</se:SvgParameter>
-                              </se:Fill>
-                              <se:Stroke>
-                                 <se:SvgParameter name="stroke">#000000</se:SvgParameter>
-                                 <se:SvgParameter name="stroke-width">0.5</se:SvgParameter>
-                              </se:Stroke>
-                           </se:Mark>
-                           <se:Size>7</se:Size>
-                           <se:Rotation>
-                              <ogc:Literal>25</ogc:Literal>
-                           </se:Rotation>
-                        </se:Graphic>
-                     </se:GraphicStroke>
+                     <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                     <se:SvgParameter name="stroke-width">2</se:SvgParameter>
+                     <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
+                     <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
+                     <se:SvgParameter name="stroke-dasharray">4 4</se:SvgParameter>
                   </se:Stroke>
                </se:LineSymbolizer>
                <se:LineSymbolizer>
                   <se:VendorOption name="placement">lastPoint</se:VendorOption>
                   <se:Stroke>
-                     <se:GraphicStroke>
-                        <se:Graphic>
-                           <se:Mark>
-                              <se:WellKnownName>line</se:WellKnownName>
-                              <se:Fill>
-                                 <se:SvgParameter name="fill">#000000</se:SvgParameter>
-                              </se:Fill>
-                              <se:Stroke>
-                                 <se:SvgParameter name="stroke">#000000</se:SvgParameter>
-                                 <se:SvgParameter name="stroke-width">0.5</se:SvgParameter>
-                              </se:Stroke>
-                           </se:Mark>
-                           <se:Size>7</se:Size>
-                           <se:Rotation>
-                              <ogc:Literal>25</ogc:Literal>
-                           </se:Rotation>
-                        </se:Graphic>
-                     </se:GraphicStroke>
+                     <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                     <se:SvgParameter name="stroke-width">2</se:SvgParameter>
+                     <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
+                     <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
+                     <se:SvgParameter name="stroke-dasharray">4 4</se:SvgParameter>
                   </se:Stroke>
                </se:LineSymbolizer>
             </se:Rule>
