@@ -62,8 +62,9 @@
 
    .top-bar-right {
       padding-right: 15px;
+      display: flex;
 
-      div {
+      div.toggle-fullscreen {
          background: url("../../../assets/gfx/icon-maximize.svg") no-repeat center center;
          width: 16px;
          height: 24px;
@@ -71,6 +72,18 @@
 
          &.fullscreen-toggled {
             background-image: url("../../../assets/gfx/icon-minimize.svg");
+         }
+      }
+
+      div.toggle-ol3d {
+         background: url("../../../assets/gfx/icon-3d.svg") no-repeat center center;
+         width: 24px;
+         height: 24px;
+         background-size: 24px;
+         margin-right: 15px;
+
+         &.ol3d-toggled {
+            background-image: url("../../../assets/gfx/icon-2d.svg");
          }
       }
    }

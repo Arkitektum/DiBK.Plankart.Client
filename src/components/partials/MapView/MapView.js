@@ -15,6 +15,7 @@ import { cesiumBaseMap } from 'config/cesiumBaseMap.config';
 import Ion from 'cesium/Source/Core/Ion';
 import IonResource from 'cesium/Source/Core/IonResource';
 import './MapView.scss';
+import MapContext from 'context/MapContext';
 
 function MapView({ mapDocument }) {
    const [map, setMap] = useState(null);
@@ -27,8 +28,7 @@ function MapView({ mapDocument }) {
    const sidebar = useSelector(state => state.map.sidebar);
    const sidebarVisible = useRef(true);
    const mapElement = useRef();
-   const [ol3dMap, setOl3dMap] = useState(null);
-   const ol3dMapEnabled = useRef(false);
+   const [ol3dMap, setOl3dMap] = useContext(MapContext);
 
    Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MjcxMThmNC00YjRlLTQxN2EtOWVlYy01ZjlkMDI4OTk1MDYiLCJpZCI6Njk1ODcsImlhdCI6MTYzODk3MjM0Mn0.gk-hx6X_EMGF5iRzvKLLlu0dNNFUoIFe65HA83ZY7IE';
 
@@ -208,14 +208,6 @@ function MapView({ mapDocument }) {
       [mapDocument]
    )
 
-   function toggle3dMap() {
-      ol3dMapEnabled.current = !ol3dMapEnabled.current;
-
-      if (ol3dMap){
-         ol3dMap.setEnabled(ol3dMapEnabled.current);
-      }
-   }
-
    async function preloadCesiumAsync() {
       ol3dMap.warmUp(0, 20000);
    }
@@ -231,9 +223,6 @@ function MapView({ mapDocument }) {
          <div className="right-content">
             <div className="map-container">
                <div ref={mapElement} className="map"></div>
-               {<button onClick={toggle3dMap}>
-                  Vis/Skjul 3d-kart
-               </button>}
             </div>
 
             <FeatureContextMenu map={map} data={contextMenuData} onFeatureSelect={selectFeature} />

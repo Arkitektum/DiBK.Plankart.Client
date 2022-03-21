@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { toggleSidebar } from 'store/slices/mapSlice';
 import filesize from 'filesize';
 import Upload from './Upload/Upload';
 import Upload3D from './Upload/Upload3D';
 import './TopBar.scss';
+import MapContext from 'context/MapContext';
 
 function TopBar({ loading, onUploadResponse }) {
    const [mapDocument, setMapDocument] = useState(null);
@@ -12,6 +13,8 @@ function TopBar({ loading, onUploadResponse }) {
    const [sidebarVisible, setSidebarVisible] = useState(true);
    const [fullscreen, setFullscreen] = useState(false);
    const dispatch = useDispatch();
+   const [ol3dMapEnabled, setOl3dMapEnabled] = useState(false);
+   const [ol3dMap, _] = useContext(MapContext);
 
    useEffect(
       () => {
@@ -27,6 +30,19 @@ function TopBar({ loading, onUploadResponse }) {
       },
       []
    );
+
+   function toggle3dMap() {
+      setOl3dMapEnabled(!ol3dMapEnabled)
+   }
+
+   useEffect(
+      () => {
+         if (ol3dMap){
+            ol3dMap.setEnabled(ol3dMapEnabled);
+         }
+      },
+      [ol3dMapEnabled]
+   )
 
    function handleToggleSidebarClick() {
       dispatch(toggleSidebar({ visible: !sidebarVisible }));
@@ -96,6 +112,12 @@ function TopBar({ loading, onUploadResponse }) {
             <span className="app-name">GML-kart | Fellestjenester PLAN</span>
          </div>
          <div className="top-bar-right">
+            <div
+               role="button"
+               className={`toggle-ol3d ${ol3dMapEnabled ? 'ol3d-toggled' : ''}`}
+               title={`Bytt til ${ol3dMapEnabled ? '2D-vising' : '3D-visning'}`}
+               onClick={toggle3dMap}
+            />
             <div
                role="button"
                className={`toggle-fullscreen ${fullscreen ? 'fullscreen-toggled' : ''}`}
