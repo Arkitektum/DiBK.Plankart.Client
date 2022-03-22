@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { toggleSidebar } from 'store/slices/mapSlice';
 import filesize from 'filesize';
@@ -16,6 +16,14 @@ function TopBar({ loading, onUploadResponse }) {
    const [ol3dMapEnabled, setOl3dMapEnabled] = useState(false);
    const [ol3dMap, _] = useContext(MapContext);
 
+   const setEnabled3dView = useCallback(
+      enabled => {
+         ol3dMap.setEnabled(enabled);
+         setOl3dMapEnabled(enabled);
+      },
+      [ol3dMap]
+   )
+
    useEffect(
       () => {
          function handleFullscreenChange() {
@@ -31,18 +39,21 @@ function TopBar({ loading, onUploadResponse }) {
       []
    );
 
-   function toggle3dMap() {
-      setOl3dMapEnabled(!ol3dMapEnabled)
-   }
-
    useEffect(
       () => {
-         if (ol3dMap){
-            ol3dMap.setEnabled(ol3dMapEnabled);
+         if (!_3dData || !mapDocument) {
+            return;
          }
+
+         mapDocument.czmlData = _3dData.czmlData;
+         mapDocument.validationResult3d = _3dData.validationResult;
+
+         onUploadResponse({ ...mapDocument });
+
+         setEnabled3dView(true);
       },
-      [ol3dMapEnabled]
-   )
+      [_3dData, setEnabled3dView, onUploadResponse, mapDocument]
+   );
 
    function handleToggleSidebarClick() {
       dispatch(toggleSidebar({ visible: !sidebarVisible }));
@@ -56,6 +67,12 @@ function TopBar({ loading, onUploadResponse }) {
          document.exitFullscreen();
       }
    }
+   
+   function handleToggle3dMapClick() {
+      if (ol3dMap){
+         setEnabled3dView(!ol3dMapEnabled);
+      }
+   }
 
    function handleUploadResponse(response) {
       setMapDocument(response);
@@ -65,20 +82,6 @@ function TopBar({ loading, onUploadResponse }) {
    function handleUpload3dResponse(response) {
       set3dData(response);
    }
-
-   useEffect(
-      () => {
-         if (!_3dData || !mapDocument) {
-            return;
-         }
-
-         mapDocument.czmlData = _3dData.czmlData;
-         mapDocument.validationResult3d = _3dData.validationResult;
-
-         onUploadResponse({ ...mapDocument });
-      },
-      [_3dData]
-   );
 
    return (
       <div className="top-bar">
@@ -116,7 +119,7 @@ function TopBar({ loading, onUploadResponse }) {
                role="button"
                className={`toggle-ol3d ${ol3dMapEnabled ? 'ol3d-toggled' : ''}`}
                title={`Bytt til ${ol3dMapEnabled ? '2D-vising' : '3D-visning'}`}
-               onClick={toggle3dMap}
+               onClick={handleToggle3dMapClick}
             />
             <div
                role="button"
