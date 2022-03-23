@@ -4,12 +4,13 @@ import { FeatureContextMenu, FeatureInfo, Legends, MapInfo, PlanInfo, Validation
 import { ZoomToExtent } from 'ol/control';
 import { click } from 'ol/events/condition';
 import { Select } from 'ol/interaction';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { filterLegends } from 'utils/map/legend';
-import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
+import { addGeometryInfo, addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 import './MapView.scss';
+import { toggleFeatureInfo } from 'store/slices/mapSlice';
 
 function MapView({ mapDocument }) {
    const [map, setMap] = useState(null);
@@ -22,13 +23,16 @@ function MapView({ mapDocument }) {
    const sidebar = useSelector(state => state.map.sidebar);
    const sidebarVisible = useRef(true);
    const mapElement = useRef();
+   const dispatch = useDispatch();
 
    const selectFeature = useCallback(
       features => {
+         addGeometryInfo(features);
          highlightSelectedFeatures(map, features);
          setSelectedFeatures([...features]);
+         dispatch(toggleFeatureInfo({ expanded: true }));
       },
-      [map]
+      [map, dispatch]
    );
 
    const addMapInteraction = useCallback(

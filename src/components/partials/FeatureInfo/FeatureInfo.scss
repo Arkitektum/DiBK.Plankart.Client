@@ -76,10 +76,20 @@
       }
 
       ol {
-         padding: 0 12px;
+         padding: 0 16px;
          margin-bottom: 0;
          max-height: 150px;
          overflow-y: auto;
+      }
+
+      span[role=button] {
+         color: #db3636;
+         text-decoration: underline;
+         margin-left: 10px;
+
+         &:hover {
+            text-decoration: none;
+         }
       }
    }
 }

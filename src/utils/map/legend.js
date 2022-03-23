@@ -12,14 +12,14 @@ import { createId } from './helpers';
 const APP_VERSION = process.env.REACT_APP_VERSION;
 const IDB_KEY = 'gml-kart-legend';
 const SYMBOLIZER = { POLYGON: 'POLYGON', LINE: 'LINE', POINT: 'POINT', TEXT: 'TEXT' };
-const LEGEND_WIDTH = 50;
+//const LEGEND_WIDTH = 50;
 
 export async function createLegends() {
-   /*const legendsFromIdb = await loadFromIdb();
+   const legendsFromIdb = await loadFromIdb();
 
    if (legendsFromIdb) {
       return legendsFromIdb;
-   }*/
+   }
 
    const legends = [];
    const [map, mapElement] = createLegendTempMap();
