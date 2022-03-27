@@ -1,16 +1,24 @@
 import axios from 'axios';
 import { getLayer as getSldLayer, getStyle, Reader } from 'utils/sld-reader';
+import { getUrl } from './helpers';
 
-const SLD_BASE_URL = process.env.REACT_APP_SLD_BASE_URL;
 const sldStyles = {};
 
-export async function loadSldStyle(name) {
+export async function loadSldStyle(featureMember) {
+   if (!featureMember.sld) {
+      return null;
+   }
+
+   const name = featureMember.name;
+
    if (sldStyles[name]) {
       return sldStyles[name];
    }
 
+   const url = getUrl(featureMember.sld);
+
    try {
-      const response = await axios.get(`${SLD_BASE_URL}/${name}.sld`);
+      const response = await axios.get(url);
       const sldObject = Reader(response.data, name);
       const sldLayer = getSldLayer(sldObject);      
       const style = getStyle(sldLayer, name);

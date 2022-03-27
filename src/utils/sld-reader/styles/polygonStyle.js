@@ -8,47 +8,42 @@ import { getCachedImage, getImageLoadingState } from '../imageCache';
 import { imageLoadingPolygonStyle, imageErrorPolygonStyle } from './static';
 import { getSimpleStroke, getSimpleFill } from './simpleStyles';
 import { getGraphicStrokeRenderer } from './graphicStrokeStyle';
+import { getUrl } from 'utils/map/helpers';
 
 function createPattern(graphic) {
    const { image, width, height } = getCachedImage(
-      graphic.externalgraphic.onlineresource
+      getUrl(graphic.externalgraphic.onlineresource)
    );
 
    const canvas = document.createElement('canvas');
-
    const context = canvas.getContext('2d');
 
-   let imageRatio = DEVICE_PIXEL_RATIO;
+   canvas.width = width;
+   canvas.height = height;
 
-   if (graphic.size && height !== graphic.size) {
-      imageRatio *= graphic.size / height;
-   }
-
-   if (imageRatio === 1) {
-      return createAndRotatePattern(context, image, graphic);
-   }
-
-   const tempCanvas = document.createElement('canvas');
-   const tCtx = tempCanvas.getContext('2d');
-
-   tempCanvas.width = width * imageRatio;
-   tempCanvas.height = height * imageRatio;
-
-   tCtx.drawImage(
+   context.drawImage(
       image,
       0, 0, width, height,
-      0, 0, width * imageRatio, height * imageRatio
+      0, 0, width, height
    );
 
-   return createAndRotatePattern(context, tempCanvas, graphic);
+   return createAndRotatePattern(context, canvas, graphic, width, height);
 }
 
-function createAndRotatePattern(context, imageOrCanvas, graphic) {
-   const pattern = context.createPattern(imageOrCanvas, 'repeat');
+function createAndRotatePattern(context, canvas, graphic, width, height) {
+   const pattern = context.createPattern(canvas, 'repeat');
+   let matrix = new DOMMatrix();
 
    if (graphic.rotation) {
-      const matrix = new DOMMatrix();
-      pattern.setTransform(matrix.rotate(graphic.rotation));
+      matrix = matrix.rotate(graphic.rotation);
+   }
+
+   if (graphic.size) {
+      matrix = matrix.scale(graphic.size / width * DEVICE_PIXEL_RATIO, graphic.size / height * DEVICE_PIXEL_RATIO);
+   }
+
+   if (graphic.rotation || graphic.size) {
+      pattern.setTransform(matrix);
    }
 
    return pattern;
@@ -56,12 +51,12 @@ function createAndRotatePattern(context, imageOrCanvas, graphic) {
 
 function getExternalGraphicFill(symbolizer) {
    const { graphic } = symbolizer.fill.graphicfill;
-   const fillImageUrl = graphic.externalgraphic.onlineresource;
+   const fillImageUrl = getUrl(graphic.externalgraphic.onlineresource);
 
    switch (getImageLoadingState(fillImageUrl)) {
       case IMAGE_LOADED:
          return new Fill({
-            color: createPattern(symbolizer.fill.graphicfill.graphic),
+            color: createPattern(symbolizer.fill.graphicfill.graphic)
          });
       case IMAGE_LOADING:
          return imageLoadingPolygonStyle.getFill();
@@ -84,11 +79,9 @@ function polygonStyle(symbolizer) {
       ? getExternalGraphicFill(symbolizer)
       : getSimpleFill(symbolizer.fill);
 
-   // When a polygon has a GraphicStroke, use a custom renderer to combine
-   // GraphicStroke with fill. This is needed because a custom renderer
-   // ignores any stroke, fill and image present in the style.
    if (symbolizer.stroke && symbolizer.stroke.graphicstroke) {
       const renderGraphicStroke = getGraphicStrokeRenderer(symbolizer);
+
       return new Style({
          renderer: (pixelCoords, renderState) => {
             // First render the fill (if any).

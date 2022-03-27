@@ -1,4 +1,5 @@
 import { LegendContext } from 'App';
+import { DEVICE_PIXEL_RATIO } from 'ol/has';
 import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { getSymbolById } from 'utils/map/helpers';
 import './FeatureContextMenu.scss';
@@ -32,17 +33,19 @@ function FeatureContextMenu({ map, data, onFeatureSelect }) {
       () => {
          if (visible) {
             let top, left;
+            const dataLeft = data.left / DEVICE_PIXEL_RATIO;
+            const dataTop = data.top / DEVICE_PIXEL_RATIO;
 
-            if (data.left + menuElement.current.offsetWidth > map.getTarget().clientWidth) {
-               left = data.left - menuElement.current.offsetWidth;
+            if (dataLeft + menuElement.current.offsetWidth > map.getTarget().clientWidth) {
+               left = dataLeft - menuElement.current.offsetWidth;
             } else {
-               left = data.left;
+               left = dataLeft;
             }
 
-            if (data.top + menuElement.current.offsetHeight > map.getTarget().clientHeight) {
-               top = data.top - menuElement.current.offsetHeight;
+            if (dataTop + menuElement.current.offsetHeight > map.getTarget().clientHeight) {
+               top = dataTop - menuElement.current.offsetHeight;
             } else {
-               top = data.top;
+               top = dataTop;
             }
 
             setPosition({ top, left });

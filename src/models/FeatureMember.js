@@ -1,16 +1,11 @@
-const SLD_BASE_URL = process.env.REACT_APP_SLD_BASE_URL;
-
 class FeatureMember {
    constructor(name, options = {}) {
-      const { sldUrl, infoProps, showLegend = true } = options;
+      const { sld, zIndex, infoProps, showLegend = true } = options;
       this.name = name;
-      this.sldUrl = sldUrl;
+      this.sld = sld;      
       this.infoProps = infoProps;
+      this.zIndex = zIndex;
       this.showLegend = showLegend;
-   }
-
-   getSldUrl() {
-      return this.sldUrl ? this.sldUrl :`${SLD_BASE_URL}/${this.name}.sld`;
    }
 }
 

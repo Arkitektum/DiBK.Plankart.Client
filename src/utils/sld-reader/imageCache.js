@@ -1,5 +1,6 @@
 /* eslint-disable no-continue */
 import { Style, Icon } from 'ol/style';
+import { getUrl } from 'utils/map/helpers';
 
 import { IMAGE_LOADING, IMAGE_LOADED, IMAGE_ERROR } from './constants';
 import { getRuleSymbolizers, getByPath } from './Utils';
@@ -186,17 +187,19 @@ function getCachingImageLoader(imageUrl) {
  * has loaded. Will be called with undefined if the loading the image resulted in an error.
  */
 export function loadExternalGraphic(imageUrl, featureTypeStyle, imageLoadedCallback) {
-   invalidateExternalGraphics(featureTypeStyle, imageUrl);
+   const url = getUrl(imageUrl);
 
-   getCachingImageLoader(imageUrl)
+   invalidateExternalGraphics(featureTypeStyle, url);
+
+   getCachingImageLoader(url)
       .then(() => {
-         invalidateExternalGraphics(featureTypeStyle, imageUrl);
+         invalidateExternalGraphics(featureTypeStyle, url);
          if (typeof imageLoadedCallback === 'function') {
-            imageLoadedCallback(imageUrl);
+            imageLoadedCallback(url);
          }
       })
       .catch(() => {
-         invalidateExternalGraphics(featureTypeStyle, imageUrl);
+         invalidateExternalGraphics(featureTypeStyle, url);
 
          if (typeof imageLoadedCallback === 'function') {
             imageLoadedCallback();
@@ -212,15 +215,17 @@ export function loadExternalGraphic(imageUrl, featureTypeStyle, imageLoadedCallb
  * @param {object} featureTypeStyle Feature type style object.
  */
 export async function loadExternalGraphicAsync(imageUrl, featureTypeStyle) {
-   invalidateExternalGraphics(featureTypeStyle, imageUrl);
+   const url = getUrl(imageUrl);
+
+   invalidateExternalGraphics(featureTypeStyle, url);
 
    try {
-      await getCachingImageLoader(imageUrl);
-      return imageUrl;
+      await getCachingImageLoader(url);
+      return url;
    } catch (error) {
       return undefined;
    } finally {
-      invalidateExternalGraphics(featureTypeStyle, imageUrl);
+      invalidateExternalGraphics(featureTypeStyle, url);
    }
 }
 

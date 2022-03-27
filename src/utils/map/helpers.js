@@ -1,7 +1,10 @@
 import { extend, getCenter } from 'ol/extent';
 import { getArea, getLength } from 'ol/sphere';
 import WKT from 'ol/format/WKT';
+import Url from 'url-parse';
 
+const PROXY_HOSTS = process.env.REACT_APP_PROXY_HOSTS.split(',');
+const PROXY_URL = process.env.REACT_APP_PROXY_URL;
 const MAX_ZOOM = 24;
 
 export function getLayer(map, id) {
@@ -23,6 +26,19 @@ export function getSymbolById(legends, id) {
    return legends
       .flatMap(legend => legend.symbols)
       .find(symbol => symbol.id === id);
+}
+
+export function getUrl(urlString) {
+   const url = new Url(urlString);
+
+   if (PROXY_HOSTS.includes(url.host)) {
+      const proxyUrl = new Url(PROXY_URL);
+      proxyUrl.set('query', `url=${urlString}`);
+
+      return proxyUrl.toString();
+   }
+   
+   return urlString;
 }
 
 export function zoomTo(map, features) {
