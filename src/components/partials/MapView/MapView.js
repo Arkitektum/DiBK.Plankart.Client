@@ -4,19 +4,23 @@ import { FeatureContextMenu, FeatureInfo, Legends, MapInfo, PlanInfo, Validation
 import { ZoomToExtent } from 'ol/control';
 import { click } from 'ol/events/condition';
 import { Select } from 'ol/interaction';
+import { transformExtent } from 'ol/proj';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterLegends } from 'utils/map/legend';
 import { addGeometryInfo, addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 import OLCesium from 'ol-cesium';
-import { WebMapServiceImageryProvider, CzmlDataSource, CesiumTerrainProvider } from 'cesium';
-import { cesiumBaseMap } from 'config/cesiumBaseMap.config';
+import { WebMapServiceImageryProvider, CzmlDataSource, CesiumTerrainProvider, Rectangle } from 'cesium';
+import { baseMap } from 'config/baseMap.config';
 import Ion from 'cesium/Source/Core/Ion';
 import IonResource from 'cesium/Source/Core/IonResource';
 import './MapView.scss';
 import { toggleFeatureInfo } from 'store/slices/mapSlice';
 import MapContext from 'context/MapContext';
+import axios from 'axios';
+
+const TERRAIN_DATA_URL = process.env.REACT_APP_TERRAIN3D_URL;
 
 function MapView({ mapDocument }) {
    const [map, setMap] = useState(null);
@@ -24,6 +28,8 @@ function MapView({ mapDocument }) {
    const [features, setFeatures] = useState([]);
    const [selectedFeatures, setSelectedFeatures] = useState([]);
    const [filteredLegends, setFilteredLegends] = useState([]);
+   const [terrainResourceId, setTerrainResourceId] = useState(null);
+   const [mapExtent3d, setMapExtent3d] = useState(null);
    const legends = useContext(LegendContext);
    const legend = useSelector(state => state.map.legend);
    const sidebar = useSelector(state => state.map.sidebar);
@@ -88,14 +94,40 @@ function MapView({ mapDocument }) {
             setMap(olMap);
 
             const vectorLayer = getLayer(olMap, 'features');
-            setFeatures(vectorLayer.getSource().getFeatures())
+            setFeatures(vectorLayer.getSource().getFeatures());
          }
 
-         if (mapDocument && mapDocument.czmlData.czmlStrings.length === 0) {
+         async function createTerrainResource() {
+            const response = await axios.post(TERRAIN_DATA_URL, 
+               {
+                  envelope: mapDocument.envelope.asString,
+                  epsgCode: mapDocument.envelope.epsg.code2D.replace("EPSG:","")
+               });
+
+            const resourceId = response.data;
+
+            setTerrainResourceId(resourceId);
+         }
+
+         if (mapDocument && mapDocument.czmlData.czmlStrings.length === 0 && terrainResourceId === null) {
             create();
+            //createTerrainResource();
          }
       },
-      [mapDocument]
+      [mapDocument, terrainResourceId]
+   );
+
+   useEffect(
+      () => {
+         async function preload() {
+            ol3dMap.warmUp(0, 20000);
+         }
+         
+         if (ol3dMap){
+            preload();
+         }
+      },
+      [ol3dMap]
    );
 
    useEffect(
@@ -109,6 +141,8 @@ function MapView({ mapDocument }) {
          const vectorLayer = getLayer(map, 'features');
          const extent = vectorLayer.getSource().getExtent();
          const view = map.getView();
+
+         setMapExtent3d(transformExtent(extent, mapDocument.envelope.epsg.code2D, 'EPSG:4326'));
 
          view.fit(extent, map.getSize());
          view.setMinZoom(12);
@@ -126,6 +160,26 @@ function MapView({ mapDocument }) {
          }
       },
       [map, selectFeature, addMapInteraction, onWindowResize]
+   );
+
+   useEffect(
+      () => {
+         if (mapExtent3d === null || ol3dMap === null){
+            return;
+         }
+
+         debugger;
+
+         const scene = ol3dMap.getCesiumScene()
+         const globe = scene.globe;
+         var dummy = Rectangle.fromDegrees(mapExtent3d[0]-0.005, mapExtent3d[1]-0.0025, mapExtent3d[2]+0.005, mapExtent3d[3]+0.0025);
+         globe.cartographicLimitRectangle = dummy;
+         globe.showSkirts = false;
+         globe.backFaceCulling = false;
+         globe.undergroundColor = undefined;
+         scene.skyAtmosphere.show = false;
+      },
+      [mapExtent3d, ol3dMap]
    );
 
    useEffect(
@@ -166,8 +220,8 @@ function MapView({ mapDocument }) {
          var olcs = new OLCesium({map: map});
          setOl3dMap(olcs);
       },
-      [map]
-   )
+      [map, setOl3dMap]
+   );
 
    useEffect(
       () => {
@@ -176,28 +230,25 @@ function MapView({ mapDocument }) {
             return;
          }
 
-         var scene = ol3dMap.getCesiumScene();
-         //scene.requestRenderMode = true;
-
+         const scene = ol3dMap.getCesiumScene();
+         
          scene.terrainProvider = new CesiumTerrainProvider({
-            url: IonResource.fromAssetId(827785),
+            url: IonResource.fromAssetId(1),
             credit: "Norges Kartverk"
          });
 
          const cesiumBaseMapWMS = new WebMapServiceImageryProvider({
-            url: cesiumBaseMap.url,
-            layers: cesiumBaseMap.layers,
-            maximumLevel: cesiumBaseMap.maxZoom,
+            url: baseMap.url,
+            layers: baseMap.layer,
+            maximumLevel: baseMap.maxZoom
          });
 
          if (!scene.imageryLayers.contains(cesiumBaseMapWMS)){
             scene.imageryLayers.addImageryProvider(cesiumBaseMapWMS);
          }
-
-         preloadCesiumAsync();
       },
       [ol3dMap]
-   )
+   );
 
    useEffect(
       () => {
@@ -209,11 +260,30 @@ function MapView({ mapDocument }) {
             );
          }
       },
-      [mapDocument]
-   )
+      [mapDocument, ol3dMap]
+   );
 
-   async function preloadCesiumAsync() {
-      ol3dMap.warmUp(0, 20000);
+   useEffect(
+      () => {
+         if (terrainResourceId === null){
+            return;
+         }
+
+         var scene = ol3dMap.getCesiumScene();
+
+         scene.terrainProvider = new CesiumTerrainProvider({
+            url: IonResource.fromAssetId(terrainResourceId),
+            credit: "Norges Kartverk"
+         });
+      },
+      [terrainResourceId, ol3dMap]
+   );
+
+   function setAllLegendCheckboxes(checkedValue){
+      document.querySelectorAll('input[type=checkbox]').forEach(c => {
+         if (c.checked === checkedValue)
+            c.click();
+      });
    }
 
    return (
