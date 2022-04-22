@@ -3,12 +3,18 @@ import { createOlStyleFunction } from 'utils/sld-reader';
 import { groupBy } from './helpers';
 import { loadSldStyle } from './sld';
 
-export async function createStyle(name, callback) {
-   const style = await loadSldStyle(name);
+export async function createStyle(featureMember, callback) {
+   const style = await loadSldStyle(featureMember);
+
+   if (style === null) {
+      return null;
+   }
+
    const featureTypeStyle = style.featuretypestyles[0];
 
    return createOlStyleFunction(featureTypeStyle, {
-      imageLoadedCallback: callback
+      imageLoadedCallback: callback,
+      zIndex: featureMember.zIndex
    });
 }
 
@@ -43,12 +49,17 @@ export async function addStyling(features, callback) {
 
    for (let i = 0; i < featureKeys.length; i++) {
       const key = featureKeys[i];
+      const featureMember = featureMembers.find(member => member.name === key);
 
-      if (!featureMembers.some(member => member.name === key)) {
+      if (!featureMember)  {
          continue;
       }
 
-      const style = await createStyle(key, callback);
+      const style = await createStyle(featureMember, callback, featureMember.zIndex);
+
+      if (style === null) {
+         continue;
+      }
 
       groupedFeatures[key].forEach(feature => {
          feature.setStyle(style);

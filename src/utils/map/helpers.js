@@ -1,5 +1,10 @@
 import { extend, getCenter } from 'ol/extent';
+import { getArea, getLength } from 'ol/sphere';
+import WKT from 'ol/format/WKT';
+import Url from 'url-parse';
 
+const PROXY_HOSTS = process.env.REACT_APP_PROXY_HOSTS.split(',');
+const PROXY_URL = process.env.REACT_APP_PROXY_URL;
 const MAX_ZOOM = 24;
 
 export function getLayer(map, id) {
@@ -18,7 +23,22 @@ export function getFeaturesByName(vectorLayer, name) {
 }
 
 export function getSymbolById(legends, id) {
-   return legends.flatMap(legend => legend.symbols).find(symbol => symbol.id === id);
+   return legends
+      .flatMap(legend => legend.symbols)
+      .find(symbol => symbol.id === id);
+}
+
+export function getUrl(urlString) {
+   const url = new Url(urlString);
+
+   if (PROXY_HOSTS.includes(url.host)) {
+      const proxyUrl = new Url(PROXY_URL);
+      proxyUrl.set('query', `url=${urlString}`);
+
+      return proxyUrl.toString();
+   }
+   
+   return urlString;
 }
 
 export function zoomTo(map, features) {
@@ -28,12 +48,23 @@ export function zoomTo(map, features) {
       extend(featureExtent, features[i].getGeometry().getExtent());
    }
 
+   zoom(map, featureExtent);
+}
+
+export function zoomToGeometry(map, wkt) {
+   const geometry = new WKT().readGeometry(wkt);
+   const extent = geometry.getExtent()
+
+   zoom(map, extent);
+}
+
+function zoom(map, extent) {
    const view = map.getView();
-   const resolution = view.getResolutionForExtent(featureExtent);
+   const resolution = view.getResolutionForExtent(extent);
    const zoom = view.getZoomForResolution(resolution);
 
    view.animate({
-      center: getCenter(featureExtent),
+      center: getCenter(extent),
       duration: 1000
    });
 
@@ -79,10 +110,30 @@ export function debounce(func, wait, immediate) {
       timeout = setTimeout(later, wait);
 
       if (callNow) {
-         func.apply(context, args);         
+         func.apply(context, args);
       }
    };
 };
+
+export function getAreaFormatted(polygon) {
+   const area = getArea(polygon);
+
+   if (area > 10000) {
+      return `${Math.round((area / 1000000) * 100) / 100} km²`.replace('.', ',');
+   }
+
+   return `${Math.round(area * 100) / 100} m²`.replace('.', ',');
+}
+
+export function getLengthFormatted(line) {
+   const length = getLength(line);
+
+   if (length > 100) {
+      return `${Math.round((length / 1000) * 100) / 100} km`.replace('.', ',');
+   }
+
+   return `${Math.round(length * 100) / 100} m`.replace('.', ',');
+}
 
 export const allEqual = array => array.every(value => value === array[0]);
 

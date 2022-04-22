@@ -1,7 +1,12 @@
-import { Stroke, Style } from 'ol/style';
 import { filterSelector } from 'utils/sld-reader/Filter';
-import { getFeaturesByName, getLayer, groupBy } from './helpers';
-import { createStyleFunction } from './styling';
+import { GeometryCollection } from 'ol/geom';
+import { Stroke, Style, Fill, Circle } from 'ol/style';
+import GeometryType from 'ol/geom/GeometryType';
+import { getAreaFormatted, getFeaturesByName, getLayer, getLengthFormatted, groupBy } from './helpers';
+import WKT from 'ol/format/WKT';
+
+const HIGHLIGHT_COLOR = 'rgb(0 109 173 / 50%)';
+const ERROR_COLOR = 'rgb(255 0 0 / 50%)';
 
 export function toggleFeatures(legend, map) {
    const vectorLayer = getLayer(map, 'features');
@@ -26,21 +31,70 @@ export function toggleFeature(feature) {
    feature.set('visible', visible);
 }
 
+export function addGeometryInfo(features) {
+   features.forEach(feature => {
+      const geometry = feature.getGeometry();
+      const geometryType = geometry.getType();
+
+      switch (geometryType) {
+         case GeometryType.POLYGON:
+         case GeometryType.MULTI_POLYGON:
+            if (!feature.get('_area')) {
+               feature.set('_area', getAreaFormatted(geometry));
+            }
+            break;
+         case GeometryType.LINE_STRING:
+         case GeometryType.MULTI_LINE_STRING:
+            if (!feature.get('_length')) {
+               feature.set('_length', getLengthFormatted(geometry));
+            }
+            break;
+         default:
+            break;
+      }
+   });
+}
+
 export function highlightSelectedFeatures(map, features) {
    const featureLayer = getLayer(map, 'selected-features');
    const layerSource = featureLayer.getSource();
 
    layerSource.clear();
 
-   const selectedFeatures = features.map(feature => {
+   const highlightClones = features
+      .filter(feature => feature.get('highlightClone') !== undefined)
+      .map(feature => feature.get('highlightClone'));
+
+   const featuresWithoutClones = features
+      .filter(feature => feature.get('highlightClone') === undefined);
+
+   const selectedFeatures = featuresWithoutClones.map(feature => {
       const cloned = feature.clone();
-      const styleFunction = createStyleFunction(cloned, getStroke(cloned));
-      cloned.setStyle(styleFunction);
+      const errorMessages = feature.get('errorMessages');
+
+      if (errorMessages) {
+         const wkts = errorMessages
+            .filter(message => message.zoomTo)
+            .map(message => message.zoomTo);
+
+         if (wkts.length) {
+            const format = new WKT();
+            const geometries = wkts.map(wkt => format.readGeometry(wkt));
+            const geoCollection = new GeometryCollection();
+
+            geoCollection.setGeometries(geometries);
+            cloned.set('zoomTo', geoCollection);
+         }
+      }
+
+      const styles = getHighlightStyle(cloned);
+      cloned.setStyle(styles);
+      feature.set('highlightClone', cloned);
 
       return cloned;
    });
-         
-   layerSource.addFeatures(selectedFeatures);
+
+   layerSource.addFeatures(selectedFeatures.concat(highlightClones));
 }
 
 export function addLegendToFeatures(features, legends) {
@@ -58,14 +112,14 @@ export function addLegendToFeatures(features, legends) {
       const feats = groupedFeatures[featureName];
 
       for (let j = 0; j < feats.length; j++) {
-         const feature = feats[j];         
+         const feature = feats[j];
          const symbol = symbols.find(sym => !sym.rule.filter || filterSelector(sym.rule.filter, feature));
 
          if (symbol) {
             feature.set('symbolId', symbol.id);
          }
-      }      
-   }  
+      }
+   }
 }
 
 export function addValidationResultToFeatures(mapDocument, features) {
@@ -80,7 +134,7 @@ export function addValidationResultToFeatures(mapDocument, features) {
    for (let i = 0; i < messages.length; i++) {
       const message = messages[i];
 
-      if (!message.gmlIds){
+      if (!message.gmlIds?.length) {
          continue;
       }
 
@@ -92,19 +146,97 @@ export function addValidationResultToFeatures(mapDocument, features) {
             const errorMessages = feature.get('errorMessages');
 
             if (!errorMessages) {
-               feature.set('errorMessages', [message.message]);
+               feature.set('errorMessages', [{ message: message.message, zoomTo: message.zoomTo }]);
             } else {
-               errorMessages.push(message.message);
+               errorMessages.push({ message: message.message, zoomTo: message.zoomTo });
             }
          }
-      }      
+      }
    }
 }
 
-function getStroke(feature) {
-   return new Stroke({ 
-      color: feature.get('errorMessages')?.length ? 'rgb(255 0 0 / 50%)' : 'rgb(0 109 173 / 50%)',
-      lineCap: 'butt', 
-      width: 5 
+function getHighlightStyle(feature) {
+   const highlightStroke = new Stroke({
+      color: feature.get('errorMessages')?.length ? ERROR_COLOR : HIGHLIGHT_COLOR,
+      lineCap: 'butt',
+      width: 3
    });
+
+   const origStyleFunction = feature.getStyleFunction();
+   let highlightStyle;
+
+   return (feature, resolution) => {
+      if (feature.get('name') === 'RpPåskrift') {
+         const styles = origStyleFunction(feature, resolution);
+
+         highlightStyle = styles[1].clone();
+         highlightStyle.getText().setStroke(highlightStroke);
+      } else if (feature.getGeometry().getType() === GeometryType.POINT) {
+         const image = feature.getStyle()[0].getImage();
+
+         highlightStyle = new Style({
+            image: new Circle({
+               radius: image.getRadius(),
+               fill: image.getFill(),
+               stroke: highlightStroke
+            })
+         });
+      } else {
+         highlightStyle = new Style({
+            stroke: highlightStroke
+         });
+      }
+
+      const zoomToStyles = [];
+      const zoomTo = feature.get('zoomTo');
+
+      if (zoomTo) {
+         const geometries = zoomTo.getGeometries();
+         addZoomToStyle(geometries, zoomToStyles);
+      }
+
+      return [highlightStyle].concat(zoomToStyles);
+   };
+}
+
+function addZoomToStyle(geometries, styles) {
+   for (let i = 0; i < geometries.length; i++) {
+      const geometry = geometries[i];
+      const geometryType = geometry.getType();
+
+      switch (geometryType) {
+         case GeometryType.GEOMETRY_COLLECTION:
+            addZoomToStyle(geometry.getGeometries(), styles);
+            break;
+         case GeometryType.POLYGON:
+         case GeometryType.MULTI_POLYGON:
+         case GeometryType.LINE_STRING:
+         case GeometryType.MULTI_LINE_STRING:
+            styles.push(
+               new Style({
+                  geometry,
+                  stroke: new Stroke({
+                     color: ERROR_COLOR,
+                     lineCap: 'round',
+                     width: 10,
+                  })
+               })
+            );
+            break;
+         case GeometryType.POINT:
+         case GeometryType.MULTI_POINT:
+            styles.push(
+               new Style({
+                  geometry,
+                  image: new Circle({
+                     radius: 5,
+                     fill: new Fill({ color: ERROR_COLOR })
+                  })
+               })
+            );
+            break;
+         default:
+            break;
+      }
+   }
 }

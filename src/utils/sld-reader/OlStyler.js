@@ -44,6 +44,7 @@ export default function OlStyler(GeometryStyles, feature) {
    const geometry = feature.getGeometry
       ? feature.getGeometry()
       : feature.geometry;
+      
    const geometryType = geometry.getType ? geometry.getType() : geometry.type;
 
    let styles = [];
@@ -168,6 +169,10 @@ export async function createOlStyleFunction(featureTypeStyle, options = {}) {
 
       // Determine style rule array.
       const olStyles = OlStyler(geometryStyles, feature);
+
+      if (options.zIndex) {
+         olStyles.forEach(style => style.setZIndex(options.zIndex));
+      }
 
       return olStyles;
    };

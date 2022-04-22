@@ -4,9 +4,9 @@ import { FeatureContextMenu, FeatureInfo, Legends, MapInfo, PlanInfo, Validation
 import { ZoomToExtent } from 'ol/control';
 import { click } from 'ol/events/condition';
 import { Select } from 'ol/interaction';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { filterLegends } from 'utils/map/legend';
-import { addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
+import { addGeometryInfo, addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
 import { debounce, getLayer } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 import OLCesium from 'ol-cesium';
@@ -15,6 +15,7 @@ import { cesiumBaseMap } from 'config/cesiumBaseMap.config';
 import Ion from 'cesium/Source/Core/Ion';
 import IonResource from 'cesium/Source/Core/IonResource';
 import './MapView.scss';
+import { toggleFeatureInfo } from 'store/slices/mapSlice';
 import MapContext from 'context/MapContext';
 
 function MapView({ mapDocument }) {
@@ -28,16 +29,19 @@ function MapView({ mapDocument }) {
    const sidebar = useSelector(state => state.map.sidebar);
    const sidebarVisible = useRef(true);
    const mapElement = useRef();
+   const dispatch = useDispatch();
    const [ol3dMap, setOl3dMap] = useContext(MapContext);
 
    Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MjcxMThmNC00YjRlLTQxN2EtOWVlYy01ZjlkMDI4OTk1MDYiLCJpZCI6Njk1ODcsImlhdCI6MTYzODk3MjM0Mn0.gk-hx6X_EMGF5iRzvKLLlu0dNNFUoIFe65HA83ZY7IE';
 
    const selectFeature = useCallback(
       features => {
+         addGeometryInfo(features);
          highlightSelectedFeatures(map, features);
          setSelectedFeatures([...features]);
+         dispatch(toggleFeatureInfo({ expanded: true }));
       },
-      [map]
+      [map, dispatch]
    );
 
    const addMapInteraction = useCallback(

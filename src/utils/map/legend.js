@@ -6,40 +6,40 @@ import { processExternalGraphicSymbolizersAsync } from 'utils/sld-reader/imageCa
 import featureMembers from 'config/features.config';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { get, set } from 'idb-keyval';
+//import { get, set } from 'idb-keyval';
 import { createId } from './helpers';
 
-const APP_VERSION = process.env.REACT_APP_VERSION;
-const IDB_KEY = 'gml-kart-legend';
+//const APP_VERSION = process.env.REACT_APP_VERSION;
+//const IDB_KEY = 'gml-kart-legend';
 const SYMBOLIZER = { POLYGON: 'POLYGON', LINE: 'LINE', POINT: 'POINT', TEXT: 'TEXT' };
-const LEGEND_WIDTH = 50;
+const LEGEND_WIDTH = 64;
 
 export async function createLegends() {
-   const legendsFromIdb = await loadFromIdb();
+   /*const legendsFromIdb = await loadFromIdb();
 
    if (legendsFromIdb) {
       return legendsFromIdb;
-   }
+   }*/
 
    const legends = [];
    const [map, mapElement] = createLegendTempMap();
    const vectorLayer = map.getLayers().getArray()[0];
 
-   const names = featureMembers
-      .filter(member => member.showLegend)
-      .map(member => member.name);
+   const members = featureMembers
+      .filter(member => member.showLegend);
 
-   for (let i = 0; i < names.length; i++) {
-      const name = names[i];
-      const legend = await createLegend(name, vectorLayer);
+   for (let i = 0; i < members.length; i++) {
+      const legend = await createLegend(members[i], vectorLayer);
 
-      legends.push(legend);
+      if (legend !== null) {
+         legends.push(legend);
+      }
    }
 
    map.dispose();
    mapElement.remove();
 
-   await set(IDB_KEY, { version: APP_VERSION, legends });
+   //await set(IDB_KEY, { version: APP_VERSION, legends });
 
    return legends;
 }
@@ -56,8 +56,13 @@ export function filterLegends(legends, features) {
    });
 }
 
-async function createLegend(name, vectorLayer) {
-   const style = await loadSldStyle(name);
+async function createLegend(featureMember, vectorLayer) {
+   const style = await loadSldStyle(featureMember);
+
+   if (style === null) {
+      return null;
+   }
+
    const rules = style.featuretypestyles[0].rules;
 
    const legend = {
@@ -125,7 +130,7 @@ async function loadExternalGraphics(style) {
    await processExternalGraphicSymbolizersAsync(rules, featureStyleType, {})
 }
 
-async function loadFromIdb() {
+/*async function loadFromIdb() {
    const { version, legends } = await get(IDB_KEY) || {};
 
    if (legends && version !== APP_VERSION) {
@@ -133,21 +138,21 @@ async function loadFromIdb() {
    }
 
    return legends;
-}
+}*/
 
 function createGeometry(rule) {
    const symbolizer = getSymbolizerType(rule);
 
    switch (symbolizer) {
       case SYMBOLIZER.POLYGON:
-         return new Polygon([[[0, 0], [0, 50], [50, 50], [50, 0], [0, 0]]]);
+         return new Polygon([[[0, 0], [0, 64], [64, 64], [64, 0], [0, 0]]]);
       case SYMBOLIZER.LINE:
-         return new LineString([[0, 50], [50, 0]]);
+         return new LineString([[0, 64], [64, 0]]);
       case SYMBOLIZER.POINT:
       case SYMBOLIZER.TEXT:
-         return new Point([25, 25]);
+         return new Point([32, 32]);
       default:         
-         return new Polygon([[[0, 0], [0, 50], [50, 50], [50, 0], [0, 0]]]);
+         return new Polygon([[[0, 0], [0, 64], [64, 64], [64, 0], [0, 0]]]);
    }
 }
 
@@ -174,16 +179,16 @@ function createLegendTempMap() {
          })
       ],
       view: new View({
-         extent: [0, 0, 50, 50]
+         extent: [0, 0, 64, 64]
       })
    });
 
    const mapElement = document.createElement('div');   
-   Object.assign(mapElement.style, { position: 'absolute', top: '-9999px', left: '-9999px', width: '50px', height: '50px' });
+   Object.assign(mapElement.style, { position: 'absolute', top: '-9999px', left: '-9999px', width: '64px', height: '64px' });
    document.getElementsByTagName('body')[0].appendChild(mapElement);
 
    map.setTarget(mapElement);
-   map.getView().fit([0, 0, 50, 50], map.getSize());
+   map.getView().fit([0, 0, 64, 64], map.getSize());
 
    return [map, mapElement];
 }

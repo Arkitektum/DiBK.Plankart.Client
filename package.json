@@ -24,8 +24,8 @@
       "react-scripts": "4.0.3",
       "react-split": "^2.0.13",
       "redux": "^4.1.1",
-      "resium": "^1.14.3",
-      "sass": "^1.42.1"
+      "sass": "^1.42.1",
+      "url-parse": "^1.5.10"
    },
    "scripts": {
       "start": "craco start",
