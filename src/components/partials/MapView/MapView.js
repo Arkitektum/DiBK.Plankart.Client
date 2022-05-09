@@ -168,8 +168,6 @@ function MapView({ mapDocument }) {
             return;
          }
 
-         debugger;
-
          const scene = ol3dMap.getCesiumScene()
          const globe = scene.globe;
          var dummy = Rectangle.fromDegrees(mapExtent3d[0]-0.005, mapExtent3d[1]-0.0025, mapExtent3d[2]+0.005, mapExtent3d[3]+0.0025);
@@ -278,13 +276,6 @@ function MapView({ mapDocument }) {
       },
       [terrainResourceId, ol3dMap]
    );
-
-   function setAllLegendCheckboxes(checkedValue){
-      document.querySelectorAll('input[type=checkbox]').forEach(c => {
-         if (c.checked === checkedValue)
-            c.click();
-      });
-   }
 
    return (
       <div className={`content ${!sidebar.visible ? 'sidebar-hidden' : ''}`}>
