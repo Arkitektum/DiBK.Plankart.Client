@@ -170,7 +170,7 @@ function MapView({ mapDocument }) {
 
          const scene = ol3dMap.getCesiumScene()
          const globe = scene.globe;
-         var dummy = Rectangle.fromDegrees(mapExtent3d[0]-0.005, mapExtent3d[1]-0.0025, mapExtent3d[2]+0.005, mapExtent3d[3]+0.0025);
+         var dummy = Rectangle.fromDegrees(mapExtent3d[0]-0.05, mapExtent3d[1]-0.025, mapExtent3d[2]+0.05, mapExtent3d[3]+0.025);
          globe.cartographicLimitRectangle = dummy;
          globe.showSkirts = false;
          globe.backFaceCulling = false;
