@@ -1,21 +1,12 @@
 import { Style, Text } from 'ol/style';
-
-import {
-   IMAGE_LOADING,
-   IMAGE_LOADED,
-   IMAGE_ERROR,
-   DEFAULT_MARK_SIZE,
-} from '../constants';
+import { IMAGE_LOADING, IMAGE_LOADED, IMAGE_ERROR, DEFAULT_MARK_SIZE } from '../constants';
 import { memoizeStyleFunction } from './styleUtils';
-import {
-   imageLoadingPointStyle,
-   imageErrorPointStyle,
-   emptyStyle,
-} from './static';
+import { imageLoadingPointStyle, imageErrorPointStyle, emptyStyle } from './static';
 import { createCachedImageStyle, getImageLoadingState } from '../imageCache';
 import getWellKnownSymbol from './wellknown';
 import evaluate, { expressionOrDefault } from '../olEvaluator';
 import { getSimpleFill, getSimpleStroke } from './simpleStyles';
+import { getUrl } from 'utils/map/helpers';
 
 const defaultMarkFill = getSimpleFill({ styling: { fill: '#888888' } });
 const defaultMarkStroke = getSimpleStroke({ styling: { stroke: {} } });
@@ -42,7 +33,7 @@ function pointStyle(pointsymbolizer) {
          pointSizeValue = null;
       }
 
-      const imageUrl = style.externalgraphic.onlineresource;
+      const imageUrl = getUrl(style.externalgraphic.onlineresource);
 
       // Use fallback point styles when image hasn't been loaded yet.
       switch (getImageLoadingState(imageUrl)) {
@@ -69,7 +60,7 @@ function pointStyle(pointsymbolizer) {
          const olFill = getSimpleFill(style.mark.fill);
          const olStroke = getSimpleStroke(style.mark.stroke);
          const ttfMatch = wellknownname.match(ttfRegex);
-   
+
          if (ttfMatch !== null) {
             return new Style({
                text: new Text({
@@ -81,7 +72,7 @@ function pointStyle(pointsymbolizer) {
                })
             });
          }
-   
+
          return new Style({
             // Note: size will be set dynamically later.
             image: getWellKnownSymbol(
@@ -131,7 +122,7 @@ function getPointStyle(symbolizer, feature) {
    // --- Update dynamic size ---
    const { graphic } = symbolizer;
    const { size } = graphic;
-   
+
    if (size && size.type === 'expression') {
       const sizeValue = Number(evaluate(size, feature)) || DEFAULT_MARK_SIZE;
 

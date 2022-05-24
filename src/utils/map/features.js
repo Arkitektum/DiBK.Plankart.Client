@@ -156,6 +156,10 @@ export function addValidationResultToFeatures(mapDocument, features) {
 }
 
 function getHighlightStyle(feature) {
+   if (feature.get('name') === 'RpJuridiskPunkt') {
+      return [];
+   }
+
    const highlightStroke = new Stroke({
       color: feature.get('errorMessages')?.length ? ERROR_COLOR : HIGHLIGHT_COLOR,
       lineCap: 'butt',

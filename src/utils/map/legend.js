@@ -101,7 +101,7 @@ function getOlStyles(styles, feature, rule) {
          const image = clone.getImage();
 
          if (image) {
-            image.setScale(LEGEND_WIDTH / image.getSize()[0]);
+            image.setScale(image.getScale() * 1.75);
          }
 
          return clone;
@@ -147,7 +147,7 @@ function createGeometry(rule) {
       case SYMBOLIZER.POLYGON:
          return new Polygon([[[0, 0], [0, 64], [64, 64], [64, 0], [0, 0]]]);
       case SYMBOLIZER.LINE:
-         return new LineString([[0, 64], [64, 0]]);
+         return new LineString([[8, 56], [56, 8]]);
       case SYMBOLIZER.POINT:
       case SYMBOLIZER.TEXT:
          return new Point([32, 32]);

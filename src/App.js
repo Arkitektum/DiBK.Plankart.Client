@@ -3,10 +3,11 @@ import { useSelector } from 'react-redux';
 import { MapView, SplashScreen, TopBar } from 'components/partials';
 import { createLegends } from 'utils/map/legend';
 import { Spinner } from 'components/custom-elements';
+import { data } from 'data';
 import './App.scss';
 
 function App() {
-   const [mapDocument, setMapDocument] = useState(null);
+   const [mapDocument, setMapDocument] = useState(data);
    const [legends, setLegends] = useState([]);
    const [loading, setLoading] = useState(true);
    const apiLoading = useSelector(state => state.api.loading);

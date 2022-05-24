@@ -54,16 +54,16 @@
                      <se:GraphicStroke>
                         <se:Graphic>
                            <se:ExternalGraphic>
-                              <se:OnlineResource xlink:type="simple" xlink:href="https://dibk-plankart.azurewebsites.net/sld/gfx/z.svg" />
+                              <se:OnlineResource xlink:type="simple" xlink:href="https://register.geonorge.no/symbol/files/reguleringsplanforslag/juridisk-linje-1204.svg" />
                               <se:Format>image/svg+xml</se:Format>
                            </se:ExternalGraphic>
                            <se:Size>11</se:Size>
                            <se:Rotation>
-                              <ogc:Literal>90</ogc:Literal>
+                              <ogc:Literal>0</ogc:Literal>
                            </se:Rotation>
                         </se:Graphic>
                         <se:Gap>
-                           <ogc:Literal>29</ogc:Literal>
+                           <ogc:Literal>27</ogc:Literal>
                         </se:Gap>
                      </se:GraphicStroke>
                   </se:Stroke>
@@ -313,18 +313,13 @@
                      <se:GraphicStroke>
                         <se:Graphic>
                            <se:ExternalGraphic>
-                              <se:OnlineResource xlink:type="simple" xlink:href="https://dibk-plankart.azurewebsites.net/sld/gfx/juridisk-linje-1227.svg" />
+                              <se:OnlineResource xlink:type="simple" xlink:href="https://register.geonorge.no/symbol/files/reguleringsplanforslag/juridisk-linje-1227.svg" />
                               <se:Format>image/svg+xml</se:Format>
                            </se:ExternalGraphic>
-                           <se:Size>10</se:Size>
-                           <se:Rotation>
-                              <ogc:Literal>90</ogc:Literal>
-                           </se:Rotation>
+                           <se:Size>7</se:Size>
                         </se:Graphic>
-                        <se:Gap>
-                           <ogc:Literal>10</ogc:Literal>
-                        </se:Gap>
                      </se:GraphicStroke>
+                     <CssParameter name="stroke-dasharray">7 19</CssParameter>
                   </se:Stroke>
                </se:LineSymbolizer>
             </se:Rule>
@@ -352,12 +347,12 @@
                      <se:GraphicStroke>
                         <se:Graphic>
                            <se:ExternalGraphic>
-                              <se:OnlineResource xlink:type="simple" xlink:href="https://dibk-plankart.azurewebsites.net/sld/gfx/svart-halv-linje.svg" />
+                              <se:OnlineResource xlink:type="simple" xlink:href="https://register.geonorge.no/symbol/files/reguleringsplanforslag/svart-halv-linje.svg" />
                               <se:Format>image/svg+xml</se:Format>
                            </se:ExternalGraphic>
                            <se:Size>18</se:Size>
                            <se:Rotation>
-                              <ogc:Literal>90</ogc:Literal>
+                              <ogc:Literal>0</ogc:Literal>
                            </se:Rotation>
                         </se:Graphic>
                         <se:Gap>
@@ -391,16 +386,16 @@
                      <se:GraphicStroke>
                         <se:Graphic>
                            <se:ExternalGraphic>
-                              <se:OnlineResource xlink:type="simple" xlink:href="https://dibk-plankart.azurewebsites.net/sld/gfx/sikringsgjerde.svg" />
+                              <se:OnlineResource xlink:type="simple" xlink:href="https://register.geonorge.no/symbol/files/reguleringsplanforslag/juridisk-linje-1235.svg" />
                               <se:Format>image/svg+xml</se:Format>
                            </se:ExternalGraphic>
                            <se:Size>11</se:Size>
                            <se:Rotation>
-                              <ogc:Literal>90</ogc:Literal>
+                              <ogc:Literal>0</ogc:Literal>
                            </se:Rotation>
                         </se:Graphic>
                         <se:Gap>
-                           <ogc:Literal>50</ogc:Literal>
+                           <ogc:Literal>78</ogc:Literal>
                         </se:Gap>
                      </se:GraphicStroke>
                   </se:Stroke>
@@ -460,31 +455,69 @@
                   </ogc:PropertyIsEqualTo>
                </ogc:Filter>
                <se:LineSymbolizer>
+                  <se:VendorOption name="placement">lastPoint</se:VendorOption>
                   <se:Stroke>
-                     <se:SvgParameter name="stroke">#000000</se:SvgParameter>
-                     <se:SvgParameter name="stroke-width">0.5</se:SvgParameter>
-                     <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-                     <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
+                     <se:GraphicStroke>
+                        <se:Graphic>
+                           <se:ExternalGraphic>
+                              <se:OnlineResource xlink:href="https://register.geonorge.no/symbol/files/reguleringsplanforslag/juridisk-linje-1259.svg" xlink:type="simple"/>
+                              <se:Format>image/svg+xml</se:Format>
+                           </se:ExternalGraphic>
+                           <!-- For kompatibilitet med QGIS - START -->   
+                           <se:Mark>
+                              <se:WellKnownName>square</se:WellKnownName>
+                              <se:Fill>
+                                 <se:SvgParameter name="fill">#000000</se:SvgParameter>
+                              </se:Fill>
+                              <se:Stroke>
+                                 <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                                 <se:SvgParameter name="stroke-width">0.5</se:SvgParameter>
+                              </se:Stroke>
+                           </se:Mark>
+                           <!-- For kompatibilitet med QGIS - SLUTT -->
+                           <se:Size>11</se:Size>
+                           <se:Rotation>
+                              <ogc:Literal>25</ogc:Literal>
+                           </se:Rotation>
+                        </se:Graphic>
+                     </se:GraphicStroke>
                   </se:Stroke>
                </se:LineSymbolizer>
                <se:LineSymbolizer>
                   <se:VendorOption name="placement">firstPoint</se:VendorOption>
                   <se:Stroke>
-                     <se:SvgParameter name="stroke">#000000</se:SvgParameter>
-                     <se:SvgParameter name="stroke-width">2</se:SvgParameter>
-                     <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-                     <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
-                     <se:SvgParameter name="stroke-dasharray">4 4</se:SvgParameter>
+                     <se:GraphicStroke>
+                        <se:Graphic>
+                           <se:ExternalGraphic>
+                              <se:OnlineResource xlink:href="https://register.geonorge.no/symbol/files/reguleringsplanforslag/juridisk-linje-1259.svg" xlink:type="simple"/>
+                              <se:Format>image/svg+xml</se:Format>
+                           </se:ExternalGraphic>
+                           <!-- For kompatibilitet med QGIS - START -->   
+                           <se:Mark>
+                              <se:WellKnownName>square</se:WellKnownName>
+                              <se:Fill>
+                                 <se:SvgParameter name="fill">#000000</se:SvgParameter>
+                              </se:Fill>
+                              <se:Stroke>
+                                 <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                                 <se:SvgParameter name="stroke-width">0.5</se:SvgParameter>
+                              </se:Stroke>
+                           </se:Mark>
+                           <!-- For kompatibilitet med QGIS - SLUTT -->
+                           <se:Size>11</se:Size>
+                           <se:Rotation>
+                              <ogc:Literal>25</ogc:Literal>
+                           </se:Rotation>
+                        </se:Graphic>
+                     </se:GraphicStroke>
                   </se:Stroke>
                </se:LineSymbolizer>
                <se:LineSymbolizer>
-                  <se:VendorOption name="placement">lastPoint</se:VendorOption>
                   <se:Stroke>
                      <se:SvgParameter name="stroke">#000000</se:SvgParameter>
-                     <se:SvgParameter name="stroke-width">2</se:SvgParameter>
+                     <se:SvgParameter name="stroke-width">1</se:SvgParameter>
                      <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
                      <se:SvgParameter name="stroke-linecap">square</se:SvgParameter>
-                     <se:SvgParameter name="stroke-dasharray">4 4</se:SvgParameter>
                   </se:Stroke>
                </se:LineSymbolizer>
             </se:Rule>
