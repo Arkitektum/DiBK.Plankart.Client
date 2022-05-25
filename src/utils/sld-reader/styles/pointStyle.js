@@ -6,7 +6,6 @@ import { createCachedImageStyle, getImageLoadingState } from '../imageCache';
 import getWellKnownSymbol from './wellknown';
 import evaluate, { expressionOrDefault } from '../olEvaluator';
 import { getSimpleFill, getSimpleStroke } from './simpleStyles';
-import { getUrl } from 'utils/map/helpers';
 
 const defaultMarkFill = getSimpleFill({ styling: { fill: '#888888' } });
 const defaultMarkStroke = getSimpleStroke({ styling: { stroke: {} } });
@@ -33,7 +32,7 @@ function pointStyle(pointsymbolizer) {
          pointSizeValue = null;
       }
 
-      const imageUrl = getUrl(style.externalgraphic.onlineresource);
+      const imageUrl = style.externalgraphic.onlineresource;
 
       // Use fallback point styles when image hasn't been loaded yet.
       switch (getImageLoadingState(imageUrl)) {

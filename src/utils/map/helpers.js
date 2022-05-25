@@ -28,7 +28,7 @@ export function getSymbolById(legends, id) {
       .find(symbol => symbol.id === id);
 }
 
-export function getUrl(urlString) {
+export function generateProxyUrl(urlString) {
    const url = new Url(urlString);
 
    if (PROXY_HOSTS.includes(url.host)) {

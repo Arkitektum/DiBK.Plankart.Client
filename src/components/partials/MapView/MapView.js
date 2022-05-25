@@ -102,7 +102,7 @@ function MapView({ mapDocument }) {
          const view = map.getView();
 
          view.fit(extent, map.getSize());
-         view.setMinZoom(12);
+         view.setMinZoom(10);
          view.setMaxZoom(24);
 
          map.addControl(new ZoomToExtent({ extent }));
