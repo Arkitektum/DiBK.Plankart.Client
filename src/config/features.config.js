@@ -6,57 +6,46 @@ const featureMembers = [
    }),
    new FeatureMember('RpArealformålOmråde', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rparealformalomrade_wms-qgis-esri_v1.sld',
-      infoProps: ['arealformål', 'feltnavn', 'eierform'] }
-   ),
+   }),
    new FeatureMember('RpBestemmelseOmråde', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rpbestemmelseomrade_wms-qgis-esri_v1.sld',
-      zIndex: 1,
-      infoProps: ['bestemmelseOmrådeNavn']
+      zIndex: 1
    }),
    new FeatureMember('RpBestemmelseMidlByggAnlegg', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rpbestemmelsemidlbygganlegg_wms-qgis-esri_v1.sld',
-      zIndex: 1,
-      infoProps: ['bestemmelseOmrådeNavn']
+      zIndex: 1
    }),
    new FeatureMember('RpAngittHensynSone', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rpangitthensynsone_wms-qgis-esri_v1.sld',
-      zIndex: 1,
-      infoProps: ['hensynSonenavn', 'angittHensyn']
+      zIndex: 1
    }),
    new FeatureMember('RpBåndleggingSone', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rpbandleggingsone_wms-qgis-esri_v1.sld', 
-      zIndex: 1,
-      infoProps: ['hensynSonenavn', 'båndlegging']
+      zIndex: 1
    }),
    new FeatureMember('RpDetaljeringSone', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rpdetaljeringsone_wms-qgis-esri_v1.sld',
-      zIndex: 1,
-      infoProps: ['hensynSonenavn', 'detaljering']
+      zIndex: 1
    }),
    new FeatureMember('RpFareSone', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rpfaresone_wms-qgis-esri_v1.sld',
-      zIndex: 1, 
-      infoProps: ['hensynSonenavn', 'fare']
+      zIndex: 1
    }),
    new FeatureMember('RpGjennomføringSone', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rpgjennomforingsone_wms-qgis-esri_v1.sld',
-      zIndex: 1,
-      infoProps: ['hensynSonenavn', 'gjennomføring'],
+      zIndex: 1
    }),
    new FeatureMember('RpInfrastrukturSone', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rpinfrastruktursone_wms-qgis-esri_v1.sld',
-      zIndex: 1,
-      infoProps: ['hensynSonenavn', 'infrastruktur']
+      zIndex: 1
    }),
    new FeatureMember('RpSikringSone', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rpsikringsone_wms-qgis-esri_v1.sld',
-      zIndex: 1,
-      infoProps: ['hensynSonenavn', 'sikring']
+      zIndex: 1
    }),
    new FeatureMember('RpStøySone', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rpstoysone_wms-qgis-esri_v1.sld',
-      zIndex: 1,
-      infoProps: ['hensynSonenavn', 'støy']
+      zIndex: 1
    }),
    new FeatureMember('RpRegulertHøyde', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rpregulerthoyde_wms-qgis-esri_v1.sld',
@@ -69,12 +58,10 @@ const featureMembers = [
    new FeatureMember('RpJuridiskLinje', { 
       sld: 'http://register.geonorge.no/register/kartografi/files/rpjuridisklinje_wms-qgis-esri_v1.sld',
       zIndex: 2, 
-      infoProps: ['juridisklinje'] 
    }),
    new FeatureMember('RpJuridiskPunkt', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rpjuridiskpunkt_wms-qgis-esri_v1.sld',
       zIndex: 3, 
-      infoProps: ['juridiskpunkt'] 
    }),
    new FeatureMember('RpGrense', { 
       /* Lokal versjon satt til "transparent": */
@@ -84,7 +71,6 @@ const featureMembers = [
    new FeatureMember('RpPåskrift', { 
       sld: 'https://register.geonorge.no/register/kartografi/files/rppaskrift_wms-qgis-esri_v1.sld',
       zIndex: 3, 
-      infoProps: ['tekststreng', 'påskriftType'], 
       showLegend: false 
    })
 ];

@@ -6,7 +6,7 @@ import { Spinner } from 'components/custom-elements';
 import './App.scss';
 
 function App() {
-   const [mapDocument, setMapDocument] = useState(null);
+   const [mapDocument, setMapDocument] = useState(data);
    const [legends, setLegends] = useState([]);
    const [loading, setLoading] = useState(true);
    const apiLoading = useSelector(state => state.api.loading);

@@ -18,17 +18,17 @@ export function toggleFeatures(legend, map) {
 }
 
 export function toggleFeature(feature) {
-   const visible = !feature.get('visible');
+   const visible = !feature.get('_visible');
 
    if (visible) {
-      const savedStyle = feature.get('savedStyle');
+      const savedStyle = feature.get('_savedStyle');
       feature.setStyle(savedStyle);
    } else {
-      feature.set('savedStyle', feature.getStyle());
+      feature.set('_savedStyle', feature.getStyle());
       feature.setStyle(new Style(null));
    }
 
-   feature.set('visible', visible);
+   feature.set('_visible', visible);
 }
 
 export function addGeometryInfo(features) {
@@ -62,15 +62,15 @@ export function highlightSelectedFeatures(map, features) {
    layerSource.clear();
 
    const highlightClones = features
-      .filter(feature => feature.get('highlightClone') !== undefined)
-      .map(feature => feature.get('highlightClone'));
+      .filter(feature => feature.get('_highlightClone') !== undefined)
+      .map(feature => feature.get('_highlightClone'));
 
    const featuresWithoutClones = features
-      .filter(feature => feature.get('highlightClone') === undefined);
+      .filter(feature => feature.get('_highlightClone') === undefined);
 
    const selectedFeatures = featuresWithoutClones.map(feature => {
       const cloned = feature.clone();
-      const errorMessages = feature.get('errorMessages');
+      const errorMessages = feature.get('_errorMessages');
 
       if (errorMessages) {
          const wkts = errorMessages
@@ -83,13 +83,13 @@ export function highlightSelectedFeatures(map, features) {
             const geoCollection = new GeometryCollection();
 
             geoCollection.setGeometries(geometries);
-            cloned.set('zoomTo', geoCollection);
+            cloned.set('_zoomTo', geoCollection);
          }
       }
 
       const styles = getHighlightStyle(cloned);
       cloned.setStyle(styles);
-      feature.set('highlightClone', cloned);
+      feature.set('_highlightClone', cloned);
 
       return cloned;
    });
@@ -98,7 +98,7 @@ export function highlightSelectedFeatures(map, features) {
 }
 
 export function addLegendToFeatures(features, legends) {
-   const groupedFeatures = groupBy(features, feature => feature.get('name'));
+   const groupedFeatures = groupBy(features, feature => feature.get('_name'));
    const featureNames = Object.keys(groupedFeatures);
 
    for (let i = 0; i < featureNames.length; i++) {
@@ -116,7 +116,7 @@ export function addLegendToFeatures(features, legends) {
          const symbol = symbols.find(sym => !sym.rule.filter || filterSelector(sym.rule.filter, feature));
 
          if (symbol) {
-            feature.set('symbolId', symbol.id);
+            feature.set('_symbolId', symbol.id);
          }
       }
    }
@@ -143,10 +143,10 @@ export function addValidationResultToFeatures(mapDocument, features) {
          const feature = features.find(feat => feat.get('id') === gmlId);
 
          if (feature) {
-            const errorMessages = feature.get('errorMessages');
+            const errorMessages = feature.get('_errorMessages');
 
             if (!errorMessages) {
-               feature.set('errorMessages', [{ message: message.message, zoomTo: message.zoomTo }]);
+               feature.set('_errorMessages', [{ message: message.message, zoomTo: message.zoomTo }]);
             } else {
                errorMessages.push({ message: message.message, zoomTo: message.zoomTo });
             }
@@ -156,12 +156,12 @@ export function addValidationResultToFeatures(mapDocument, features) {
 }
 
 function getHighlightStyle(feature) {
-   if (feature.get('name') === 'RpJuridiskPunkt') {
+   if (feature.get('_name') === 'RpJuridiskPunkt') {
       return [];
    }
 
    const highlightStroke = new Stroke({
-      color: feature.get('errorMessages')?.length ? ERROR_COLOR : HIGHLIGHT_COLOR,
+      color: feature.get('_errorMessages')?.length ? ERROR_COLOR : HIGHLIGHT_COLOR,
       lineCap: 'butt',
       width: 3
    });
@@ -170,7 +170,7 @@ function getHighlightStyle(feature) {
    let highlightStyle;
 
    return (feature, resolution) => {
-      if (feature.get('name') === 'RpPåskrift') {
+      if (feature.get('_name') === 'RpPåskrift') {
          const styles = origStyleFunction(feature, resolution);
 
          highlightStyle = styles[1].clone();
@@ -192,7 +192,7 @@ function getHighlightStyle(feature) {
       }
 
       const zoomToStyles = [];
-      const zoomTo = feature.get('zoomTo');
+      const zoomTo = feature.get('_zoomTo');
 
       if (zoomTo) {
          const geometries = zoomTo.getGeometries();

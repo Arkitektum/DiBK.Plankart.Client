@@ -47,7 +47,7 @@ export async function createLegends() {
 export function filterLegends(legends, features) {
    return legends.map(legend => {
       legend.symbols.forEach(symbol => {
-         symbol.hidden = !features.some(feature => feature.get('symbolId') === symbol.id);
+         symbol.hidden = !features.some(feature => feature.get('_symbolId') === symbol.id);
       });
 
       legend.hidden = legend.symbols.every(symbol => symbol.hidden);
