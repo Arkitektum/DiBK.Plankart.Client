@@ -222,7 +222,7 @@ function addZoomToStyle(geometries, styles) {
                   stroke: new Stroke({
                      color: ERROR_COLOR,
                      lineCap: 'round',
-                     width: 10,
+                     width: 7,
                   })
                })
             );
