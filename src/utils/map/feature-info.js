@@ -1,6 +1,7 @@
 const EXCEPTIONS = [
    key => key === 'id',
    key => key === 'geometry',
+   key => key === 'symbolretning',
    key => key.includes(':'),
    key => key.startsWith('_')
 ]
