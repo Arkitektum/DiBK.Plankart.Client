@@ -14,6 +14,10 @@
       border-bottom: 0 !important;
    }
 
+   &.box-expanded .expand-button::after {
+      transform: rotate(90deg) !important;
+   }
+
    &:not(.box-expanded) {
       width: auto !important;
 
