@@ -6,20 +6,19 @@ import { processExternalGraphicSymbolizersAsync } from 'utils/sld-reader/imageCa
 import featureMembers from 'config/features.config';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-//import { get, set } from 'idb-keyval';
+import { get, set } from 'idb-keyval';
 import { createId } from './helpers';
 
-//const APP_VERSION = process.env.REACT_APP_VERSION;
-//const IDB_KEY = 'gml-kart-legend';
+const APP_VERSION = process.env.REACT_APP_VERSION;
+const IDB_KEY = 'dibk-gml-kart';
 const SYMBOLIZER = { POLYGON: 'POLYGON', LINE: 'LINE', POINT: 'POINT', TEXT: 'TEXT' };
-const LEGEND_WIDTH = 64;
 
 export async function createLegends() {
-   /*const legendsFromIdb = await loadFromIdb();
+   const legendsFromIdb = await loadLegendsFromIdb();
 
    if (legendsFromIdb) {
       return legendsFromIdb;
-   }*/
+   }
 
    const legends = [];
    const [map, mapElement] = createLegendTempMap();
@@ -39,7 +38,8 @@ export async function createLegends() {
    map.dispose();
    mapElement.remove();
 
-   //await set(IDB_KEY, { version: APP_VERSION, legends });
+   const data = await get(IDB_KEY) || {};
+   await set(IDB_KEY, { ...data, version: APP_VERSION, legends });
 
    return legends;
 }
@@ -47,7 +47,7 @@ export async function createLegends() {
 export function filterLegends(legends, features) {
    return legends.map(legend => {
       legend.symbols.forEach(symbol => {
-         symbol.hidden = !features.some(feature => feature.get('symbolId') === symbol.id);
+         symbol.hidden = !features.some(feature => feature.get('_symbolId') === symbol.id);
       });
 
       legend.hidden = legend.symbols.every(symbol => symbol.hidden);
@@ -101,7 +101,7 @@ function getOlStyles(styles, feature, rule) {
          const image = clone.getImage();
 
          if (image) {
-            image.setScale(LEGEND_WIDTH / image.getSize()[0]);
+            image.setScale(image.getScale() * 1.75);
          }
 
          return clone;
@@ -130,7 +130,7 @@ async function loadExternalGraphics(style) {
    await processExternalGraphicSymbolizersAsync(rules, featureStyleType, {})
 }
 
-/*async function loadFromIdb() {
+async function loadLegendsFromIdb() {
    const { version, legends } = await get(IDB_KEY) || {};
 
    if (legends && version !== APP_VERSION) {
@@ -138,7 +138,7 @@ async function loadExternalGraphics(style) {
    }
 
    return legends;
-}*/
+}
 
 function createGeometry(rule) {
    const symbolizer = getSymbolizerType(rule);
@@ -147,7 +147,7 @@ function createGeometry(rule) {
       case SYMBOLIZER.POLYGON:
          return new Polygon([[[0, 0], [0, 64], [64, 64], [64, 0], [0, 0]]]);
       case SYMBOLIZER.LINE:
-         return new LineString([[0, 64], [64, 0]]);
+         return new LineString([[8, 56], [56, 8]]);
       case SYMBOLIZER.POINT:
       case SYMBOLIZER.TEXT:
          return new Point([32, 32]);

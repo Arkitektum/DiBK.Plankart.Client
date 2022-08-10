@@ -29,7 +29,7 @@ export function createStyleFunction(feature, stroke) {
       const styles = origStyleFunction(feature, resolution);
       let newStyle;
 
-      if (feature.get('name') === 'RpPåskrift') {
+      if (feature.get('_name') === 'RpPåskrift') {
          newStyle = styles[1].clone();
          newStyle.getText().setStroke(stroke);
       } else {
@@ -44,7 +44,7 @@ export function createStyleFunction(feature, stroke) {
 }
 
 export async function addStyling(features, callback) {
-   const groupedFeatures = groupBy(features, feature => feature.get('name'));
+   const groupedFeatures = groupBy(features, feature => feature.get('_name'));
    const featureKeys = Object.keys(groupedFeatures);
 
    for (let i = 0; i < featureKeys.length; i++) {
@@ -63,7 +63,7 @@ export async function addStyling(features, callback) {
 
       groupedFeatures[key].forEach(feature => {
          feature.setStyle(style);
-         feature.set('visible', true);
+         feature.set('_visible', true);
       });
    }
 }

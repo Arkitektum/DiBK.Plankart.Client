@@ -8,12 +8,9 @@ import { getCachedImage, getImageLoadingState } from '../imageCache';
 import { imageLoadingPolygonStyle, imageErrorPolygonStyle } from './static';
 import { getSimpleStroke, getSimpleFill } from './simpleStyles';
 import { getGraphicStrokeRenderer } from './graphicStrokeStyle';
-import { getUrl } from 'utils/map/helpers';
 
 function createPattern(graphic) {
-   const { image, width, height } = getCachedImage(
-      getUrl(graphic.externalgraphic.onlineresource)
-   );
+   const { image, width, height } = getCachedImage(graphic.externalgraphic.onlineresource);
 
    const canvas = document.createElement('canvas');
    const context = canvas.getContext('2d');
@@ -51,7 +48,7 @@ function createAndRotatePattern(context, canvas, graphic, width, height) {
 
 function getExternalGraphicFill(symbolizer) {
    const { graphic } = symbolizer.fill.graphicfill;
-   const fillImageUrl = getUrl(graphic.externalgraphic.onlineresource);
+   const fillImageUrl = graphic.externalgraphic.onlineresource;
 
    switch (getImageLoadingState(fillImageUrl)) {
       case IMAGE_LOADED:

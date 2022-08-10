@@ -7,9 +7,12 @@ import TileLayer from 'ol/layer/Tile';
 import Map from 'ol/Map';
 import TileWMS from 'ol/source/TileWMS';
 import VectorSource from 'ol/source/Vector';
+import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
+import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import { addValidationResultToFeatures } from './features';
 import { addStyling } from './styling';
 import { baseMap } from 'config/baseMap.config';
+import axios from 'axios';
 
 async function createFeaturesLayer(mapDocument) {
    const features = new GeoJSON().readFeatures(mapDocument.geoJson);
@@ -39,10 +42,16 @@ function createSelectedFeaturesLayer() {
    return selectedFeaturesLayer;
 }
 
-function createTileLayer() {
+async function createTileLayer(epsgCode) {
+   const tileLayer = await createTileLayerWMTS(epsgCode)
+
+   return tileLayer !== null ? tileLayer : createTileLayerWMS();
+}
+
+function createTileLayerWMS() {
    return new TileLayer({
       source: new TileWMS({
-         url: baseMap.url,
+         url: baseMap.wmsUrl,
          params: {
             LAYERS: baseMap.layer,
             VERSION: '1.1.1',
@@ -53,6 +62,28 @@ function createTileLayer() {
    });
 }
 
+async function createTileLayerWMTS(epsgCode) {
+   let response;
+
+   try {
+      response = await axios.get(baseMap.wmtsCapabilitiesUrl);
+   } catch {
+      return null;
+   }
+
+   const capabilities = new WMTSCapabilities().read(response.data);
+
+   const options = optionsFromCapabilities(capabilities, {
+      layer: baseMap.layer,
+      matrixSet: epsgCode,
+   });
+
+   return new TileLayer({
+      source: new WMTS(options),
+      maxZoom: baseMap.maxZoom
+   });
+}
+
 export async function createMap(mapDocument) {
    if (!mapDocument) {
       return null;
@@ -60,7 +91,7 @@ export async function createMap(mapDocument) {
 
    return new Map({
       layers: [
-         createTileLayer(),
+         await createTileLayer(mapDocument.epsg.code),
          await createFeaturesLayer(mapDocument),
          createSelectedFeaturesLayer()
       ],

@@ -31,6 +31,7 @@ function addPropOrArray(node, obj, prop) {
    const property = prop.toLowerCase();
    const item = {};
    readNode(node, item);
+
    if (!(property in obj)) {
       obj[property] = item;
    } else if (Array.isArray(obj[property])) {
@@ -316,6 +317,7 @@ export default function Reader(sld) {
       result.version = n.getAttribute('version');
       readNode(n, result);
    }
+
    return result;
 }
 

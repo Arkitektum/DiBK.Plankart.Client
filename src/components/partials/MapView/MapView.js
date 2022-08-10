@@ -145,7 +145,7 @@ function MapView({ mapDocument }) {
          setMapExtent3d(transformExtent(extent, mapDocument.envelope.epsg.code2D, 'EPSG:4326'));
 
          view.fit(extent, map.getSize());
-         view.setMinZoom(12);
+         view.setMinZoom(10);
          view.setMaxZoom(24);
 
          map.addControl(new ZoomToExtent({ extent }));

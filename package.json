@@ -1,7 +1,7 @@
 {
    "name": "dibk-gml-kart",
-   "description": "Visning av GML-kart i OpenLayers",
-   "version": "0.5.3",
+   "description": "GML-kartvising av reguleringsplanforslag",
+   "version": "1.0.0",
    "private": true,
    "dependencies": {
       "@hot-loader/react-dom": "^17.0.1",
@@ -13,9 +13,9 @@
       "dayjs": "^1.10.7",
       "filesize": "^8.0.3",
       "idb-keyval": "^6.0.3",
-      "ol": "^6.8.1",
+      "ol": "^6.14.1",
       "ol-cesium": "^2.13.0",
-      "proj4": "^2.7.5",
+      "proj4": "^2.8.0",
       "react": "^17.0.2",
       "react-bootstrap": "^1.6.4",
       "react-dom": "^17.0.2",

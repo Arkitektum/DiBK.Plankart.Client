@@ -1,7 +1,5 @@
 /* eslint-disable no-continue */
 import { Style, Icon } from 'ol/style';
-import { getUrl } from 'utils/map/helpers';
-
 import { IMAGE_LOADING, IMAGE_LOADED, IMAGE_ERROR } from './constants';
 import { getRuleSymbolizers, getByPath } from './Utils';
 
@@ -187,19 +185,17 @@ function getCachingImageLoader(imageUrl) {
  * has loaded. Will be called with undefined if the loading the image resulted in an error.
  */
 export function loadExternalGraphic(imageUrl, featureTypeStyle, imageLoadedCallback) {
-   const url = getUrl(imageUrl);
+   invalidateExternalGraphics(featureTypeStyle, imageUrl);
 
-   invalidateExternalGraphics(featureTypeStyle, url);
-
-   getCachingImageLoader(url)
+   getCachingImageLoader(imageUrl)
       .then(() => {
-         invalidateExternalGraphics(featureTypeStyle, url);
+         invalidateExternalGraphics(featureTypeStyle, imageUrl);
          if (typeof imageLoadedCallback === 'function') {
-            imageLoadedCallback(url);
+            imageLoadedCallback(imageUrl);
          }
       })
       .catch(() => {
-         invalidateExternalGraphics(featureTypeStyle, url);
+         invalidateExternalGraphics(featureTypeStyle, imageUrl);
 
          if (typeof imageLoadedCallback === 'function') {
             imageLoadedCallback();
@@ -215,17 +211,15 @@ export function loadExternalGraphic(imageUrl, featureTypeStyle, imageLoadedCallb
  * @param {object} featureTypeStyle Feature type style object.
  */
 export async function loadExternalGraphicAsync(imageUrl, featureTypeStyle) {
-   const url = getUrl(imageUrl);
-
-   invalidateExternalGraphics(featureTypeStyle, url);
+   invalidateExternalGraphics(featureTypeStyle, imageUrl);
 
    try {
-      await getCachingImageLoader(url);
-      return url;
+      await getCachingImageLoader(imageUrl);
+      return imageUrl;
    } catch (error) {
       return undefined;
    } finally {
-      invalidateExternalGraphics(featureTypeStyle, url);
+      invalidateExternalGraphics(featureTypeStyle, imageUrl);
    }
 }
 
@@ -313,6 +307,7 @@ function _processExternalGraphicsSymbolizers(rules, featureTypeStyle, callbackRe
  */
 export function createCachedImageStyle(imageUrl, size, rotationDegrees = 0.0) {
    const { image, width, height } = getCachedImage(imageUrl);
+
    return new Style({
       image: new Icon({
          img: image,

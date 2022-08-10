@@ -19,7 +19,7 @@ export function getFeatureById(vectorLayer, id) {
 
 export function getFeaturesByName(vectorLayer, name) {
    return vectorLayer.getSource().getFeatures()
-      .filter(feature => feature.get('name') === name);
+      .filter(feature => feature.get('_name') === name);
 }
 
 export function getSymbolById(legends, id) {
@@ -28,7 +28,7 @@ export function getSymbolById(legends, id) {
       .find(symbol => symbol.id === id);
 }
 
-export function getUrl(urlString) {
+export function generateProxyUrl(urlString) {
    const url = new Url(urlString);
 
    if (PROXY_HOSTS.includes(url.host)) {
