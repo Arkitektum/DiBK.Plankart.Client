@@ -229,10 +229,9 @@ function MapView({ mapDocument }) {
          }
 
          const scene = ol3dMap.getCesiumScene();
-         
+
          scene.terrainProvider = new CesiumTerrainProvider({
             url: IonResource.fromAssetId(1),
-            credit: "Norges Kartverk"
          });
 
          const cesiumBaseMapWMS = new WebMapServiceImageryProvider({
