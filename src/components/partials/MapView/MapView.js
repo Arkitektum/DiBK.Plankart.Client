@@ -111,7 +111,7 @@ function MapView({ mapDocument }) {
 
          if (mapDocument && mapDocument.czmlData.czmlStrings.length === 0 && terrainResourceId === null) {
             create();
-            //createTerrainResource();
+            createTerrainResource();
          }
       },
       [mapDocument, terrainResourceId]
