@@ -235,7 +235,7 @@ function MapView({ mapDocument }) {
          });
 
          const cesiumBaseMapWMS = new WebMapServiceImageryProvider({
-            url: baseMap.url,
+            url: baseMap.wmsUrl,
             layers: baseMap.layer,
             maximumLevel: baseMap.maxZoom
          });
@@ -262,7 +262,7 @@ function MapView({ mapDocument }) {
 
    useEffect(
       () => {
-         if (terrainResourceId === null){
+         if (terrainResourceId === null || ol3dMap === null){
             return;
          }
 

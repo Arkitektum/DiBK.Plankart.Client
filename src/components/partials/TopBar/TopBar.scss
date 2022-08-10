@@ -62,7 +62,7 @@
 
    .top-bar-right {
       padding-right: 15px;
-      width: 31px;
+      display: flex;
 
       div.toggle-fullscreen {
          background: url("../../../assets/gfx/icon-maximize.svg") no-repeat center center;
