@@ -6,6 +6,8 @@ import Upload from './Upload/Upload';
 import Upload3D from './Upload/Upload3D';
 import './TopBar.scss';
 import MapContext from 'context/MapContext';
+import { getLayer, getFeaturesByName } from 'utils/map/helpers';
+import { toggleFeature } from 'utils/map/features';
 
 function TopBar({ loading, onUploadResponse }) {
    const [mapDocument, setMapDocument] = useState(null);
@@ -18,8 +20,19 @@ function TopBar({ loading, onUploadResponse }) {
 
    const setEnabled3dView = useCallback(
       enabled => {
+         function togglePaaskrifter(){
+            const vectorLayer = getLayer(ol3dMap.getOlMap(), 'features');
+            const paaskrifter = getFeaturesByName(vectorLayer, 'RpPåskrift');
+
+            paaskrifter.forEach(paaskrift => {
+               toggleFeature(paaskrift);
+            })
+         }
+
          ol3dMap.setEnabled(enabled);
          setOl3dMapEnabled(enabled);
+
+         setTimeout(togglePaaskrifter, 0);
       },
       [ol3dMap]
    )
