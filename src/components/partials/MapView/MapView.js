@@ -21,6 +21,7 @@ import MapContext from 'context/MapContext';
 import axios from 'axios';
 
 const TERRAIN_DATA_URL = process.env.REACT_APP_TERRAIN3D_URL;
+const CESIUM_ION_ACCESS_TOKEN_URL = process.env.REACT_APP_CESIUMION_TOKEN_URL;
 
 function MapView({ mapDocument }) {
    const [map, setMap] = useState(null);
@@ -37,8 +38,6 @@ function MapView({ mapDocument }) {
    const mapElement = useRef();
    const dispatch = useDispatch();
    const [ol3dMap, setOl3dMap] = useContext(MapContext);
-
-   Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MjcxMThmNC00YjRlLTQxN2EtOWVlYy01ZjlkMDI4OTk1MDYiLCJpZCI6Njk1ODcsImlhdCI6MTYzODk3MjM0Mn0.gk-hx6X_EMGF5iRzvKLLlu0dNNFUoIFe65HA83ZY7IE';
 
    const selectFeature = useCallback(
       features => {
@@ -120,6 +119,7 @@ function MapView({ mapDocument }) {
    useEffect(
       () => {
          async function preload() {
+            Ion.defaultAccessToken = (await axios.get(CESIUM_ION_ACCESS_TOKEN_URL)).data;
             ol3dMap.warmUp(0, 20000);
          }
          
