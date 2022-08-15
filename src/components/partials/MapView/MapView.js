@@ -119,10 +119,9 @@ function MapView({ mapDocument }) {
          }
 
          map.once('rendercomplete', _ => {
-
             const olcs = new OLCesium({ map });
             olcs.warmUp(0, 20000);
-            console.log('nlsah')
+            
             setOl3dMap(olcs);
          });
 
