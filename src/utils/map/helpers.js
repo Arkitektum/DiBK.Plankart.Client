@@ -12,6 +12,23 @@ export function getLayer(map, id) {
       .find(layer => layer.get('id') === id);
 }
 
+export function getAllFeatures(map) {
+   return map.getAllLayers()
+      .filter(layer => layer.get('isFeatureLayer') === true)
+      .flatMap(layer => layer.getSource().getFeatures());
+}
+
+export function getExtentOfFeatures(map) {
+   const features = getAllFeatures(map);
+   const featureExtent = features[0].getGeometry().getExtent();
+
+   for (let i = 1; i < features.length; i++) {
+      extend(featureExtent, features[i].getGeometry().getExtent());
+   }
+
+   return featureExtent;
+}
+
 export function getFeatureById(vectorLayer, id) {
    return vectorLayer.getSource().getFeatures()
       .find(feature => feature.get('id') === id);

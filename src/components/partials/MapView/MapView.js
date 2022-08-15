@@ -8,20 +8,18 @@ import { transformExtent } from 'ol/proj';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterLegends } from 'utils/map/legend';
 import { addGeometryInfo, addLegendToFeatures, highlightSelectedFeatures, toggleFeatures } from 'utils/map/features';
-import { debounce, getLayer } from 'utils/map/helpers';
+import { debounce, getAllFeatures, getExtentOfFeatures } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 import OLCesium from 'ol-cesium';
 import { WebMapServiceImageryProvider, CzmlDataSource, CesiumTerrainProvider, Rectangle } from 'cesium';
 import { baseMap } from 'config/baseMap.config';
-import Ion from 'cesium/Source/Core/Ion';
 import IonResource from 'cesium/Source/Core/IonResource';
-import './MapView.scss';
 import { toggleFeatureInfo } from 'store/slices/mapSlice';
 import MapContext from 'context/MapContext';
 import axios from 'axios';
+import './MapView.scss';
 
 const TERRAIN_DATA_URL = process.env.REACT_APP_TERRAIN3D_URL;
-const CESIUM_ION_ACCESS_TOKEN_URL = process.env.REACT_APP_CESIUMION_TOKEN_URL;
 
 function MapView({ mapDocument }) {
    const [map, setMap] = useState(null);
@@ -31,13 +29,13 @@ function MapView({ mapDocument }) {
    const [filteredLegends, setFilteredLegends] = useState([]);
    const [terrainResourceId, setTerrainResourceId] = useState(null);
    const [mapExtent3d, setMapExtent3d] = useState(null);
+   const [ol3dMap, setOl3dMap] = useContext(MapContext);
    const legends = useContext(LegendContext);
    const legend = useSelector(state => state.map.legend);
    const sidebar = useSelector(state => state.map.sidebar);
    const sidebarVisible = useRef(true);
    const mapElement = useRef();
    const dispatch = useDispatch();
-   const [ol3dMap, setOl3dMap] = useContext(MapContext);
 
    const selectFeature = useCallback(
       features => {
@@ -53,7 +51,7 @@ function MapView({ mapDocument }) {
       () => {
          const selectClick = new Select({
             condition: click,
-            layers: layer => layer.get('id') === 'features',
+            layers: layer => layer.get('isFeatureLayer') === true,
             multi: true,
             hitTolerance: 5,
             style: null
@@ -74,7 +72,7 @@ function MapView({ mapDocument }) {
       },
       [map, selectFeature]
    );
-   
+
    const { onWindowResize } = useMemo(
       () => {
          const onWindowResize = debounce(_ => {
@@ -88,28 +86,26 @@ function MapView({ mapDocument }) {
 
    useEffect(
       () => {
-         async function create() {
+         async function createOlMap() {
             const olMap = await createMap(mapDocument);
             setMap(olMap);
 
-            const vectorLayer = getLayer(olMap, 'features');
-            setFeatures(vectorLayer.getSource().getFeatures());
+            const features = getAllFeatures(olMap);
+            setFeatures(features);
          }
 
          async function createTerrainResource() {
-            const response = await axios.post(TERRAIN_DATA_URL, 
-               {
-                  envelope: mapDocument.envelope.asString,
-                  epsgCode: mapDocument.envelope.epsg.code2D.replace("EPSG:","")
-               });
+            const response = await axios.post(TERRAIN_DATA_URL, {
+               envelope: mapDocument.envelope.asString,
+               epsgCode: mapDocument.envelope.epsg.code2D.replace('EPSG:', '')
+            });
 
             const resourceId = response.data;
-
             setTerrainResourceId(resourceId);
          }
 
          if (mapDocument && mapDocument.czmlData.czmlStrings.length === 0 && terrainResourceId === null) {
-            create();
+            createOlMap();
             createTerrainResource();
          }
       },
@@ -118,31 +114,25 @@ function MapView({ mapDocument }) {
 
    useEffect(
       () => {
-         async function preload() {
-            Ion.defaultAccessToken = (await axios.get(CESIUM_ION_ACCESS_TOKEN_URL)).data;
-            ol3dMap.warmUp(0, 20000);
-         }
-         
-         if (ol3dMap){
-            preload();
-         }
-      },
-      [ol3dMap]
-   );
-
-   useEffect(
-      () => {
          if (!map) {
             return;
          }
 
+         map.once('rendercomplete', _ => {
+
+            const olcs = new OLCesium({ map });
+            olcs.warmUp(0, 20000);
+            console.log('nlsah')
+            setOl3dMap(olcs);
+         });
+
          map.setTarget(mapElement.current);
 
-         const vectorLayer = getLayer(map, 'features');
-         const extent = vectorLayer.getSource().getExtent();
+         const extent = getExtentOfFeatures(map)
          const view = map.getView();
 
-         setMapExtent3d(transformExtent(extent, mapDocument.envelope.epsg.code2D, 'EPSG:4326'));
+         const mapEpsgCode = map.getView().getProjection().getCode();
+         setMapExtent3d(transformExtent(extent, mapEpsgCode, 'EPSG:4326'));
 
          view.fit(extent, map.getSize());
          view.setMinZoom(10);
@@ -159,18 +149,19 @@ function MapView({ mapDocument }) {
             setSelectedFeatures([]);
          }
       },
-      [map, selectFeature, addMapInteraction, onWindowResize]
+      [map, setOl3dMap, selectFeature, addMapInteraction, onWindowResize]
    );
 
    useEffect(
       () => {
-         if (mapExtent3d === null || ol3dMap === null){
+         if (mapExtent3d === null || ol3dMap === null) {
             return;
          }
 
          const scene = ol3dMap.getCesiumScene()
          const globe = scene.globe;
-         var dummy = Rectangle.fromDegrees(mapExtent3d[0]-0.05, mapExtent3d[1]-0.025, mapExtent3d[2]+0.05, mapExtent3d[3]+0.025);
+         const dummy = Rectangle.fromDegrees(mapExtent3d[0] - 0.05, mapExtent3d[1] - 0.025, mapExtent3d[2] + 0.05, mapExtent3d[3] + 0.025);
+
          globe.cartographicLimitRectangle = dummy;
          globe.showSkirts = false;
          globe.backFaceCulling = false;
@@ -198,12 +189,12 @@ function MapView({ mapDocument }) {
       },
       [legend, map]
    );
-   
+
    useEffect(
       () => {
          if (map && sidebar.visible !== sidebarVisible.current) {
             map.updateSize();
-            sidebarVisible.current = sidebar.visible;            
+            sidebarVisible.current = sidebar.visible;
          }
       },
       [sidebar, map]
@@ -211,20 +202,7 @@ function MapView({ mapDocument }) {
 
    useEffect(
       () => {
-         if (!map) {
-            return;
-         }
-
-         var olcs = new OLCesium({map: map});
-         setOl3dMap(olcs);
-      },
-      [map, setOl3dMap]
-   );
-
-   useEffect(
-      () => {
-         if (!ol3dMap){
-            console.log('ol3dMap not ready');
+         if (!ol3dMap) {
             return;
          }
 
@@ -240,7 +218,7 @@ function MapView({ mapDocument }) {
             maximumLevel: baseMap.maxZoom
          });
 
-         if (!scene.imageryLayers.contains(cesiumBaseMapWMS)){
+         if (!scene.imageryLayers.contains(cesiumBaseMapWMS)) {
             scene.imageryLayers.addImageryProvider(cesiumBaseMapWMS);
          }
       },
@@ -249,7 +227,7 @@ function MapView({ mapDocument }) {
 
    useEffect(
       () => {
-         if (mapDocument?.czmlData.czmlStrings.length > 0){
+         if (mapDocument?.czmlData.czmlStrings.length > 0) {
             var dataSources = ol3dMap.getDataSources();
 
             mapDocument.czmlData.czmlStrings.forEach(czmlString =>
@@ -262,7 +240,7 @@ function MapView({ mapDocument }) {
 
    useEffect(
       () => {
-         if (terrainResourceId === null || ol3dMap === null){
+         if (terrainResourceId === null || ol3dMap === null) {
             return;
          }
 

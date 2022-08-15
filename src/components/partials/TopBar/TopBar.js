@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { toggleSidebar } from 'store/slices/mapSlice';
+import { toggle3d, toggleSidebar } from 'store/slices/mapSlice';
 import filesize from 'filesize';
 import Upload from './Upload/Upload';
 import Upload3D from './Upload/Upload3D';
 import './TopBar.scss';
 import MapContext from 'context/MapContext';
-import { getLayer, getFeaturesByName } from 'utils/map/helpers';
-import { toggleFeature } from 'utils/map/features';
+import { getLayer } from 'utils/map/helpers';
 
 function TopBar({ loading, onUploadResponse }) {
    const [mapDocument, setMapDocument] = useState(null);
@@ -16,25 +15,21 @@ function TopBar({ loading, onUploadResponse }) {
    const [fullscreen, setFullscreen] = useState(false);
    const dispatch = useDispatch();
    const [ol3dMapEnabled, setOl3dMapEnabled] = useState(false);
-   const [ol3dMap, _] = useContext(MapContext);
+   const [ol3dMap] = useContext(MapContext);
 
    const setEnabled3dView = useCallback(
       enabled => {
-         function togglePaaskrifter(){
-            const vectorLayer = getLayer(ol3dMap.getOlMap(), 'features');
-            const paaskrifter = getFeaturesByName(vectorLayer, 'RpPåskrift');
-
-            paaskrifter.forEach(paaskrift => {
-               toggleFeature(paaskrift);
-            })
+         function togglePåskrifter() {
+            const vectorLayer = getLayer(ol3dMap.getOlMap(), 'RpPåskrift');
+            vectorLayer.setVisible(false);
          }
 
          ol3dMap.setEnabled(enabled);
          setOl3dMapEnabled(enabled);
-
-         setTimeout(togglePaaskrifter, 0);
+         dispatch(toggle3d(enabled));
+         setTimeout(togglePåskrifter, 0);
       },
-      [ol3dMap]
+      [ol3dMap, dispatch]
    )
 
    useEffect(
@@ -80,9 +75,9 @@ function TopBar({ loading, onUploadResponse }) {
          document.exitFullscreen();
       }
    }
-   
+
    function handleToggle3dMapClick() {
-      if (ol3dMap){
+      if (ol3dMap) {
          setEnabled3dView(!ol3dMapEnabled);
       }
    }
@@ -99,11 +94,13 @@ function TopBar({ loading, onUploadResponse }) {
    return (
       <div className="top-bar">
          <div className="top-bar-left">
-            <div className="upload-button" style={{ display: loading ? 'none' : 'block' }}>
-               <Upload onResponse={handleUploadResponse} />
-            </div>
-            <div className="upload-button" style={{ display: loading ? 'none' : 'block' }}>
-               <Upload3D onResponse={handleUpload3dResponse} />
+            <div className="open-files">
+               <div className="upload-button" style={{ display: loading ? 'none' : 'block' }}>
+                  <Upload onResponse={handleUploadResponse} />
+               </div>
+               <div className="upload-button" style={{ display: loading ? 'none' : 'block' }}>
+                  <Upload3D onResponse={handleUpload3dResponse} />
+               </div>
             </div>
 
             <div

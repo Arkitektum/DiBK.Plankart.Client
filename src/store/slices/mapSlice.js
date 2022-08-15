@@ -10,6 +10,9 @@ const initialState = {
    },
    featureInfo: {
       expanded: false
+   },
+   _3d: {
+      enabled: false
    }
 };
 
@@ -40,10 +43,20 @@ export const mapSlice = createSlice({
                ...state.featureInfo, ...action.payload
             }
          }
+      },
+      toggle3d: (state, action) => {
+         const b = {
+            ...state, 
+            _3d: {
+               enabled: action.payload
+            }
+         }
+
+         return b;
       }
    }
 });
 
-export const { toggleSidebar, toggleLegend, toggleFeatureInfo } = mapSlice.actions;
+export const { toggleSidebar, toggleLegend, toggleFeatureInfo, toggle3d } = mapSlice.actions;
 
 export default mapSlice.reducer;

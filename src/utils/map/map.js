@@ -12,22 +12,40 @@ import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import { addValidationResultToFeatures } from './features';
 import { addStyling } from './styling';
 import { baseMap } from 'config/baseMap.config';
+import featureMembers from 'config/features.config';
 import axios from 'axios';
+import { groupBy } from './helpers';
+import orderBy from 'lodash.orderby';
 
-async function createFeaturesLayer(mapDocument) {
-   const features = new GeoJSON().readFeatures(mapDocument.geoJson);
+async function createFeatureLayers(mapDocument) {
+   const allFeatures = new GeoJSON().readFeatures(mapDocument.geoJson);
+   addValidationResultToFeatures(mapDocument, allFeatures);
 
-   const featuresLayer = new VectorLayer({
-      source: new VectorSource({ features }),
-      declutter: true
-   });
+   const grouped = groupBy(allFeatures, feature => feature.get('_name'));
+   const keys = Object.keys(grouped);
+   const vectorLayers = [];
 
-   featuresLayer.set('id', 'features');
+   for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const features = grouped[key];
+      const featureMember = featureMembers.find(member => member.name === key);
 
-   addValidationResultToFeatures(mapDocument, features);
-   await addStyling(features, () => { featuresLayer.changed() });
+      const vectorLayer = new VectorLayer({
+         source: new VectorSource({ features: grouped[key] }),
+         declutter: true,
+         zIndex: featureMember?.zIndex || 0
+      });
 
-   return featuresLayer;
+      await addStyling(features, () => { vectorLayer.changed() });
+
+      vectorLayer.set('id', key);
+      vectorLayer.set('isFeatureLayer', true);
+      vectorLayers.push(vectorLayer);
+   }
+
+   const ordered = orderBy(vectorLayers, layer => layer.getZIndex());
+
+   return ordered;
 }
 
 function createSelectedFeaturesLayer() {
@@ -88,12 +106,10 @@ export async function createMap(mapDocument) {
    if (!mapDocument) {
       return null;
    }
-
-   return new Map({
+   
+   const map = new Map({
       layers: [
-         await createTileLayer(mapDocument.epsg.code),
-         await createFeaturesLayer(mapDocument),
-         createSelectedFeaturesLayer()
+         await createTileLayer(mapDocument.epsg.code)
       ],
       view: new View({
          projection: mapDocument.epsg.code2D,
@@ -101,5 +117,12 @@ export async function createMap(mapDocument) {
       }),
       controls: defaultControls().extend([new FullScreen()]),
       interactions: defaultInteractions().extend([new DragRotateAndZoom()]),
-   });
+   });   
+
+   const featureLayers = await createFeatureLayers(mapDocument);
+
+   featureLayers.forEach(layer => map.addLayer(layer));
+   map.addLayer(createSelectedFeaturesLayer());
+
+   return map;
 }

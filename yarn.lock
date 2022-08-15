@@ -1487,11 +1487,6 @@
   version "0.4.7"
   resolved "https://registry.yarnpkg.com/@open-wc/webpack-import-meta-loader/-/webpack-import-meta-loader-0.4.7.tgz#d8212640a386a66bf06a2a4c101936467839b5a1"
   integrity sha512-F3d1EHRckk2+ZpgEEAgVITp8BU9DYLBhKOhNMREeQ1BwILRIhrt+V1bebpnd0Mz595jzd7Yh1wSibLsXibkCpg==
-  
-"@petamoriken/float16@^3.4.7":
-  version "3.6.3"
-  resolved "https://registry.yarnpkg.com/@petamoriken/float16/-/float16-3.6.3.tgz#7ed8f2ae05ea4096f0ccdf2c2655d04aca545d33"
-  integrity sha512-Yx6Z93kmz3JVPYoPPRFJXnt2/G4kfaxRROcZVVHsE4zOClJXvkOVidv/JfvP6hWn16lykbKYKVzUsId6mqXdGg==
 
 "@petamoriken/float16@^3.4.7":
   version "3.5.11"
@@ -7181,6 +7176,11 @@ lodash.memoize@^4.1.2:
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
 
+lodash.orderby@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.orderby/-/lodash.orderby-4.6.0.tgz#e697f04ce5d78522f54d9338b32b81a3393e4eb3"
+  integrity sha512-T0rZxKmghOOf5YPnn8EY5iLYeWCpZq8G41FfqoVHH5QDTAFaghJRmAdLiadEDq+ztgM2q5PjA+Z1fOwGrLgmtg==
+
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
@@ -7888,7 +7888,6 @@ ol-cesium@^2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/ol-cesium/-/ol-cesium-2.13.0.tgz#cac61b1df6cef8aa1e7628b1116bd0a989416cb9"
   integrity sha512-IKeCyS1LSsNORtb6O3SLF2DWbGfwThifO9l0lbNcz54nZkFrsDhDRFUWvawxsLHNjLn/a1VI3Z2WH31HDHimSQ==
-
 
 ol-mapbox-style@^7.1.1:
   version "7.1.1"
@@ -9807,11 +9806,6 @@ reselect@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.0.0.tgz#f2529830e5d3d0e021408b246a206ef4ea4437f7"
   integrity sha512-qUgANli03jjAyGlnbYVAV5vvnOmJnODyABz51RdBN7M4WaVu8mecZWgyQNkG8Yqe3KRGRt0l4K4B3XVEULC4CA==
-
-resium@^1.14.3:
-  version "1.14.3"
-  resolved "https://registry.yarnpkg.com/resium/-/resium-1.14.3.tgz#ac69b4ba1fbef89cedeaf26e2fffe7371be17185"
-  integrity sha512-JgxEMnVVrvL2sf305pgf+w+n/w2LgP/106u2WYaBQotC539y9j8SBNQCSAGBMCWCejzmhIdMBEX0BKQj5kzwqQ==
 
 resolve-cwd@^2.0.0:
   version "2.0.0"

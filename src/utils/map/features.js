@@ -2,19 +2,15 @@ import { filterSelector } from 'utils/sld-reader/Filter';
 import { GeometryCollection } from 'ol/geom';
 import { Stroke, Style, Fill, Circle } from 'ol/style';
 import GeometryType from 'ol/geom/GeometryType';
-import { getAreaFormatted, getFeaturesByName, getLayer, getLengthFormatted, groupBy } from './helpers';
+import { getAreaFormatted, getLayer, getLengthFormatted, groupBy } from './helpers';
 import WKT from 'ol/format/WKT';
 
 const HIGHLIGHT_COLOR = 'rgb(0 109 173 / 50%)';
 const ERROR_COLOR = 'rgb(255 0 0 / 50%)';
 
 export function toggleFeatures(legend, map) {
-   const vectorLayer = getLayer(map, 'features');
-   const features = getFeaturesByName(vectorLayer, legend.name);
-
-   features.forEach(feature => {
-      toggleFeature(feature);
-   });
+   const vectorLayer = getLayer(map, legend.name);
+   vectorLayer.setVisible(!vectorLayer.getVisible());
 }
 
 export function toggleFeature(feature) {

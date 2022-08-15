@@ -15,6 +15,14 @@
       padding-left: 15px;
       width: 400px;
 
+      .open-files {
+         display: flex;
+
+         > div {
+            margin-right: 15px;
+         }
+      }
+
       .toggle-sidebar {
          background: url("../../../assets/gfx/icon-menu.svg") no-repeat center center;
          position: relative;

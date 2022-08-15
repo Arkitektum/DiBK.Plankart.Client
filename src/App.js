@@ -3,9 +3,12 @@ import { useSelector } from 'react-redux';
 import { MapView, SplashScreen, TopBar } from 'components/partials';
 import { createLegends } from 'utils/map/legend';
 import { Spinner } from 'components/custom-elements';
-import './App.scss';
 import MapContext from 'context/MapContext';
+import Ion from 'cesium/Source/Core/Ion';
+import axios from 'axios';
+import './App.scss';
 
+const CESIUM_ION_ACCESS_TOKEN_URL = process.env.REACT_APP_CESIUMION_TOKEN_URL;
 
 function App() {
    const [mapDocument, setMapDocument] = useState(null);
@@ -16,12 +19,15 @@ function App() {
 
    useEffect(
       () => {
-         async function loadLegends() {
+         async function setupApp() {
+            const cesiumTokenResponse = await axios.get(CESIUM_ION_ACCESS_TOKEN_URL);
+            Ion.defaultAccessToken = cesiumTokenResponse.data;
+
             setLegends(await createLegends());
             setLoading(false);
          }
          
-         loadLegends();
+         setupApp();
       },
       []
    );

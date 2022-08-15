@@ -5,11 +5,13 @@ import { ScaleBar } from 'components/partials';
 import NorthArrow from 'assets/gfx/symbol-north-arrow.svg';
 import './MapInfo.scss';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
 
 function MapInfo({ mapDocument, map }) {
    const prevResolution = useRef(0);
    const [scale, setScale] = useState(null);
    const [rotation, setRotation] = useState(0);
+   const _3dView = useSelector(state => state.map._3d);
 
    const getScale = useCallback(
       event => {
@@ -83,14 +85,14 @@ function MapInfo({ mapDocument, map }) {
                   <div className="label">Ekvidistanse:</div>
                   <div className="value">{baseMap.equidistance} m</div>
                </div>
+               <div className={_3dView.enabled ? 'hidden' : ''}>
+                  <div className="box-row">
+                     <div className="label">Kartmålestokk:</div>
+                     <div className="value">{scale}</div>
+                  </div>
 
-               <div className="box-row">
-                  <div className="label">Kartmålestokk:</div>
-                  <div className="value">{scale}</div>
+                  <ScaleBar map={map} numberOfSteps={4} minWidth={150} />
                </div>
-
-               <ScaleBar map={map} numberOfSteps={4} minWidth={150} />
-
                <div className="north-arrow">
                   <span>N</span>
                   <img src={NorthArrow} style={{ transform: `rotate(${rotation}rad)` }} alt="" />

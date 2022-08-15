@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { getFeatureById, getLayer, zoomTo } from 'utils/map/helpers';
+import { getAllFeatures, zoomTo } from 'utils/map/helpers';
 import { Rule } from 'components/partials';
 import './ValidationErrors.scss';
 
@@ -22,8 +22,8 @@ function ValidationErrors({ map, validationResult, onMessageClick }) {
    }
 
    function handleMessageClick(gmlIds) {
-      const featureLayer = getLayer(map, 'features');
-      const features = gmlIds.map(gmlId => getFeatureById(featureLayer, gmlId));
+      const allFeatures = getAllFeatures(map);
+      const features = gmlIds.map(gmlId => allFeatures.find(feature => feature.get('id') === gmlId));
 
       onMessageClick(features);
       zoomTo(map, features);
