@@ -11,13 +11,16 @@ import { addGeometryInfo, addLegendToFeatures, highlightSelectedFeatures, toggle
 import { debounce, getAllFeatures, getExtentOfFeatures } from 'utils/map/helpers';
 import { createMap } from 'utils/map/map';
 import OLCesium from 'ol-cesium';
-import { WebMapServiceImageryProvider, CzmlDataSource, CesiumTerrainProvider, Rectangle } from 'cesium';
+import { WebMapServiceImageryProvider, CzmlDataSource, CesiumTerrainProvider, Rectangle, defined } from 'cesium';
 import { baseMap } from 'config/baseMap.config';
 import IonResource from 'cesium/Source/Core/IonResource';
 import { toggleFeatureInfo } from 'store/slices/mapSlice';
 import MapContext from 'context/MapContext';
 import axios from 'axios';
 import './MapView.scss';
+import ScreenSpaceEventHandler from 'cesium/Source/Core/ScreenSpaceEventHandler';
+import ScreenSpaceEventType from 'cesium/Source/Core/ScreenSpaceEventType';
+import { Collection } from 'ol';
 
 const TERRAIN_DATA_URL = process.env.REACT_APP_TERRAIN3D_URL;
 
@@ -29,15 +32,16 @@ function MapView({ mapDocument }) {
    const [filteredLegends, setFilteredLegends] = useState([]);
    const [terrainResourceId, setTerrainResourceId] = useState(null);
    const [mapExtent3d, setMapExtent3d] = useState(null);
-   const [ol3dMap, setOl3dMap] = useContext(MapContext);
+   const [_3dMap, set_3dMap] = useContext(MapContext);
    const legends = useContext(LegendContext);
    const legend = useSelector(state => state.map.legend);
    const sidebar = useSelector(state => state.map.sidebar);
+   const _3dView = useSelector(state => state.map._3d);
    const sidebarVisible = useRef(true);
    const mapElement = useRef();
    const dispatch = useDispatch();
 
-   const selectFeature = useCallback(
+   const select2dFeature = useCallback(
       features => {
          addGeometryInfo(features);
          highlightSelectedFeatures(map, features);
@@ -45,6 +49,15 @@ function MapView({ mapDocument }) {
          dispatch(toggleFeatureInfo({ expanded: true }));
       },
       [map, dispatch]
+   );
+
+   const select3dFeature = useCallback(
+      features => {
+         addGeometryInfo(features);
+         setSelectedFeatures([...features]);
+         dispatch(toggleFeatureInfo({ expanded: true }));
+      },
+      [dispatch]
    );
 
    const addMapInteraction = useCallback(
@@ -63,14 +76,14 @@ function MapView({ mapDocument }) {
             const features = event.target.getFeatures();
 
             if (features.getLength() === 1) {
-               selectFeature(features.getArray());
+               select2dFeature(features.getArray());
             } else if (features.getLength() > 1) {
                const originalEvent = event.mapBrowserEvent.originalEvent;
                setContextMenuData({ left: originalEvent.offsetX, top: originalEvent.offsetY, features });
             }
          });
       },
-      [map, selectFeature]
+      [map, select2dFeature]
    );
 
    const { onWindowResize } = useMemo(
@@ -122,7 +135,7 @@ function MapView({ mapDocument }) {
             const olcs = new OLCesium({ map });
             olcs.warmUp(0, 20000);
             
-            setOl3dMap(olcs);
+            set_3dMap(olcs);
          });
 
          map.setTarget(mapElement.current);
@@ -148,26 +161,26 @@ function MapView({ mapDocument }) {
             setSelectedFeatures([]);
          }
       },
-      [map, setOl3dMap, selectFeature, addMapInteraction, onWindowResize]
+      [map, set_3dMap, select2dFeature, addMapInteraction, onWindowResize]
    );
 
    useEffect(
       () => {
-         if (mapExtent3d === null || ol3dMap === null) {
+         if (mapExtent3d === null || _3dMap === null) {
             return;
          }
 
-         const scene = ol3dMap.getCesiumScene()
+         const scene = _3dMap.getCesiumScene()
          const globe = scene.globe;
-         const dummy = Rectangle.fromDegrees(mapExtent3d[0] - 0.05, mapExtent3d[1] - 0.025, mapExtent3d[2] + 0.05, mapExtent3d[3] + 0.025);
+         const customExtent = Rectangle.fromDegrees(mapExtent3d[0] - 0.05, mapExtent3d[1] - 0.025, mapExtent3d[2] + 0.05, mapExtent3d[3] + 0.025);
 
-         globe.cartographicLimitRectangle = dummy;
+         globe.cartographicLimitRectangle = customExtent;
          globe.showSkirts = false;
          globe.backFaceCulling = false;
          globe.undergroundColor = undefined;
          scene.skyAtmosphere.show = false;
       },
-      [mapExtent3d, ol3dMap]
+      [mapExtent3d, _3dMap]
    );
 
    useEffect(
@@ -201,11 +214,11 @@ function MapView({ mapDocument }) {
 
    useEffect(
       () => {
-         if (!ol3dMap) {
+         if (!_3dMap) {
             return;
          }
 
-         const scene = ol3dMap.getCesiumScene();
+         const scene = _3dMap.getCesiumScene();
 
          scene.terrainProvider = new CesiumTerrainProvider({
             url: IonResource.fromAssetId(1),
@@ -221,36 +234,62 @@ function MapView({ mapDocument }) {
             scene.imageryLayers.addImageryProvider(cesiumBaseMapWMS);
          }
       },
-      [ol3dMap]
+      [_3dMap]
    );
 
    useEffect(
       () => {
-         if (mapDocument?.czmlData.czmlStrings.length > 0) {
-            var dataSources = ol3dMap.getDataSources();
+         if (!_3dMap){
+            return;
+         }
 
+         if (mapDocument?.czmlData.czmlStrings.length > 0) {
+            const dataSources = _3dMap.getDataSources();
             mapDocument.czmlData.czmlStrings.forEach(czmlString =>
                dataSources.add(CzmlDataSource.load(czmlString))
             );
          }
+         else {
+            const scene = _3dMap.getCesiumScene();
+
+            const handler = new ScreenSpaceEventHandler(scene.canvas);
+
+            handler.setInputAction((movement) => {
+               const pickedElements = scene.drillPick(movement.position);
+
+               const features = new Collection();
+
+               if (defined(pickedElements)){
+                  for (const pickedElement of pickedElements) {
+                     features.push(pickedElement.primitive.olFeature);
+                  }
+
+                  if (features.getLength() === 1) {
+                     select3dFeature(features.getArray());
+                  } else if (features.getLength() > 1) {
+                     setContextMenuData({ left: movement.position.x, top: movement.position.y, features });
+                  }
+               }
+            }, ScreenSpaceEventType.LEFT_CLICK);
+         }
       },
-      [mapDocument, ol3dMap]
+      [mapDocument, _3dMap, select3dFeature]
    );
 
    useEffect(
       () => {
-         if (terrainResourceId === null || ol3dMap === null) {
+         if (terrainResourceId === null || _3dMap === null) {
             return;
          }
 
-         var scene = ol3dMap.getCesiumScene();
+         var scene = _3dMap.getCesiumScene();
 
          scene.terrainProvider = new CesiumTerrainProvider({
             url: IonResource.fromAssetId(terrainResourceId),
             credit: "Norges Kartverk"
          });
       },
-      [terrainResourceId, ol3dMap]
+      [terrainResourceId, _3dMap]
    );
 
    return (
@@ -266,9 +305,9 @@ function MapView({ mapDocument }) {
                <div ref={mapElement} className="map"></div>
             </div>
 
-            <FeatureContextMenu map={map} data={contextMenuData} onFeatureSelect={selectFeature} />
+            <FeatureContextMenu map={map} data={contextMenuData} onFeatureSelect={_3dView.enabled ? select3dFeature : select2dFeature} />
             <FeatureInfo map={map} features={selectedFeatures} />
-            <ValidationErrors map={map} validationResult={mapDocument?.validationResult} onMessageClick={selectFeature} />
+            <ValidationErrors map={map} validationResult={mapDocument?.validationResult} onMessageClick={_3dView.enabled ? select3dFeature : select2dFeature} />
          </div>
       </div>
    );

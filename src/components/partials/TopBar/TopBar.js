@@ -7,6 +7,7 @@ import Upload3D from './Upload/Upload3D';
 import './TopBar.scss';
 import MapContext from 'context/MapContext';
 import { getLayer } from 'utils/map/helpers';
+import { clearSelectedFeatures } from 'utils/map/features';
 
 function TopBar({ loading, onUploadResponse }) {
    const [mapDocument, setMapDocument] = useState(null);
@@ -14,22 +15,26 @@ function TopBar({ loading, onUploadResponse }) {
    const [sidebarVisible, setSidebarVisible] = useState(true);
    const [fullscreen, setFullscreen] = useState(false);
    const dispatch = useDispatch();
-   const [ol3dMapEnabled, setOl3dMapEnabled] = useState(false);
-   const [ol3dMap] = useContext(MapContext);
+   const [_3dMapEnabled, set_3dMapEnabled] = useState(false);
+   const [_3dMap] = useContext(MapContext);
 
    const setEnabled3dView = useCallback(
       enabled => {
+         const olMap = _3dMap.getOlMap();
+
          function togglePåskrifter() {
-            const vectorLayer = getLayer(ol3dMap.getOlMap(), 'RpPåskrift');
-            vectorLayer.setVisible(false);
+            const vectorLayer = getLayer(olMap, 'RpPåskrift');
+            vectorLayer.setVisible(!enabled);
          }
 
-         ol3dMap.setEnabled(enabled);
-         setOl3dMapEnabled(enabled);
+         clearSelectedFeatures(olMap);
+
+         _3dMap.setEnabled(enabled);
+         set_3dMapEnabled(enabled);
          dispatch(toggle3d(enabled));
          setTimeout(togglePåskrifter, 0);
       },
-      [ol3dMap, dispatch]
+      [_3dMap, dispatch]
    )
 
    useEffect(
@@ -77,8 +82,8 @@ function TopBar({ loading, onUploadResponse }) {
    }
 
    function handleToggle3dMapClick() {
-      if (ol3dMap) {
-         setEnabled3dView(!ol3dMapEnabled);
+      if (_3dMap) {
+         setEnabled3dView(!_3dMapEnabled);
       }
    }
 
@@ -127,8 +132,8 @@ function TopBar({ loading, onUploadResponse }) {
          <div className="top-bar-right">
             <div
                role="button"
-               className={`toggle-ol3d ${ol3dMapEnabled ? 'ol3d-toggled' : ''}`}
-               title={`Bytt til ${ol3dMapEnabled ? '2D-vising' : '3D-visning'}`}
+               className={`toggle-ol3d ${_3dMapEnabled ? 'ol3d-toggled' : ''}`}
+               title={`Bytt til ${_3dMapEnabled ? '2D-vising' : '3D-visning'}`}
                onClick={handleToggle3dMapClick}
             />
             <div

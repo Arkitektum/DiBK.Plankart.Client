@@ -151,6 +151,13 @@ export function addValidationResultToFeatures(mapDocument, features) {
    }
 }
 
+export function clearSelectedFeatures(map){
+   const featureLayer = getLayer(map, 'selected-features');
+   const layerSource = featureLayer.getSource();
+
+   layerSource.clear();
+}
+
 function getHighlightStyle(feature) {
    if (feature.get('_name') === 'RpJuridiskPunkt') {
       return [];
