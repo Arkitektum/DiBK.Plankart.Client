@@ -1,7 +1,6 @@
 import { filterSelector } from 'utils/sld-reader/Filter';
 import { GeometryCollection } from 'ol/geom';
 import { Stroke, Style, Fill, Circle } from 'ol/style';
-import GeometryType from 'ol/geom/GeometryType';
 import { getAreaFormatted, getLayer, getLengthFormatted, groupBy } from './helpers';
 import WKT from 'ol/format/WKT';
 
@@ -33,14 +32,14 @@ export function addGeometryInfo(features) {
       const geometryType = geometry.getType();
 
       switch (geometryType) {
-         case GeometryType.POLYGON:
-         case GeometryType.MULTI_POLYGON:
+         case 'Polygon':
+         case 'MultiPolygon':
             if (!feature.get('_area')) {
                feature.set('_area', getAreaFormatted(geometry));
             }
             break;
-         case GeometryType.LINE_STRING:
-         case GeometryType.MULTI_LINE_STRING:
+         case 'LineString':
+         case 'MultiLineString':
             if (!feature.get('_length')) {
                feature.set('_length', getLengthFormatted(geometry));
             }
@@ -178,7 +177,7 @@ function getHighlightStyle(feature) {
 
          highlightStyle = styles[1].clone();
          highlightStyle.getText().setStroke(highlightStroke);
-      } else if (feature.getGeometry().getType() === GeometryType.POINT) {
+      } else if (feature.getGeometry().getType() === 'Point') {
          const image = feature.getStyle()[0].getImage();
 
          highlightStyle = new Style({
@@ -212,13 +211,13 @@ function addZoomToStyle(geometries, styles) {
       const geometryType = geometry.getType();
 
       switch (geometryType) {
-         case GeometryType.GEOMETRY_COLLECTION:
+         case 'GeometryCollection':
             addZoomToStyle(geometry.getGeometries(), styles);
             break;
-         case GeometryType.POLYGON:
-         case GeometryType.MULTI_POLYGON:
-         case GeometryType.LINE_STRING:
-         case GeometryType.MULTI_LINE_STRING:
+         case 'Polygon':
+         case 'MultiPolygon':
+         case 'LineString':
+         case 'MultiLineString':
             styles.push(
                new Style({
                   geometry,
@@ -230,8 +229,8 @@ function addZoomToStyle(geometries, styles) {
                })
             );
             break;
-         case GeometryType.POINT:
-         case GeometryType.MULTI_POINT:
+         case 'Point':
+         case 'MultiPoint':
             styles.push(
                new Style({
                   geometry,
