@@ -17,6 +17,7 @@ export function toggleFeatures(legend, map) {
    });
 }
 
+
 export function toggleFeature(feature) {
    const visible = !feature.get('_visible');
 
