@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { getPropertyList } from 'utils/map/feature-info';
 import { getSymbolById, zoomTo, zoomToGeometry } from 'utils/map/helpers';
+import './Feature.scss';
 
 function Feature({ feature, map, legend }) {
    function getFeatureInfo(feature) {
@@ -27,9 +28,7 @@ function Feature({ feature, map, legend }) {
       return (
          <Fragment>
             <div className="divider"></div>
-            {
-               rows.map(row => row)
-            }
+            {rows.map(row => row)}
          </Fragment>
       )
    }
@@ -63,22 +62,34 @@ function Feature({ feature, map, legend }) {
    }
 
    function getErrorMessages(feature) {
-      const errorMessages = feature.get('_errorMessages');
+      const messages = feature.get('_errorMessages');
 
-      if (!errorMessages?.length) {
+      if (!messages?.length) {
          return null;
+      }
+
+      const errors = messages.filter(message => message.type === 'ERROR');
+      const warnings = messages.filter(message => message.type === 'WARNING');
+      let title;
+      
+      if (errors.length && warnings.length) {
+         title = 'Feil og advarsler';
+      } else if (errors.length && !warnings.length) {
+         title = 'Feil';
+      } else {
+         title = 'Advarsler';
       }
 
       return (
          <Fragment>
             <div className="divider"></div>
             <div className="error-messages">
-               <h5>Valideringsfeil ({errorMessages.length}):</h5>
-               <ol>
+               <h5>{title} ({messages.length}):</h5>
+               <ul>
                   {
-                     errorMessages.map((message, index) => {
+                     errors.concat(warnings).map((message, index) => {
                         return (
-                           <li key={`${feature.get('id')}-error-${index}`}>
+                           <li key={`${feature.get('id')}-error-${index}`} className={'message message-' + message.type.toLowerCase()}>
                               {message.message}
                               {
                                  message.zoomTo ?
@@ -89,7 +100,7 @@ function Feature({ feature, map, legend }) {
                         )
                      })
                   }
-               </ol>
+               </ul>
             </div>
          </Fragment>
       );

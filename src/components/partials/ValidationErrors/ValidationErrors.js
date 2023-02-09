@@ -7,6 +7,8 @@ function ValidationErrors({ map, validationResult, onMessageClick }) {
    const [expanded, setExpanded] = useState(false);
    const validationResultId = useRef(null);
    const rules = validationResult?.rules || [];
+   const errors = rules.filter(rule => rule.messageType === 'ERROR') || [];
+   const warnings = rules.filter(rule => rule.messageType === 'WARNING') || [];
 
    useEffect(
       () => {
@@ -29,6 +31,15 @@ function ValidationErrors({ map, validationResult, onMessageClick }) {
       zoomTo(map, features);
    }
 
+   function getTitle() {
+      if (errors.length && warnings.length) {
+         return 'Feil og advarsler';
+      } else if (errors.length && !warnings.length) {
+         return 'Feil';
+      }
+      return 'Advarsler';
+   }
+
    function getErrorCount() {
       return rules.flatMap(rule => rule.messages).length;
    }
@@ -39,13 +50,12 @@ function ValidationErrors({ map, validationResult, onMessageClick }) {
 
    return (
       <div className={`validation-errors box ${expanded ? 'box-expanded' : ''}`}>
-         <div className="box-header expand-button" role="button" onClick={toggle}>Valideringsfeil ({getErrorCount()})</div>
-
+         <div className="box-header expand-button" role="button" onClick={toggle}>{getTitle()} ({getErrorCount()})</div>
+         <div className="warning"></div>
          <div className="box-content">
             <div className="rules">
-               {
-                  rules.map((rule, index) => <Rule key={'rule-' + index} rule={rule} onMessageClick={handleMessageClick} />)
-               }
+               {errors.map((rule, index) => <Rule key={'rule-error-' + index} rule={rule} onMessageClick={handleMessageClick} />)}
+               {warnings.map((rule, index) => <Rule key={'rule-warning-' + index} rule={rule} onMessageClick={handleMessageClick} />)}
             </div>
          </div>
       </div>

@@ -1,6 +1,18 @@
 .rule {
    margin-bottom: 15px;
 
+   &.rule-error .rule-name {
+      background: url('../../../assets/gfx/icon-error.svg') no-repeat center left;
+      background-size: 20px;
+      padding-left: 24px;
+   }
+   
+   &.rule-warning .rule-name {
+      background: url('../../../assets/gfx/icon-warning.svg') no-repeat center left;
+      background-size: 20px;
+      padding-left: 24px;
+   }
+
    &:last-child {
       margin-bottom: 0;
    }
@@ -57,10 +69,17 @@
 
       li {
          padding: 5px 10px;
-         transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 
-         &:hover {
-            background-color: #ebebeb;
+         &.link {
+            transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+
+            &:hover {
+               background-color: #ebebeb;
+            }
+         }
+
+         &.no-link {
+            font-size: 13px;
          }
       }
 

@@ -4,7 +4,7 @@
    color: #ffffff;
    display: flex;
    height: 32px;
-   justify-content: center;
+   justify-content: space-between;
    line-height: 32px;
    width: 100%;
    z-index: 999;
@@ -41,10 +41,9 @@
 
    .top-bar-center {
       display: flex;
-      width: calc(100% - 431px);
-      justify-content: center;
-      white-space: nowrap;
-      overflow: hidden;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
 
       .file-name {
          margin-right: 15px;

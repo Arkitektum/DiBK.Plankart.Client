@@ -1,0 +1,30 @@
+.error-messages {
+   ul {
+      padding-left: 25px;
+
+      li.message {
+         position: relative;
+         list-style: none;
+         margin-bottom: 5px;
+      
+         &::before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background-size: 20px !important;
+         }
+         
+         &.message-error::before {
+            background:  url('../../../../assets/gfx/icon-error.svg');
+         }
+      
+         &.message-warning::before {
+            background:  url('../../../../assets/gfx/icon-warning.svg');
+         }
+      }
+   }
+}
+

@@ -129,26 +129,28 @@ export function addValidationResultToFeatures(mapDocument, features) {
       return;
    }
 
-   const messages = rules.flatMap(rule => rule.messages);
-
-   for (let i = 0; i < messages.length; i++) {
-      const message = messages[i];
-
-      if (!message.gmlIds?.length) {
-         continue;
-      }
-
-      for (let j = 0; j < message.gmlIds.length; j++) {
-         const gmlId = message.gmlIds[j];
-         const feature = features.find(feat => feat.get('id') === gmlId);
-
-         if (feature) {
-            const errorMessages = feature.get('_errorMessages');
-
-            if (!errorMessages) {
-               feature.set('_errorMessages', [{ message: message.message, zoomTo: message.zoomTo }]);
-            } else {
-               errorMessages.push({ message: message.message, zoomTo: message.zoomTo });
+   for (let i = 0; i < rules.length; i++) {
+      const rule = rules[i];
+      
+      for (let j = 0; j < rule.messages.length; j++) {
+         const message = rule.messages[j];
+   
+         if (!message.gmlIds?.length) {
+            continue;
+         }
+   
+         for (let k = 0; k < message.gmlIds.length; k++) {
+            const gmlId = message.gmlIds[k];
+            const feature = features.find(feat => feat.get('id') === gmlId);
+   
+            if (feature) {
+               const errorMessages = feature.get('_errorMessages');
+   
+               if (!errorMessages) {
+                  feature.set('_errorMessages', [{ message: message.message, type: rule.messageType, zoomTo: message.zoomTo }]);
+               } else {
+                  errorMessages.push({ message: message.message, type: rule.messageType, zoomTo: message.zoomTo });
+               }
             }
          }
       }

@@ -11,7 +11,7 @@ function Rule({ rule, onMessageClick }) {
    }
 
    return (
-      <div className={`rule ${!expanded ? 'rule-collapsed' : ''}`} role="button">
+      <div className={`rule rule-${rule.messageType.toLowerCase()} ${!expanded ? 'rule-collapsed' : ''}`} role="button">
          <div className="rule-name" onClick={toggle}>
             <span title={title}>{title}</span>
          </div>
@@ -21,9 +21,13 @@ function Rule({ rule, onMessageClick }) {
                   const messageId = `${rule.id}-${index}`;
 
                   return (
-                     <li key={messageId}>
-                        <Button variant="link" onClick={() => onMessageClick(message.gmlIds)}>{message.message}</Button>
-                     </li>
+                     message.gmlIds ?
+                        <li key={messageId} className="link">
+                           <Button variant="link" onClick={() => onMessageClick(message.gmlIds)}>{message.message}</Button>
+                        </li> :
+                        <li key={messageId} className="no-link">
+                           <span>{message.message}</span>
+                        </li>
                   );
                })
             }
